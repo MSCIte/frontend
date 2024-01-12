@@ -9,23 +9,45 @@ interface CourseProps {
   courseCode: string;
   longName: string;
   tags: Tag[];
+  isExtended: boolean;
 }
 
 export const Course = (props: CourseProps) => {
-  return (
-    <div className={styles.wrapper}>
-      <h1 className={styles.header}>{props.courseCode}</h1>
-      <div>
-        <div className={styles.description}>{props.longName}</div>
+  if (props.isExtended) {
+    return (
+      <div className={styles.wrapper}>
+        <div className={styles.header}>{props.courseCode}</div>
+        <div>
+          <div className={styles.description}>{props.longName}</div>
+        </div>
+        <div className={styles.pillWrapper}>
+          {props.tags.map((tag) => (
+            <div
+              className={styles.textPill}
+              style={{ border: `1px solid ${tag.color}` }}
+            >
+              {tag.name}
+            </div>
+          ))}
+        </div>
       </div>
-      <div className={styles.pillWrapper}>
-        {props.tags.map((tag) => (
-          <div
-            className={styles.colorPill}
-            style={{ background: tag.color }}
-          ></div>
-        ))}
+    );
+  } else {
+    return (
+      <div className={styles.wrapper}>
+        <div className={styles.header}>{props.courseCode}</div>
+        <div>
+          <div className={styles.description}>{props.longName}</div>
+        </div>
+        <div className={styles.pillWrapper}>
+          {props.tags.map((tag) => (
+            <div
+              className={styles.colorPill}
+              style={{ background: tag.color }}
+            ></div>
+          ))}
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 };

@@ -15,7 +15,7 @@ function App() {
   return (
     <div style={{ background: "red" }}>
       <div style={{ border: "1px solid black", background: "unset" }}>
-        <Course {...courseData} />
+        <Course isExtended={true} {...courseData} />
       </div>
     </div>
   );

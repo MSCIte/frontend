@@ -17,7 +17,6 @@
 
 .pillWrapper {
   display: flex;
-  /* flex-direction: row-reverse; */
   margin-right: 0;
 }
 
@@ -26,7 +25,17 @@
   color: white;
   padding: 0.25rem 0.5rem;
   margin: 0.25rem;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.textPill {
+  border-radius: 10px;
+  color: black;
+  padding: 0.25rem 0.5rem;
+  margin: 0.25rem;
+  font-size: 0.5rem;
   font-weight: 500;
   display: inline-block;
 }
