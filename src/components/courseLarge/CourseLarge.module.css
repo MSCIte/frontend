@@ -1,23 +1,24 @@
-.wrapper {
-  background: white;
-  border: none;
-  border-radius: 10px;
-  color: black;
-  padding: 0.5rem;
+.accentColor {
+  border-left: 4px solid blue;
 }
 
 .header {
-  font-size: 1rem;
+  font-size: 1.25rem;
 }
 
 .description {
   color: #a1a1a1;
-  font-size: 0.5rem;
+  font-size: 1rem;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
 }
 
 .pillWrapper {
   display: flex;
   margin-right: 0;
+  flex-direction: row-reverse;
 }
 
 .colorPill {
@@ -35,7 +36,7 @@
   color: black;
   padding: 0.25rem 0.5rem;
   margin: 0.25rem;
-  font-size: 0.5rem;
+  font-size: 0.75rem;
   font-weight: 500;
   display: inline-block;
 }
