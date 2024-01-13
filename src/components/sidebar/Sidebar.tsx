@@ -23,7 +23,7 @@ export const Sidebar = () => {
         <button onClick={toggleSidebar} className="w-6 h-6 float-right">
           {isExpanded ? <ArrowLeftIcon /> : <ArrowRightIcon />}
         </button>
-        <div className="lineDownCenter h-full w-full mt-6" />
+        <div className="lineDownCenter h-full w-full mt-8" />
       </div>
     </div>
   );
