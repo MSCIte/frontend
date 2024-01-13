@@ -2,9 +2,7 @@ import clsx from "clsx";
 import { useCallback, useState } from "react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 
-interface SidebarProps {}
-
-export const Sidebar = (props: SidebarProps) => {
+export const Sidebar = () => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleSidebar = useCallback(() => {

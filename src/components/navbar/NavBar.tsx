@@ -1,6 +1,5 @@
-import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Fragment } from "react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Disclosure } from "@headlessui/react";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import { Link, useRoute } from "wouter";
 
