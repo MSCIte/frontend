@@ -8,7 +8,7 @@
   font-weight: 400;
 
   /* color-scheme: light dark; */
-  color: rgba(255, 255, 255, 0.87);
+  /* color: rgba(255, 255, 255, 0.87); */
   background: #f3f3f3;
 
   font-synthesis: none;
@@ -17,15 +17,18 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.main {
+.lineDownCenter{
+  background: linear-gradient(#000, #000) no-repeat center/2px 100%;
+}
+
+/* .main {
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
 
   & > * {
     margin: 1rem;
   }
-}
+} */
 
 /*
 a {

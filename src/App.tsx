@@ -1,66 +1,24 @@
+import { Route, Switch } from "wouter";
 import "./App.css";
-import { ActionButton } from "./components/actionButton/ActionButton";
-import { CourseLarge } from "./components/courseLarge/CourseLarge";
-import { CourseSmall } from "./components/courseSmall/CourseSmall";
-import { RequirementsPane } from "./components/requirementsPane/RequirementsPane";
-import AllTermsView from "./assets/allTermsView.svg?react";
-import YearView from "./assets/yearView.svg?react";
-import TermView from "./assets/termView.svg?react";
-
-const courseData = {
-  courseCode: "CHE 100",
-  longName:
-    "Chemical Engineering Concepts I mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
-  tags: [
-    { name: "Chemistry", color: "red" },
-    { name: "Physics", color: "blue" },
-    { name: "Math", color: "green" },
-  ],
-};
-
-const requirements = {
-  title: "Degree Requirements",
-  data: [
-    {
-      name: "Mandatory Courses",
-      requirementsCompleted: 15,
-      requirementsTotal: 20,
-      color: "red",
-    },
-    {
-      name: "Technical Electives",
-      requirementsCompleted: 0,
-      requirementsTotal: 6,
-      color: "blue",
-    },
-    {
-      name: "Degree Completion",
-      requirementsCompleted: 36,
-      requirementsTotal: 45,
-      color: "green",
-    },
-  ],
-};
-
+import { DemoPage } from "./pages/DemoPage";
+import { FAQPage } from "./pages/FAQPage";
+import { Navbar } from "./components/navbar/NavBar";
+import { LandingPage } from "./pages/LandingPage";
+import { PlanningPage } from "./pages/PlanningPage";
+import { AboutPage } from "./pages/AboutPage";
 
 function App() {
   return (
-    <div className="main">
-      <div style={{ width: "10rem" }}>
-        <CourseSmall {...courseData} />
-      </div>
-      <div style={{ width: "20rem" }}>
-        <CourseLarge {...courseData} />
-      </div>
-      <div>
-        <RequirementsPane {...requirements} />
-      </div>
-      <div className="space-y-2">
-        <ActionButton text="All Terms" icon={<AllTermsView />} />
-        <ActionButton text="Year" icon={<YearView />} />
-        <ActionButton text="Term" icon={<TermView />} />
-      </div>
-    </div>
+    <>
+      <Navbar />
+      <Switch>
+        <Route path="/about" component={AboutPage} />
+        <Route path="/faq" component={FAQPage} />
+        <Route path="/plan" component={PlanningPage} />
+        <Route path="/demo" component={DemoPage} />
+        <Route path="/" component={LandingPage} />
+      </Switch>
+    </>
   );
 }
 
