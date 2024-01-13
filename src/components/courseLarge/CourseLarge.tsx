@@ -1,6 +1,5 @@
 import { Pane } from "../pane/Pane";
 import styles from "./CourseLarge.module.css";
-import clsx from "clsx";
 interface Tag {
   name: string;
   color: string;
