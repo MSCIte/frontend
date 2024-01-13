@@ -4,6 +4,8 @@ import { CourseLarge } from "./components/courseLarge/CourseLarge";
 import { CourseSmall } from "./components/courseSmall/CourseSmall";
 import { RequirementsPane } from "./components/requirementsPane/RequirementsPane";
 import AllTermsView from "./assets/allTermsView.svg?react";
+import YearView from "./assets/yearView.svg?react";
+import TermView from "./assets/termView.svg?react";
 
 const courseData = {
   courseCode: "CHE 100",
@@ -40,11 +42,6 @@ const requirements = {
   ],
 };
 
-const actionButtonData = {
-  text: "Add Course",
-  onClick: () => console.log("button clicked"),
-  icon: <AllTermsView />,
-};
 
 function App() {
   return (
@@ -58,8 +55,10 @@ function App() {
       <div>
         <RequirementsPane {...requirements} />
       </div>
-      <div>
-        <ActionButton {...actionButtonData} />
+      <div className="space-y-2">
+        <ActionButton text="All Terms" icon={<AllTermsView />} />
+        <ActionButton text="Year" icon={<YearView />} />
+        <ActionButton text="Term" icon={<TermView />} />
       </div>
     </div>
   );

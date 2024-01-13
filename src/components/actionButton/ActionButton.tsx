@@ -2,22 +2,23 @@ import clsx from "clsx";
 
 interface ActionButtonProps {
   text: string;
-  onClick: () => void;
+  onClick?: () => void;
   icon?: React.ReactNode;
   className?: string;
+  isActive?: boolean;
 }
 
 export const ActionButton = (props: ActionButtonProps) => {
   return (
     <button
       className={clsx(
-        "rounded-full w-12 h-12 bg-slate-500 text-white hover:bg-slate-600",
+        "rounded bg-transparent border-gray-400 border text-white hover:bg-gray-200 hover:border-transparent py-1 px-2 flex items-center justify-center space-x-2",
         props.className
       )}
       onClick={props.onClick}
     >
-      <span>{props.icon && <div>{props.icon}</div>}</span>
-      <span className="text-xs">{props.text}</span>
+      <div>{props.icon && <div>{props.icon}</div>}</div>
+      <div className="block text-xs text-gray-500">{props.text}</div>
     </button>
   );
 };
