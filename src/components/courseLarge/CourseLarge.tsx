@@ -1,6 +1,6 @@
 import { Pane } from "../pane/Pane";
 import styles from "./CourseLarge.module.css";
-interface Tag {
+export interface Tag {
   name: string;
   color: string;
 }

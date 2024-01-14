@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { Pane } from "../pane/Pane";
 import styles from "./CourseSmall.module.css";
 interface Tag {
@@ -14,8 +15,8 @@ interface CourseProps {
 
 export const CourseSmall = (props: CourseProps) => {
   return (
-    <Pane>
-      <div className={styles.header}>{props.courseCode}</div>
+    <Pane className="h-full w-36">
+      <div className={clsx(styles.header)}>{props.courseCode}</div>
       <div>
         <div className={styles.description}>{props.longName}</div>
       </div>

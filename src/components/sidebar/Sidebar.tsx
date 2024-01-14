@@ -80,7 +80,7 @@ export const Sidebar = () => {
   return (
     <div
       className={clsx(
-        "flex flex-col transition-width overflow-hidden ",
+        "flex flex-shrink-0 flex-grow-0 flex-col transition-width overflow-hidden ",
         isExpanded ? "w-80 border-r-2" : "w-16"
       )}
       style={{ height: "calc(100vh - 6rem)" }}
