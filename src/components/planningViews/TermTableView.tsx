@@ -1,6 +1,8 @@
 import { CourseViewProps } from "~/pages/PlanningPage";
 import { CourseSmall } from "../courseSmall/CourseSmall";
 import { CourseLarge } from "../courseLarge/CourseLarge";
+import { Pane } from "../pane/Pane";
+import { useSelectedCourse } from "~/hooks/useSelectedCourse";
 
 export const TermTableView = ({
   courseData,
@@ -34,59 +36,72 @@ export const TermTableView = ({
     Object.entries(courseData).filter((_, ind) => ind === focusedTerm)
   );
 
+  const { selectedCourse, updateSelectedCourse } = useSelectedCourse(
+    Object.values(selectedCourseData)?.[0]?.[0] || null
+  );
+
   return (
-    <div className="w-full overflow-x-auto">
-      <table className="border-separate border-spacing-2 overflow-x-auto ">
-        <thead>
-          <tr>
-            {Object.keys(selectedCourseData).map((key) => (
-              <th key={key}>{key}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {Array(maxCoursesInATerm + 1)
-            .fill(0)
-            .map((_, i) => {
-              return (
-                <tr key={`course-${i}`}>
-                  {Object.keys(selectedCourseData).map((term) => {
-                    const course = selectedCourseData?.[term]?.[i];
-                    if (course) {
-                      const { courseCode, longName, tags } = course;
-                      return (
-                        <td
-                          key={`${term}-${course.courseCode}`}
-                          className="h-full"
-                        >
-                          <CourseLarge
-                            courseCode={courseCode}
-                            longName={longName}
-                            tags={tags}
-                          />
-                        </td>
-                      );
-                    } else if (selectedCourseData?.[term]?.[i - 1]) {
-                      // if the previous box in the term has a course, we add a plus button
-                      return (
-                        <td key={`${term}-${i}`} className="align-top">
-                          <button
-                            className="bg-white rounded-lg w-full flex justify-center items-center"
-                            onClick={() => setNewCourse(term, i)}
+    <div className="flex">
+      <div className="w-full overflow-x-auto">
+        <table className="border-separate border-spacing-2 overflow-x-auto ">
+          <thead>
+            <tr>
+              {Object.keys(selectedCourseData).map((key) => (
+                <th key={key}>{key}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {Array(maxCoursesInATerm + 1)
+              .fill(0)
+              .map((_, i) => {
+                return (
+                  <tr key={`course-${i}`}>
+                    {Object.keys(selectedCourseData).map((term) => {
+                      const course = selectedCourseData?.[term]?.[i];
+                      if (course) {
+                        const { courseCode, longName, tags } = course;
+                        return (
+                          <td
+                            key={`${term}-${course.courseCode}`}
+                            className="h-full"
                           >
-                            <div className="text-4xl">+</div>
-                          </button>
-                        </td>
-                      );
-                    } else {
-                      return <td key={`${term}-${i}`} />;
-                    }
-                  })}
-                </tr>
-              );
-            })}
-        </tbody>
-      </table>
+                            <CourseLarge
+                              onClick={() => updateSelectedCourse(course)}
+                              courseCode={courseCode}
+                              longName={longName}
+                              tags={tags}
+                            />
+                          </td>
+                        );
+                      } else if (selectedCourseData?.[term]?.[i - 1]) {
+                        // if the previous box in the term has a course, we add a plus button
+                        return (
+                          <td key={`${term}-${i}`} className="align-top">
+                            <button
+                              className="bg-white rounded-lg w-full flex justify-center items-center"
+                              onClick={() => setNewCourse(term, i)}
+                            >
+                              <div className="text-4xl">+</div>
+                            </button>
+                          </td>
+                        );
+                      } else {
+                        return <td key={`${term}-${i}`} />;
+                      }
+                    })}
+                  </tr>
+                );
+              })}
+          </tbody>
+        </table>
+      </div>
+      <Pane className=" md:max-w-96 xl:max-w-screen-2xl">
+        <h2 className="text-xl">Selected Course</h2>
+        <div>{selectedCourse?.courseCode}</div>
+        <div>{selectedCourse?.longName}</div>
+        <div>{selectedCourse?.description}</div>
+      </Pane>
     </div>
   );
 };

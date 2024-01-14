@@ -1,11 +1,14 @@
 import { Tag } from "./components/courseLarge/CourseLarge";
 
+export interface Course {
+  courseCode: string;
+  longName: string;
+  description?: string;
+  tags: Tag[];
+}
+
 export interface CourseData {
-  [key: string]: {
-    courseCode: string;
-    longName: string;
-    tags: Tag[];
-  }[];
+  [key: string]: Course[];
 }
 
 export const courseData: CourseData = {
@@ -13,6 +16,8 @@ export const courseData: CourseData = {
     {
       courseCode: "CHE 100",
       longName: "Chemical Engineering Concepts I",
+      description:
+        "This course introduces students to the fundamental concepts of chemical engineering. Topics include: material and energy balances, fluid flow, heat transfer, and mass transfer. The course also introduces students to the chemical engineering profession and the role of chemical engineers in society.",
       tags: [{ name: "Mandatory", color: "blue" }],
     },
     {
@@ -88,7 +93,7 @@ export const courseData: CourseData = {
       courseCode: "CHE 230",
       longName: "Computer Literacy & Programming",
       tags: [{ name: "Mandatory", color: "blue" }],
-    }
+    },
   ],
   "2B": [
     {

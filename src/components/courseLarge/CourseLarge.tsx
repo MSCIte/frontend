@@ -10,11 +10,12 @@ interface CourseProps {
   longName: string;
   tags: Tag[];
   courseColor?: string;
+  onClick?: () => void;
 }
 
 export const CourseLarge = (props: CourseProps) => {
   return (
-    <Pane className={styles.accentColor}>
+    <Pane className={styles.accentColor} onClick={props?.onClick}>
       {/* <div className={clsx(styles.wrapper, styles.accentColor)}> */}
       <div className={styles.header}>{props.courseCode}</div>
       <div>
