@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { Pane } from "../pane/Pane";
 import styles from "./CourseSmall.module.css";
+import { CoursePills } from "../courseSmallPill/CourseSmallPill";
 interface Tag {
   name: string;
   color: string;
@@ -21,14 +22,8 @@ export const CourseSmall = (props: CourseProps) => {
         <div>
           <div className={styles.description}>{props.longName}</div>
         </div>
-        <div className={styles.pillWrapper}>
-          {props.tags.map((tag) => (
-            <div
-              key={props.courseCode + tag.name}
-              className={styles.colorPill}
-              style={{ background: tag.color }}
-            />
-          ))}
+        <div className="flex mr-0 flex-row-reverse">
+          <CoursePills courseCode={props.courseCode} tags={props.tags} />
         </div>
       </div>
     </Pane>

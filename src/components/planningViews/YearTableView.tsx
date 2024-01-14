@@ -2,6 +2,7 @@ import { CourseViewProps } from "~/pages/PlanningPage";
 import { CourseLarge } from "../courseLarge/CourseLarge";
 import { useSelectedCourse } from "~/hooks/useSelectedCourse";
 import { Pane } from "../pane/Pane";
+import clsx from "clsx";
 
 export const YearTableView = ({
   courseData,
@@ -44,6 +45,8 @@ export const YearTableView = ({
   const { selectedCourse, updateSelectedCourse } = useSelectedCourse(
     Object.values(selectedCourseData)?.[0]?.[0] || null
   );
+
+  console.log(selectedCourse?.tags?.[0].color);
 
   return (
     <div className="flex">
@@ -101,10 +104,16 @@ export const YearTableView = ({
           </tbody>
         </table>
       </div>
-      <Pane className=" md:max-w-72 lg:max-w-96 xl:max-w-fit">
-        <h2 className="text-xl">Selected Course</h2>
-        <div>{selectedCourse?.courseCode}</div>
-        <div>{selectedCourse?.longName}</div>
+      <Pane className=" md:max-w-72 lg:max-w-96 xl:max-w-fit py-4 px-6 space-y-4">
+        <h2 className="text-4xl">{selectedCourse?.courseCode}</h2>
+        <h3 className="text-2xl">{selectedCourse?.longName}</h3>
+        <div
+          className={clsx(
+            "w-28 h-6 rounded-xl",
+            selectedCourse?.tags?.[0].color &&
+              `bg-${selectedCourse?.tags?.[0].color}-400`
+          )}
+        />
         <div>{selectedCourse?.description}</div>
       </Pane>
     </div>

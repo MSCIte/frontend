@@ -6,6 +6,8 @@ import AllTermsView from "~/assets/allTermsView.svg?react";
 import YearView from "~/assets/yearView.svg?react";
 import TermView from "~/assets/termView.svg?react";
 import { Sidebar } from "~/components/sidebar/Sidebar";
+import { CourseSelectionPane } from "~/components/courseSelectionPane/CourseSelectionPane";
+import { Pane } from "~/components/pane/Pane";
 
 const courseData = {
   courseCode: "CHE 100",
@@ -45,6 +47,10 @@ const requirements = {
 export const DemoPage = () => {
   return (
     <div className="main space-y-10">
+      <Pane style={{ width: "80rem", height: "50rem" }}>
+        <CourseSelectionPane />
+      </Pane>
+
       <Sidebar />
       <div style={{ width: "10rem" }}>
         <CourseSmall {...courseData} />
