@@ -1,18 +1,11 @@
-import { CourseData, courseData } from "~/sampleData";
 import { CourseSmall } from "../courseSmall/CourseSmall";
-import { Dispatch, SetStateAction } from "react";
-
-interface AllTermProps {
-  courseData: CourseData;
-  maxCoursesInATerm: number;
-  setCourseData: Dispatch<SetStateAction<CourseData>>;
-}
+import { CourseViewProps } from "~/pages/PlanningPage";
 
 export const AllTermsTableView = ({
   courseData,
   maxCoursesInATerm,
   setCourseData,
-}: AllTermProps) => {
+}: CourseViewProps) => {
   const setNewCourse = (term: string, index: number) => {
     setCourseData((prev) => {
       const newCourseData = { ...prev };
@@ -30,7 +23,6 @@ export const AllTermsTableView = ({
           tags: [{ name: "Chemistry", color: "red" }],
         };
       }
-
       return newCourseData;
     });
   };
