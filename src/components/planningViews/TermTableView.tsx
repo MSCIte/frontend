@@ -1,5 +1,4 @@
 import { CourseViewProps } from "~/pages/PlanningPage";
-import { CourseSmall } from "../courseSmall/CourseSmall";
 import { CourseLarge } from "../courseLarge/CourseLarge";
 import { Pane } from "../pane/Pane";
 import { useSelectedCourse } from "~/hooks/useSelectedCourse";
@@ -9,7 +8,6 @@ export const TermTableView = ({
   focusedTerm,
   maxCoursesInATerm,
   setCourseData,
-  setFocusedTerm,
 }: CourseViewProps) => {
   const setNewCourse = (term: string, index: number) => {
     setCourseData((prev) => {

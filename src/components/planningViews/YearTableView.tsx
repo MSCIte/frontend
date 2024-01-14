@@ -8,7 +8,6 @@ export const YearTableView = ({
   focusedTerm,
   maxCoursesInATerm,
   setCourseData,
-  setFocusedTerm,
 }: CourseViewProps) => {
   const setNewCourse = (term: string, index: number) => {
     setCourseData((prev) => {
