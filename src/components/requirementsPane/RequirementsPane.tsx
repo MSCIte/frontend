@@ -18,8 +18,8 @@ export const RequirementsPane = (props: RequirementsPaneProps) => {
     <Pane>
       <h3 className="font-medium text-xl">{props.title}</h3>
       <div className="mt-4">
-        {props.data.map((requirement) => (
-          <div className="my-2">
+        {props.data.map((requirement, ind) => (
+          <div className="my-2" key={`req-${props.title}-${ind}`} >
             <div className="font-light">
               <span>{requirement.name}</span>
               <span className="float-right  text-slate-500">

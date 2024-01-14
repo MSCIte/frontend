@@ -17,8 +17,8 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.lineDownCenter{
-  background: linear-gradient(#000, #000) no-repeat center/2px 100%;
+.lineDownCenter {
+  background: linear-gradient(#e5e7eb, #e5e7eb) no-repeat center/2px 100%;
 }
 
 /* .main {
