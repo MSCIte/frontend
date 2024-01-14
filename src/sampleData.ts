@@ -1,6 +1,6 @@
 import { Tag } from "./components/courseLarge/CourseLarge";
 
-interface CourseData {
+export interface CourseData {
   [key: string]: {
     courseCode: string;
     longName: string;
