@@ -9,7 +9,8 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006 --disable-telemetry",
-    "build-storybook": "storybook build --disable-telemetry"
+    "build-storybook": "storybook build --disable-telemetry",
+    "gen-api": "orval --config ./orval.config.ts"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.18",

@@ -4,10 +4,10 @@ import clsx from "clsx";
 import { Link, useRoute } from "wouter";
 
 export const Navbar = () => {
-  const [isPlan, _] = useRoute("/plan");
-  const [isAbout, __] = useRoute("/about");
-  const [isFAQ, ___] = useRoute("/faq");
-  const [isDemo, ____] = useRoute("/demo");
+  const isPlan = useRoute("/plan")[0];
+  const isAbout = useRoute("/about")[0];
+  const isFAQ = useRoute("/faq")[0];
+  const isDemo = useRoute("/demo")[0];
 
   const navigation = [
     { name: "Plan", href: "/plan", current: isPlan },

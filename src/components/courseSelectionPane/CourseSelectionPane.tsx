@@ -1,11 +1,8 @@
 import { useMemo, useState } from "react";
 import { Course, courseList } from "~/sampleData";
 import { stringSimilarity } from "~/utils";
-import { CoursePills } from "../courseSmallPill/CourseSmallPill";
 import { CourseBlock } from "./CourseBlock";
 import clsx from "clsx";
-import { ActionButton } from "../actionButton/ActionButton";
-import { XMarkIcon } from "@heroicons/react/24/solid";
 
 interface CourseSelectionPaneProps {
   initialCourse?: Course;
@@ -22,7 +19,6 @@ const stringSearchScore = (searchQuery: string, s1: string, s2: string) => {
 export const CourseSelectionPane = ({
   initialCourse,
   onCourseAccept,
-  onCancel,
 }: CourseSelectionPaneProps) => {
   // TODO: Call backend API
   const entireCourseList = courseList;
