@@ -21,6 +21,7 @@
     "wouter": "^2.12.1"
   },
   "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.9.0",
     "@storybook/addon-essentials": "^7.6.7",
     "@storybook/addon-interactions": "^7.6.7",
     "@storybook/addon-links": "^7.6.7",

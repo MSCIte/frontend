@@ -1,3 +1,15 @@
+# LOL
+
+## Development
+
+Install with `pnpm i`
+
+Create OpenAPI client:
+1.  Install and start `backend`, 
+2. `openapi-generator generate -i http://localhost:8000/openapi.json -g typescript-axios -o ./src/api`
+
+
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
