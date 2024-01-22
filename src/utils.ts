@@ -17,7 +17,7 @@ export function stringSimilarity(
   function getNGrams(s: string, len: number) {
     s = " ".repeat(len - 1) + s.toLowerCase() + " ".repeat(len - 1);
     const v = new Array(s.length - len + 1);
-    for (const i = 0; i < v.length; i++) {
+    for (let i = 0; i < v.length; i++) {
       v[i] = s.slice(i, i + len);
     }
     return v;
