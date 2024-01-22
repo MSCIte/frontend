@@ -31,11 +31,11 @@ export const TermTableView = ({
   };
 
   const selectedCourseData = Object.fromEntries(
-    Object.entries(courseData).filter((_, ind) => ind === focusedTerm)
+    Object.entries(courseData).filter((_, ind) => ind === focusedTerm),
   );
 
   const { selectedCourse, updateSelectedCourse } = useSelectedCourse(
-    Object.values(selectedCourseData)?.[0]?.[0] || null
+    Object.values(selectedCourseData)?.[0]?.[0] || null,
   );
 
   return (

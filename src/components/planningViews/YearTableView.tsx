@@ -39,11 +39,11 @@ export const YearTableView = ({
       } else {
         return ind === focusedTerm || ind === focusedTerm + 1;
       }
-    })
+    }),
   );
 
   const { selectedCourse, updateSelectedCourse } = useSelectedCourse(
-    Object.values(selectedCourseData)?.[0]?.[0] || null
+    Object.values(selectedCourseData)?.[0]?.[0] || null,
   );
 
   console.log(selectedCourse?.tags?.[0].color);
@@ -111,7 +111,7 @@ export const YearTableView = ({
           className={clsx(
             "w-28 h-6 rounded-xl",
             selectedCourse?.tags?.[0].color &&
-              `bg-${selectedCourse?.tags?.[0].color}-400`
+              `bg-${selectedCourse?.tags?.[0].color}-400`,
           )}
         />
         <div>{selectedCourse?.description}</div>

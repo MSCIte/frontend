@@ -1,10 +1,10 @@
 /**
  * Compares the similarity between two strings using an n-gram comparison method.
  * The grams default to length 2.
- * 
+ *
  * Source: https://stackoverflow.com/a/62216738
- * 
- * 
+ *
+ *
  * @param str1 The first string to compare.
  * @param str2 The second string to compare.
  * @param gramSize The size of the grams. Defaults to length 2.
@@ -12,7 +12,7 @@
 export function stringSimilarity(
   str1: string,
   str2: string,
-  gramSize: number = 2
+  gramSize: number = 2,
 ) {
   function getNGrams(s: string, len: number) {
     s = " ".repeat(len - 1) + s.toLowerCase() + " ".repeat(len - 1);

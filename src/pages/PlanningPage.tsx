@@ -22,7 +22,7 @@ export const PlanningPage = () => {
   const maxCoursesInATerm = 6; //TODO: get this from the backend, or get it calculated
 
   const [selectedView, setSelectedView] = useState<"all" | "year" | "term">(
-    "all"
+    "all",
   );
   const [selectedTerm, setSelectedTerm] = useState<number>(0);
   const [courseData, setCourseData] = useState(initialData);
@@ -71,7 +71,7 @@ export const PlanningPage = () => {
                 className={clsx(
                   // Disable if we're at the first term
                   (selectedTerm === 0 || selectedView === "all") &&
-                    "cursor-default text-gray-300"
+                    "cursor-default text-gray-300",
                 )}
               >
                 <svg
@@ -107,7 +107,7 @@ export const PlanningPage = () => {
                   // Disable if we're at the last term
                   (selectedTerm === Object.keys(courseData).length - 1 ||
                     selectedView === "all") &&
-                    "cursor-default text-gray-300"
+                    "cursor-default text-gray-300",
                 )}
               >
                 <svg

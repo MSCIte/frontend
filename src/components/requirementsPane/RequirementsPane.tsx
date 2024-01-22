@@ -58,7 +58,7 @@ export const RequirementsPane = (props: RequirementsPaneProps) => {
                   `[&::-webkit-progress-bar]:bg-slate-300`,
                   colorVariants?.[
                     requirement.color as keyof typeof colorVariants
-                  ]
+                  ],
                 )}
               />
             </div>

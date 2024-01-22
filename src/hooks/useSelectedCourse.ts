@@ -3,7 +3,7 @@ import { Course } from "~/sampleData";
 
 export const useSelectedCourse = (defaultCourse: Course | null) => {
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(
-    defaultCourse
+    defaultCourse,
   );
 
   const updateSelectedCourse = (newCourse: Course) => {

@@ -29,7 +29,7 @@ export const CourseSelectionPane = ({
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCourse, setSelectedCourse] = useState<Course | undefined>(
-    initialCourse || entireCourseList[0]
+    initialCourse || entireCourseList[0],
   );
 
   // Ideally backend can search across title, description, tags, etc.
@@ -46,13 +46,13 @@ export const CourseSelectionPane = ({
         cmpScore += stringSearchScore(
           searchQuery,
           a.tags.map((tag) => tag.name).join(" "),
-          b.tags.map((tag) => tag.name).join(" ")
+          b.tags.map((tag) => tag.name).join(" "),
         );
         if (a.description && b.description) {
           cmpScore += stringSearchScore(
             searchQuery,
             a.description,
-            b.description
+            b.description,
           );
         }
         return cmpScore;
@@ -124,7 +124,7 @@ export const CourseSelectionPane = ({
               key={tag.name}
               className={clsx(
                 "inline-block rounded-full text-white py-1 px-2",
-                `bg-${tag.color}-400`
+                `bg-${tag.color}-400`,
               )}
             >
               {tag.name}

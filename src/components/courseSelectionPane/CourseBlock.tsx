@@ -17,7 +17,9 @@ export const CourseBlock = ({ course, onClick }: CourseBlockProps) => {
         key={course.courseCode}
         onClick={onClick}
       >
-        <div>{course.courseCode}: {course.longName}</div>
+        <div>
+          {course.courseCode}: {course.longName}
+        </div>
         <div></div>
         <div>
           <CoursePills courseCode={course.courseCode} tags={course.tags} />

@@ -6,7 +6,8 @@ Install with `pnpm i`
 
 Create OpenAPI client:
 1.  Install and start `backend`, 
-2. `openapi-generator generate -i http://localhost:8000/openapi.json -g typescript-axios -o ./src/api`
+1.  curl http://localhost:8000/openapi.json > openapi.json
+1. `pnpx orval --config ./orval.config.ts`
 
 
 

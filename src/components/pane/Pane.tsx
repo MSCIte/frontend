@@ -10,7 +10,11 @@ interface PaneProps {
 
 export const Pane = (props: PaneProps) => {
   return (
-    <div className={clsx(styles.wrapper, props.className)} style={props?.style} onClick={props?.onClick}>
+    <div
+      className={clsx(styles.wrapper, props.className)}
+      style={props?.style}
+      onClick={props?.onClick}
+    >
       {props.children}
     </div>
   );
