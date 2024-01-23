@@ -49,10 +49,8 @@ export const getReadRootGetQueryOptions = <
   TData = Awaited<ReturnType<typeof readRootGet>>,
   TError = AxiosError<unknown>,
 >(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof readRootGet>>,
-    TError,
-    TData
+  query?: Partial<
+    UseQueryOptions<Awaited<ReturnType<typeof readRootGet>>, TError, TData>
   >;
   axios?: AxiosRequestConfig;
 }) => {
@@ -83,10 +81,8 @@ export const useReadRootGet = <
   TData = Awaited<ReturnType<typeof readRootGet>>,
   TError = AxiosError<unknown>,
 >(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof readRootGet>>,
-    TError,
-    TData
+  query?: Partial<
+    UseQueryOptions<Awaited<ReturnType<typeof readRootGet>>, TError, TData>
   >;
   axios?: AxiosRequestConfig;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -118,10 +114,8 @@ export const getReadItemQueryGetQueryOptions = <
   TData = Awaited<ReturnType<typeof readItemQueryGet>>,
   TError = AxiosError<unknown>,
 >(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof readItemQueryGet>>,
-    TError,
-    TData
+  query?: Partial<
+    UseQueryOptions<Awaited<ReturnType<typeof readItemQueryGet>>, TError, TData>
   >;
   axios?: AxiosRequestConfig;
 }) => {
@@ -152,10 +146,8 @@ export const useReadItemQueryGet = <
   TData = Awaited<ReturnType<typeof readItemQueryGet>>,
   TError = AxiosError<unknown>,
 >(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof readItemQueryGet>>,
-    TError,
-    TData
+  query?: Partial<
+    UseQueryOptions<Awaited<ReturnType<typeof readItemQueryGet>>, TError, TData>
   >;
   axios?: AxiosRequestConfig;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
@@ -187,10 +179,12 @@ export const getGetTopCoursesCoursesTopGetQueryOptions = <
   TData = Awaited<ReturnType<typeof getTopCoursesCoursesTopGet>>,
   TError = AxiosError<unknown>,
 >(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getTopCoursesCoursesTopGet>>,
-    TError,
-    TData
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof getTopCoursesCoursesTopGet>>,
+      TError,
+      TData
+    >
   >;
   axios?: AxiosRequestConfig;
 }) => {
@@ -222,14 +216,90 @@ export const useGetTopCoursesCoursesTopGet = <
   TData = Awaited<ReturnType<typeof getTopCoursesCoursesTopGet>>,
   TError = AxiosError<unknown>,
 >(options?: {
-  query?: UseQueryOptions<
-    Awaited<ReturnType<typeof getTopCoursesCoursesTopGet>>,
-    TError,
-    TData
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof getTopCoursesCoursesTopGet>>,
+      TError,
+      TData
+    >
   >;
   axios?: AxiosRequestConfig;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const queryOptions = getGetTopCoursesCoursesTopGetQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+};
+
+/**
+ * @summary Courses All
+ */
+export const coursesAllCoursesAllGet = (
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<unknown>> => {
+  return axios.default.get(`/courses/all`, options);
+};
+
+export const getCoursesAllCoursesAllGetQueryKey = () => {
+  return [`/courses/all`] as const;
+};
+
+export const getCoursesAllCoursesAllGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof coursesAllCoursesAllGet>>,
+  TError = AxiosError<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof coursesAllCoursesAllGet>>,
+      TError,
+      TData
+    >
+  >;
+  axios?: AxiosRequestConfig;
+}) => {
+  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getCoursesAllCoursesAllGetQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof coursesAllCoursesAllGet>>
+  > = ({ signal }) => coursesAllCoursesAllGet({ signal, ...axiosOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof coursesAllCoursesAllGet>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type CoursesAllCoursesAllGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof coursesAllCoursesAllGet>>
+>;
+export type CoursesAllCoursesAllGetQueryError = AxiosError<unknown>;
+
+/**
+ * @summary Courses All
+ */
+export const useCoursesAllCoursesAllGet = <
+  TData = Awaited<ReturnType<typeof coursesAllCoursesAllGet>>,
+  TError = AxiosError<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof coursesAllCoursesAllGet>>,
+      TError,
+      TData
+    >
+  >;
+  axios?: AxiosRequestConfig;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getCoursesAllCoursesAllGetQueryOptions(options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -329,6 +399,15 @@ export const getFastAPIMock = () => [
     });
   }),
   http.get("*/courses/top", async () => {
+    await delay(1000);
+    return new HttpResponse(null, {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }),
+  http.get("*/courses/all", async () => {
     await delay(1000);
     return new HttpResponse(null, {
       status: 200,
