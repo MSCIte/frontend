@@ -1,1 +1,371 @@
-{"openapi":"3.1.0","info":{"title":"FastAPI","version":"0.1.0"},"paths":{"/":{"get":{"summary":"Read Root","operationId":"read_root__get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}}}}},"/query":{"get":{"summary":"Read Item","operationId":"read_item_query_get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}}}}},"/courses/top":{"get":{"summary":"Get Top Courses","operationId":"get_top_courses_courses_top_get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}}}}},"/courses/all":{"get":{"summary":"Courses All","operationId":"courses_all_courses_all_get","responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}}}}},"/can-take/{course}":{"post":{"summary":"Can Take","operationId":"can_take_can_take__course__post","parameters":[{"name":"course","in":"path","required":true,"schema":{"type":"string","title":"Course"}}],"requestBody":{"required":true,"content":{"application/json":{"schema":{"$ref":"#/components/schemas/CoursesTakenBody"}}}},"responses":{"200":{"description":"Successful Response","content":{"application/json":{"schema":{}}}},"422":{"description":"Validation Error","content":{"application/json":{"schema":{"$ref":"#/components/schemas/HTTPValidationError"}}}}}}}},"components":{"schemas":{"CoursesTakenBody":{"properties":{"course_codes_taken":{"items":{"type":"string"},"type":"array","title":"Course Codes Taken"}},"type":"object","required":["course_codes_taken"],"title":"CoursesTakenBody"},"HTTPValidationError":{"properties":{"detail":{"items":{"$ref":"#/components/schemas/ValidationError"},"type":"array","title":"Detail"}},"type":"object","title":"HTTPValidationError"},"ValidationError":{"properties":{"loc":{"items":{"anyOf":[{"type":"string"},{"type":"integer"}]},"type":"array","title":"Location"},"msg":{"type":"string","title":"Message"},"type":{"type":"string","title":"Error Type"}},"type":"object","required":["loc","msg","type"],"title":"ValidationError"}}}}
+{
+  "openapi": "3.1.0",
+  "info": { "title": "FastAPI", "version": "0.1.0" },
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Read Root",
+        "operationId": "read_root__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    },
+    "/query": {
+      "get": {
+        "summary": "Read Item",
+        "operationId": "read_item_query_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    },
+    "/option/{opt_id}/reqs": {
+      "get": {
+        "summary": "Options Reqs",
+        "operationId": "options_reqs_option__opt_id__reqs_get",
+        "parameters": [
+          {
+            "name": "opt_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Opt Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/CourseSchema" },
+                  "title": "Response Options Reqs Option  Opt Id  Reqs Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/option/{opt_id}/missing_reqs": {
+      "get": {
+        "summary": "Options Missing Reqs",
+        "operationId": "options_missing_reqs_option__opt_id__missing_reqs_get",
+        "parameters": [
+          {
+            "name": "opt_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Opt Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/CourseSchema" },
+                  "title": "Response Options Missing Reqs Option  Opt Id  Missing Reqs Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/degree/{degree_id}/reqs": {
+      "get": {
+        "summary": "Degree Reqs",
+        "operationId": "degree_reqs_degree__degree_id__reqs_get",
+        "parameters": [
+          {
+            "name": "degree_id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "title": "Degree Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/CourseSchema" },
+                  "title": "Response Degree Reqs Degree  Degree Id  Reqs Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/degree/{degree_id}/missing_reqs": {
+      "get": {
+        "summary": "Degree Missing Reqs",
+        "operationId": "degree_missing_reqs_degree__degree_id__missing_reqs_get",
+        "parameters": [
+          {
+            "name": "degree_id",
+            "in": "path",
+            "required": true,
+            "schema": { "title": "Degree Id" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/CourseSchema" },
+                  "title": "Response Degree Missing Reqs Degree  Degree Id  Missing Reqs Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/courses/can-take/{course_code}": {
+      "get": {
+        "summary": "Courses Can Take",
+        "operationId": "courses_can_take_courses_can_take__course_code__get",
+        "parameters": [
+          {
+            "name": "course_code",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Course Code" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CoursesTakenBody" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/RequirementsResults" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/courses/search": {
+      "get": {
+        "summary": "Search Courses",
+        "operationId": "search_courses_courses_search_get",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Q"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "integer" }, { "type": "null" }],
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/CourseSchema" },
+                  "title": "Response Search Courses Courses Search Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sample-path": {
+      "get": {
+        "summary": "Sample Path",
+        "operationId": "sample_path_sample_path_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CourseSchema": {
+        "properties": {
+          "courseCode": {
+            "type": "string",
+            "title": "Coursecode",
+            "default": ""
+          },
+          "courseName": {
+            "type": "string",
+            "title": "Coursename",
+            "default": ""
+          },
+          "credit": {
+            "anyOf": [{ "type": "integer" }, { "type": "null" }],
+            "title": "Credit",
+            "default": -1000
+          },
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "default": ""
+          },
+          "location": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Location",
+            "default": ""
+          },
+          "prerequisites": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Prerequisites",
+            "default": ""
+          },
+          "antirequisites": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Antirequisites",
+            "default": ""
+          },
+          "corequisites": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Corequisites",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "title": "CourseSchema"
+      },
+      "CoursesTakenBody": {
+        "properties": {
+          "courseCodesTaken": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Coursecodestaken"
+          }
+        },
+        "type": "object",
+        "required": ["courseCodesTaken"],
+        "title": "CoursesTakenBody"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": { "$ref": "#/components/schemas/ValidationError" },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "RequirementsResults": {
+        "properties": {
+          "result": { "type": "boolean", "title": "Result" },
+          "message": { "type": "string", "title": "Message" }
+        },
+        "type": "object",
+        "required": ["result", "message"],
+        "title": "RequirementsResults"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": { "anyOf": [{ "type": "string" }, { "type": "integer" }] },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": { "type": "string", "title": "Message" },
+          "type": { "type": "string", "title": "Error Type" }
+        },
+        "type": "object",
+        "required": ["loc", "msg", "type"],
+        "title": "ValidationError"
+      }
+    }
+  }
+}

@@ -4,18 +4,22 @@
  * FastAPI
  * OpenAPI spec version: 0.1.0
  */
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import type {
-  MutationFunction,
   QueryFunction,
   QueryKey,
-  UseMutationOptions,
   UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
 import * as axios from "axios";
 import type { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { faker } from "@faker-js/faker";
 import { HttpResponse, delay, http } from "msw";
+export type SearchCoursesCoursesSearchGetParams = {
+  q?: string | null;
+  offset?: number | null;
+};
+
 export type ValidationErrorLocItem = string | number;
 
 export interface ValidationError {
@@ -24,12 +28,38 @@ export interface ValidationError {
   type: string;
 }
 
+export interface RequirementsResults {
+  message: string;
+  result: boolean;
+}
+
 export interface HTTPValidationError {
   detail?: ValidationError[];
 }
 
 export interface CoursesTakenBody {
-  course_codes_taken: string[];
+  courseCodesTaken: string[];
+}
+
+export type CourseSchemaPrerequisites = string | null;
+
+export type CourseSchemaLocation = string | null;
+
+export type CourseSchemaCredit = number | null;
+
+export type CourseSchemaCorequisites = string | null;
+
+export type CourseSchemaAntirequisites = string | null;
+
+export interface CourseSchema {
+  antirequisites?: CourseSchemaAntirequisites;
+  corequisites?: CourseSchemaCorequisites;
+  courseCode?: string;
+  courseName?: string;
+  credit?: CourseSchemaCredit;
+  description?: string;
+  location?: CourseSchemaLocation;
+  prerequisites?: CourseSchemaPrerequisites;
 }
 
 /**
@@ -163,221 +193,836 @@ export const useReadItemQueryGet = <
 };
 
 /**
- * @summary Get Top Courses
+ * @summary Options Reqs
  */
-export const getTopCoursesCoursesTopGet = (
+export const optionsReqsOptionOptIdReqsGet = (
+  optId: number,
   options?: AxiosRequestConfig,
-): Promise<AxiosResponse<unknown>> => {
-  return axios.default.get(`/courses/top`, options);
+): Promise<AxiosResponse<CourseSchema[]>> => {
+  return axios.default.get(`/option/${optId}/reqs`, options);
 };
 
-export const getGetTopCoursesCoursesTopGetQueryKey = () => {
-  return [`/courses/top`] as const;
+export const getOptionsReqsOptionOptIdReqsGetQueryKey = (optId: number) => {
+  return [`/option/${optId}/reqs`] as const;
 };
 
-export const getGetTopCoursesCoursesTopGetQueryOptions = <
-  TData = Awaited<ReturnType<typeof getTopCoursesCoursesTopGet>>,
-  TError = AxiosError<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof getTopCoursesCoursesTopGet>>,
-      TError,
-      TData
-    >
-  >;
-  axios?: AxiosRequestConfig;
-}) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
-
-  const queryKey =
-    queryOptions?.queryKey ?? getGetTopCoursesCoursesTopGetQueryKey();
-
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getTopCoursesCoursesTopGet>>
-  > = ({ signal }) => getTopCoursesCoursesTopGet({ signal, ...axiosOptions });
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getTopCoursesCoursesTopGet>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
-
-export type GetTopCoursesCoursesTopGetQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getTopCoursesCoursesTopGet>>
->;
-export type GetTopCoursesCoursesTopGetQueryError = AxiosError<unknown>;
-
-/**
- * @summary Get Top Courses
- */
-export const useGetTopCoursesCoursesTopGet = <
-  TData = Awaited<ReturnType<typeof getTopCoursesCoursesTopGet>>,
-  TError = AxiosError<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof getTopCoursesCoursesTopGet>>,
-      TError,
-      TData
-    >
-  >;
-  axios?: AxiosRequestConfig;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getGetTopCoursesCoursesTopGetQueryOptions(options);
-
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
-
-  query.queryKey = queryOptions.queryKey;
-
-  return query;
-};
-
-/**
- * @summary Courses All
- */
-export const coursesAllCoursesAllGet = (
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<unknown>> => {
-  return axios.default.get(`/courses/all`, options);
-};
-
-export const getCoursesAllCoursesAllGetQueryKey = () => {
-  return [`/courses/all`] as const;
-};
-
-export const getCoursesAllCoursesAllGetQueryOptions = <
-  TData = Awaited<ReturnType<typeof coursesAllCoursesAllGet>>,
-  TError = AxiosError<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof coursesAllCoursesAllGet>>,
-      TError,
-      TData
-    >
-  >;
-  axios?: AxiosRequestConfig;
-}) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
-
-  const queryKey =
-    queryOptions?.queryKey ?? getCoursesAllCoursesAllGetQueryKey();
-
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof coursesAllCoursesAllGet>>
-  > = ({ signal }) => coursesAllCoursesAllGet({ signal, ...axiosOptions });
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof coursesAllCoursesAllGet>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
-
-export type CoursesAllCoursesAllGetQueryResult = NonNullable<
-  Awaited<ReturnType<typeof coursesAllCoursesAllGet>>
->;
-export type CoursesAllCoursesAllGetQueryError = AxiosError<unknown>;
-
-/**
- * @summary Courses All
- */
-export const useCoursesAllCoursesAllGet = <
-  TData = Awaited<ReturnType<typeof coursesAllCoursesAllGet>>,
-  TError = AxiosError<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof coursesAllCoursesAllGet>>,
-      TError,
-      TData
-    >
-  >;
-  axios?: AxiosRequestConfig;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getCoursesAllCoursesAllGetQueryOptions(options);
-
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
-
-  query.queryKey = queryOptions.queryKey;
-
-  return query;
-};
-
-/**
- * @summary Can Take
- */
-export const canTakeCanTakeCoursePost = (
-  course: string,
-  coursesTakenBody: CoursesTakenBody,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<unknown>> => {
-  return axios.default.post(`/can-take/${course}`, coursesTakenBody, options);
-};
-
-export const getCanTakeCanTakeCoursePostMutationOptions = <
+export const getOptionsReqsOptionOptIdReqsGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof optionsReqsOptionOptIdReqsGet>>,
   TError = AxiosError<HTTPValidationError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof canTakeCanTakeCoursePost>>,
+>(
+  optId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof optionsReqsOptionOptIdReqsGet>>,
+        TError,
+        TData
+      >
+    >;
+    axios?: AxiosRequestConfig;
+  },
+) => {
+  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getOptionsReqsOptionOptIdReqsGetQueryKey(optId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof optionsReqsOptionOptIdReqsGet>>
+  > = ({ signal }) =>
+    optionsReqsOptionOptIdReqsGet(optId, { signal, ...axiosOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!optId,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof optionsReqsOptionOptIdReqsGet>>,
     TError,
-    { course: string; data: CoursesTakenBody },
-    TContext
-  >;
-  axios?: AxiosRequestConfig;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof canTakeCanTakeCoursePost>>,
-  TError,
-  { course: string; data: CoursesTakenBody },
-  TContext
-> => {
-  const { mutation: mutationOptions, axios: axiosOptions } = options ?? {};
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof canTakeCanTakeCoursePost>>,
-    { course: string; data: CoursesTakenBody }
-  > = (props) => {
-    const { course, data } = props ?? {};
-
-    return canTakeCanTakeCoursePost(course, data, axiosOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
+    TData
+  > & { queryKey: QueryKey };
 };
 
-export type CanTakeCanTakeCoursePostMutationResult = NonNullable<
-  Awaited<ReturnType<typeof canTakeCanTakeCoursePost>>
+export type OptionsReqsOptionOptIdReqsGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof optionsReqsOptionOptIdReqsGet>>
 >;
-export type CanTakeCanTakeCoursePostMutationBody = CoursesTakenBody;
-export type CanTakeCanTakeCoursePostMutationError =
+export type OptionsReqsOptionOptIdReqsGetQueryError =
   AxiosError<HTTPValidationError>;
 
 /**
- * @summary Can Take
+ * @summary Options Reqs
  */
-export const useCanTakeCanTakeCoursePost = <
+export const useOptionsReqsOptionOptIdReqsGet = <
+  TData = Awaited<ReturnType<typeof optionsReqsOptionOptIdReqsGet>>,
   TError = AxiosError<HTTPValidationError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof canTakeCanTakeCoursePost>>,
+>(
+  optId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof optionsReqsOptionOptIdReqsGet>>,
+        TError,
+        TData
+      >
+    >;
+    axios?: AxiosRequestConfig;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getOptionsReqsOptionOptIdReqsGetQueryOptions(
+    optId,
+    options,
+  );
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+};
+
+/**
+ * @summary Options Missing Reqs
+ */
+export const optionsMissingReqsOptionOptIdMissingReqsGet = (
+  optId: number,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<CourseSchema[]>> => {
+  return axios.default.get(`/option/${optId}/missing_reqs`, options);
+};
+
+export const getOptionsMissingReqsOptionOptIdMissingReqsGetQueryKey = (
+  optId: number,
+) => {
+  return [`/option/${optId}/missing_reqs`] as const;
+};
+
+export const getOptionsMissingReqsOptionOptIdMissingReqsGetQueryOptions = <
+  TData = Awaited<
+    ReturnType<typeof optionsMissingReqsOptionOptIdMissingReqsGet>
+  >,
+  TError = AxiosError<HTTPValidationError>,
+>(
+  optId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof optionsMissingReqsOptionOptIdMissingReqsGet>>,
+        TError,
+        TData
+      >
+    >;
+    axios?: AxiosRequestConfig;
+  },
+) => {
+  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getOptionsMissingReqsOptionOptIdMissingReqsGetQueryKey(optId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof optionsMissingReqsOptionOptIdMissingReqsGet>>
+  > = ({ signal }) =>
+    optionsMissingReqsOptionOptIdMissingReqsGet(optId, {
+      signal,
+      ...axiosOptions,
+    });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!optId,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof optionsMissingReqsOptionOptIdMissingReqsGet>>,
     TError,
-    { course: string; data: CoursesTakenBody },
-    TContext
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type OptionsMissingReqsOptionOptIdMissingReqsGetQueryResult =
+  NonNullable<
+    Awaited<ReturnType<typeof optionsMissingReqsOptionOptIdMissingReqsGet>>
+  >;
+export type OptionsMissingReqsOptionOptIdMissingReqsGetQueryError =
+  AxiosError<HTTPValidationError>;
+
+/**
+ * @summary Options Missing Reqs
+ */
+export const useOptionsMissingReqsOptionOptIdMissingReqsGet = <
+  TData = Awaited<
+    ReturnType<typeof optionsMissingReqsOptionOptIdMissingReqsGet>
+  >,
+  TError = AxiosError<HTTPValidationError>,
+>(
+  optId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof optionsMissingReqsOptionOptIdMissingReqsGet>>,
+        TError,
+        TData
+      >
+    >;
+    axios?: AxiosRequestConfig;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions =
+    getOptionsMissingReqsOptionOptIdMissingReqsGetQueryOptions(optId, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+};
+
+/**
+ * @summary Degree Reqs
+ */
+export const degreeReqsDegreeDegreeIdReqsGet = (
+  degreeId: number,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<CourseSchema[]>> => {
+  return axios.default.get(`/degree/${degreeId}/reqs`, options);
+};
+
+export const getDegreeReqsDegreeDegreeIdReqsGetQueryKey = (
+  degreeId: number,
+) => {
+  return [`/degree/${degreeId}/reqs`] as const;
+};
+
+export const getDegreeReqsDegreeDegreeIdReqsGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof degreeReqsDegreeDegreeIdReqsGet>>,
+  TError = AxiosError<HTTPValidationError>,
+>(
+  degreeId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof degreeReqsDegreeDegreeIdReqsGet>>,
+        TError,
+        TData
+      >
+    >;
+    axios?: AxiosRequestConfig;
+  },
+) => {
+  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getDegreeReqsDegreeDegreeIdReqsGetQueryKey(degreeId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof degreeReqsDegreeDegreeIdReqsGet>>
+  > = ({ signal }) =>
+    degreeReqsDegreeDegreeIdReqsGet(degreeId, { signal, ...axiosOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!degreeId,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof degreeReqsDegreeDegreeIdReqsGet>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type DegreeReqsDegreeDegreeIdReqsGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof degreeReqsDegreeDegreeIdReqsGet>>
+>;
+export type DegreeReqsDegreeDegreeIdReqsGetQueryError =
+  AxiosError<HTTPValidationError>;
+
+/**
+ * @summary Degree Reqs
+ */
+export const useDegreeReqsDegreeDegreeIdReqsGet = <
+  TData = Awaited<ReturnType<typeof degreeReqsDegreeDegreeIdReqsGet>>,
+  TError = AxiosError<HTTPValidationError>,
+>(
+  degreeId: number,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof degreeReqsDegreeDegreeIdReqsGet>>,
+        TError,
+        TData
+      >
+    >;
+    axios?: AxiosRequestConfig;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getDegreeReqsDegreeDegreeIdReqsGetQueryOptions(
+    degreeId,
+    options,
+  );
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+};
+
+/**
+ * @summary Degree Missing Reqs
+ */
+export const degreeMissingReqsDegreeDegreeIdMissingReqsGet = (
+  degreeId: unknown,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<CourseSchema[]>> => {
+  return axios.default.get(`/degree/${degreeId}/missing_reqs`, options);
+};
+
+export const getDegreeMissingReqsDegreeDegreeIdMissingReqsGetQueryKey = (
+  degreeId: unknown,
+) => {
+  return [`/degree/${degreeId}/missing_reqs`] as const;
+};
+
+export const getDegreeMissingReqsDegreeDegreeIdMissingReqsGetQueryOptions = <
+  TData = Awaited<
+    ReturnType<typeof degreeMissingReqsDegreeDegreeIdMissingReqsGet>
+  >,
+  TError = AxiosError<HTTPValidationError>,
+>(
+  degreeId: unknown,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof degreeMissingReqsDegreeDegreeIdMissingReqsGet>
+        >,
+        TError,
+        TData
+      >
+    >;
+    axios?: AxiosRequestConfig;
+  },
+) => {
+  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getDegreeMissingReqsDegreeDegreeIdMissingReqsGetQueryKey(degreeId);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof degreeMissingReqsDegreeDegreeIdMissingReqsGet>>
+  > = ({ signal }) =>
+    degreeMissingReqsDegreeDegreeIdMissingReqsGet(degreeId, {
+      signal,
+      ...axiosOptions,
+    });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!degreeId,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof degreeMissingReqsDegreeDegreeIdMissingReqsGet>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type DegreeMissingReqsDegreeDegreeIdMissingReqsGetQueryResult =
+  NonNullable<
+    Awaited<ReturnType<typeof degreeMissingReqsDegreeDegreeIdMissingReqsGet>>
+  >;
+export type DegreeMissingReqsDegreeDegreeIdMissingReqsGetQueryError =
+  AxiosError<HTTPValidationError>;
+
+/**
+ * @summary Degree Missing Reqs
+ */
+export const useDegreeMissingReqsDegreeDegreeIdMissingReqsGet = <
+  TData = Awaited<
+    ReturnType<typeof degreeMissingReqsDegreeDegreeIdMissingReqsGet>
+  >,
+  TError = AxiosError<HTTPValidationError>,
+>(
+  degreeId: unknown,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof degreeMissingReqsDegreeDegreeIdMissingReqsGet>
+        >,
+        TError,
+        TData
+      >
+    >;
+    axios?: AxiosRequestConfig;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions =
+    getDegreeMissingReqsDegreeDegreeIdMissingReqsGetQueryOptions(
+      degreeId,
+      options,
+    );
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+};
+
+/**
+ * @summary Courses Can Take
+ */
+export const coursesCanTakeCoursesCanTakeCourseCodeGet = (
+  courseCode: string,
+  coursesTakenBody: CoursesTakenBody,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<RequirementsResults>> => {
+  return axios.default.get(`/courses/can-take/${courseCode}`, options);
+};
+
+export const getCoursesCanTakeCoursesCanTakeCourseCodeGetQueryKey = (
+  courseCode: string,
+  coursesTakenBody: CoursesTakenBody,
+) => {
+  return [`/courses/can-take/${courseCode}`, coursesTakenBody] as const;
+};
+
+export const getCoursesCanTakeCoursesCanTakeCourseCodeGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof coursesCanTakeCoursesCanTakeCourseCodeGet>>,
+  TError = AxiosError<HTTPValidationError>,
+>(
+  courseCode: string,
+  coursesTakenBody: CoursesTakenBody,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof coursesCanTakeCoursesCanTakeCourseCodeGet>>,
+        TError,
+        TData
+      >
+    >;
+    axios?: AxiosRequestConfig;
+  },
+) => {
+  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getCoursesCanTakeCoursesCanTakeCourseCodeGetQueryKey(
+      courseCode,
+      coursesTakenBody,
+    );
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof coursesCanTakeCoursesCanTakeCourseCodeGet>>
+  > = ({ signal }) =>
+    coursesCanTakeCoursesCanTakeCourseCodeGet(courseCode, coursesTakenBody, {
+      signal,
+      ...axiosOptions,
+    });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!courseCode,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof coursesCanTakeCoursesCanTakeCourseCodeGet>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type CoursesCanTakeCoursesCanTakeCourseCodeGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof coursesCanTakeCoursesCanTakeCourseCodeGet>>
+>;
+export type CoursesCanTakeCoursesCanTakeCourseCodeGetQueryError =
+  AxiosError<HTTPValidationError>;
+
+/**
+ * @summary Courses Can Take
+ */
+export const useCoursesCanTakeCoursesCanTakeCourseCodeGet = <
+  TData = Awaited<ReturnType<typeof coursesCanTakeCoursesCanTakeCourseCodeGet>>,
+  TError = AxiosError<HTTPValidationError>,
+>(
+  courseCode: string,
+  coursesTakenBody: CoursesTakenBody,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof coursesCanTakeCoursesCanTakeCourseCodeGet>>,
+        TError,
+        TData
+      >
+    >;
+    axios?: AxiosRequestConfig;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getCoursesCanTakeCoursesCanTakeCourseCodeGetQueryOptions(
+    courseCode,
+    coursesTakenBody,
+    options,
+  );
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+};
+
+/**
+ * @summary Search Courses
+ */
+export const searchCoursesCoursesSearchGet = (
+  params?: SearchCoursesCoursesSearchGetParams,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<CourseSchema[]>> => {
+  return axios.default.get(`/courses/search`, {
+    ...options,
+    params: { ...params, ...options?.params },
+  });
+};
+
+export const getSearchCoursesCoursesSearchGetQueryKey = (
+  params?: SearchCoursesCoursesSearchGetParams,
+) => {
+  return [`/courses/search`, ...(params ? [params] : [])] as const;
+};
+
+export const getSearchCoursesCoursesSearchGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof searchCoursesCoursesSearchGet>>,
+  TError = AxiosError<HTTPValidationError>,
+>(
+  params?: SearchCoursesCoursesSearchGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof searchCoursesCoursesSearchGet>>,
+        TError,
+        TData
+      >
+    >;
+    axios?: AxiosRequestConfig;
+  },
+) => {
+  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getSearchCoursesCoursesSearchGetQueryKey(params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof searchCoursesCoursesSearchGet>>
+  > = ({ signal }) =>
+    searchCoursesCoursesSearchGet(params, { signal, ...axiosOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof searchCoursesCoursesSearchGet>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type SearchCoursesCoursesSearchGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof searchCoursesCoursesSearchGet>>
+>;
+export type SearchCoursesCoursesSearchGetQueryError =
+  AxiosError<HTTPValidationError>;
+
+/**
+ * @summary Search Courses
+ */
+export const useSearchCoursesCoursesSearchGet = <
+  TData = Awaited<ReturnType<typeof searchCoursesCoursesSearchGet>>,
+  TError = AxiosError<HTTPValidationError>,
+>(
+  params?: SearchCoursesCoursesSearchGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof searchCoursesCoursesSearchGet>>,
+        TError,
+        TData
+      >
+    >;
+    axios?: AxiosRequestConfig;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getSearchCoursesCoursesSearchGetQueryOptions(
+    params,
+    options,
+  );
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+};
+
+/**
+ * @summary Sample Path
+ */
+export const samplePathSamplePathGet = (
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<unknown>> => {
+  return axios.default.get(`/sample-path`, options);
+};
+
+export const getSamplePathSamplePathGetQueryKey = () => {
+  return [`/sample-path`] as const;
+};
+
+export const getSamplePathSamplePathGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof samplePathSamplePathGet>>,
+  TError = AxiosError<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof samplePathSamplePathGet>>,
+      TError,
+      TData
+    >
   >;
   axios?: AxiosRequestConfig;
 }) => {
-  const mutationOptions = getCanTakeCanTakeCoursePostMutationOptions(options);
+  const { query: queryOptions, axios: axiosOptions } = options ?? {};
 
-  return useMutation(mutationOptions);
+  const queryKey =
+    queryOptions?.queryKey ?? getSamplePathSamplePathGetQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof samplePathSamplePathGet>>
+  > = ({ signal }) => samplePathSamplePathGet({ signal, ...axiosOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof samplePathSamplePathGet>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
 };
+
+export type SamplePathSamplePathGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof samplePathSamplePathGet>>
+>;
+export type SamplePathSamplePathGetQueryError = AxiosError<unknown>;
+
+/**
+ * @summary Sample Path
+ */
+export const useSamplePathSamplePathGet = <
+  TData = Awaited<ReturnType<typeof samplePathSamplePathGet>>,
+  TError = AxiosError<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof samplePathSamplePathGet>>,
+      TError,
+      TData
+    >
+  >;
+  axios?: AxiosRequestConfig;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getSamplePathSamplePathGetQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+};
+
+export const getOptionsReqsOptionOptIdReqsGetMock = () =>
+  Array.from(
+    { length: faker.number.int({ min: 1, max: 10 }) },
+    (_, i) => i + 1,
+  ).map(() => ({
+    antirequisites: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+    corequisites: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+    courseCode: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+    courseName: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+    credit: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([
+        faker.number.int({ min: undefined, max: undefined }),
+        {},
+      ]),
+      undefined,
+    ]),
+    description: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+    location: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+    prerequisites: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+  }));
+
+export const getOptionsMissingReqsOptionOptIdMissingReqsGetMock = () =>
+  Array.from(
+    { length: faker.number.int({ min: 1, max: 10 }) },
+    (_, i) => i + 1,
+  ).map(() => ({
+    antirequisites: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+    corequisites: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+    courseCode: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+    courseName: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+    credit: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([
+        faker.number.int({ min: undefined, max: undefined }),
+        {},
+      ]),
+      undefined,
+    ]),
+    description: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+    location: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+    prerequisites: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+  }));
+
+export const getDegreeReqsDegreeDegreeIdReqsGetMock = () =>
+  Array.from(
+    { length: faker.number.int({ min: 1, max: 10 }) },
+    (_, i) => i + 1,
+  ).map(() => ({
+    antirequisites: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+    corequisites: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+    courseCode: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+    courseName: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+    credit: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([
+        faker.number.int({ min: undefined, max: undefined }),
+        {},
+      ]),
+      undefined,
+    ]),
+    description: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+    location: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+    prerequisites: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+  }));
+
+export const getDegreeMissingReqsDegreeDegreeIdMissingReqsGetMock = () =>
+  Array.from(
+    { length: faker.number.int({ min: 1, max: 10 }) },
+    (_, i) => i + 1,
+  ).map(() => ({
+    antirequisites: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+    corequisites: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+    courseCode: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+    courseName: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+    credit: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([
+        faker.number.int({ min: undefined, max: undefined }),
+        {},
+      ]),
+      undefined,
+    ]),
+    description: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+    location: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+    prerequisites: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+  }));
+
+export const getCoursesCanTakeCoursesCanTakeCourseCodeGetMock = () => ({
+  message: faker.word.sample(),
+  result: faker.datatype.boolean(),
+});
+
+export const getSearchCoursesCoursesSearchGetMock = () =>
+  Array.from(
+    { length: faker.number.int({ min: 1, max: 10 }) },
+    (_, i) => i + 1,
+  ).map(() => ({
+    antirequisites: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+    corequisites: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+    courseCode: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+    courseName: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+    credit: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([
+        faker.number.int({ min: undefined, max: undefined }),
+        {},
+      ]),
+      undefined,
+    ]),
+    description: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+    location: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+    prerequisites: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+  }));
 
 export const getFastAPIMock = () => [
   http.get("*/", async () => {
@@ -398,25 +1043,79 @@ export const getFastAPIMock = () => [
       },
     });
   }),
-  http.get("*/courses/top", async () => {
+  http.get("*/option/:optId/reqs", async () => {
     await delay(1000);
-    return new HttpResponse(null, {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
+    return new HttpResponse(
+      JSON.stringify(getOptionsReqsOptionOptIdReqsGetMock()),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
       },
-    });
+    );
   }),
-  http.get("*/courses/all", async () => {
+  http.get("*/option/:optId/missing_reqs", async () => {
     await delay(1000);
-    return new HttpResponse(null, {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
+    return new HttpResponse(
+      JSON.stringify(getOptionsMissingReqsOptionOptIdMissingReqsGetMock()),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
       },
-    });
+    );
   }),
-  http.post("*/can-take/:course", async () => {
+  http.get("*/degree/:degreeId/reqs", async () => {
+    await delay(1000);
+    return new HttpResponse(
+      JSON.stringify(getDegreeReqsDegreeDegreeIdReqsGetMock()),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+  }),
+  http.get("*/degree/:degreeId/missing_reqs", async () => {
+    await delay(1000);
+    return new HttpResponse(
+      JSON.stringify(getDegreeMissingReqsDegreeDegreeIdMissingReqsGetMock()),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+  }),
+  http.get("*/courses/can-take/:courseCode", async () => {
+    await delay(1000);
+    return new HttpResponse(
+      JSON.stringify(getCoursesCanTakeCoursesCanTakeCourseCodeGetMock()),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+  }),
+  http.get("*/courses/search", async () => {
+    await delay(1000);
+    return new HttpResponse(
+      JSON.stringify(getSearchCoursesCoursesSearchGetMock()),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+  }),
+  http.get("*/sample-path", async () => {
     await delay(1000);
     return new HttpResponse(null, {
       status: 200,

@@ -12,7 +12,7 @@
 export function stringSimilarity(
   str1: string,
   str2: string,
-  gramSize: number = 2
+  gramSize: number = 2,
 ) {
   function getNGrams(s: string, len: number) {
     s = " ".repeat(len - 1) + s.toLowerCase() + " ".repeat(len - 1);

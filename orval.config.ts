@@ -9,7 +9,7 @@ export default {
       target: "./openapi.json",
     },
     hooks: {
-      afterAllFilesWrite: "pnpx prettier --write ./src",
+      afterAllFilesWrite: "pnpx prettier --write ./src ./openapi.json",
     },
   },
 };
