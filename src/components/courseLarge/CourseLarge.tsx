@@ -1,3 +1,4 @@
+import { TagSchema } from "~/api/endpoints";
 import { Pane } from "../pane/Pane";
 import styles from "./CourseLarge.module.css";
 export interface Tag {
@@ -8,7 +9,7 @@ export interface Tag {
 interface CourseProps {
   courseCode: string;
   longName: string;
-  tags: Tag[];
+  tags: TagSchema[];
   courseColor?: string;
   onClick?: () => void;
 }
@@ -16,7 +17,6 @@ interface CourseProps {
 export const CourseLarge = (props: CourseProps) => {
   return (
     <Pane className={styles.accentColor} onClick={props?.onClick}>
-      {/* <div className={clsx(styles.wrapper, styles.accentColor)}> */}
       <div className={styles.header}>{props.courseCode}</div>
       <div>
         <div className={styles.description}>{props.longName}</div>
@@ -25,10 +25,10 @@ export const CourseLarge = (props: CourseProps) => {
         {props.tags.map((tag) => (
           <div
             className={styles.textPill}
-            key={`${props.courseCode}-${tag.name}`}
+            key={`${props.courseCode}-${tag.longName}`}
             style={{ border: `1px solid ${tag.color}` }}
           >
-            {tag.name}
+            {tag.longName}
           </div>
         ))}
       </div>

@@ -1,10 +1,10 @@
-import { Course } from "~/sampleData";
 import { CoursePills } from "../courseSmallPill/CourseSmallPill";
 import { MouseEventHandler } from "react";
 import { Pane } from "../pane/Pane";
+import { CourseWithTagsSchema } from "~/api/endpoints";
 
 interface CourseBlockProps {
-  course: Course;
+  course: CourseWithTagsSchema;
   onClick: MouseEventHandler<HTMLButtonElement>;
 }
 
@@ -18,11 +18,13 @@ export const CourseBlock = ({ course, onClick }: CourseBlockProps) => {
         onClick={onClick}
       >
         <div>
-          {course.courseCode}: {course.longName}
+          {course.courseCode}: {course.courseName}
         </div>
         <div></div>
         <div>
-          <CoursePills courseCode={course.courseCode} tags={course.tags} />
+          {course.tags && course.tags.length > 0 && (
+            <CoursePills courseCode={course.courseCode} tags={course.tags} />
+          )}
         </div>
       </button>
     </Pane>

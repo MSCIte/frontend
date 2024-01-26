@@ -186,7 +186,7 @@
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/CoursesTakenBody" }
+              "schema": { "$ref": "#/components/schemas/CoursesTakenIn" }
             }
           }
         },
@@ -242,7 +242,9 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": { "$ref": "#/components/schemas/CourseSchema" },
+                  "items": {
+                    "$ref": "#/components/schemas/CourseWithTagsSchema"
+                  },
                   "title": "Response Search Courses Courses Search Get"
                 }
               }
@@ -274,18 +276,25 @@
   },
   "components": {
     "schemas": {
+      "ColorsEnum": {
+        "type": "string",
+        "enum": [
+          "red",
+          "green",
+          "orange",
+          "yellow",
+          "blue",
+          "purple",
+          "pink",
+          "indigo",
+          "gray"
+        ],
+        "title": "ColorsEnum"
+      },
       "CourseSchema": {
         "properties": {
-          "courseCode": {
-            "type": "string",
-            "title": "Coursecode",
-            "default": ""
-          },
-          "courseName": {
-            "type": "string",
-            "title": "Coursename",
-            "default": ""
-          },
+          "courseCode": { "type": "string", "title": "Coursecode" },
+          "courseName": { "type": "string", "title": "Coursename" },
           "credit": {
             "anyOf": [{ "type": "integer" }, { "type": "null" }],
             "title": "Credit",
@@ -318,9 +327,55 @@
           }
         },
         "type": "object",
+        "required": ["courseCode", "courseName"],
         "title": "CourseSchema"
       },
-      "CoursesTakenBody": {
+      "CourseWithTagsSchema": {
+        "properties": {
+          "courseCode": { "type": "string", "title": "Coursecode" },
+          "courseName": { "type": "string", "title": "Coursename" },
+          "credit": {
+            "anyOf": [{ "type": "integer" }, { "type": "null" }],
+            "title": "Credit",
+            "default": -1000
+          },
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "default": ""
+          },
+          "location": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Location",
+            "default": ""
+          },
+          "prerequisites": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Prerequisites",
+            "default": ""
+          },
+          "antirequisites": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Antirequisites",
+            "default": ""
+          },
+          "corequisites": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Corequisites",
+            "default": ""
+          },
+          "tags": {
+            "items": { "$ref": "#/components/schemas/TagSchema" },
+            "type": "array",
+            "title": "Tags",
+            "default": []
+          }
+        },
+        "type": "object",
+        "required": ["courseCode", "courseName"],
+        "title": "CourseWithTagsSchema"
+      },
+      "CoursesTakenIn": {
         "properties": {
           "courseCodesTaken": {
             "items": { "type": "string" },
@@ -330,7 +385,7 @@
         },
         "type": "object",
         "required": ["courseCodesTaken"],
-        "title": "CoursesTakenBody"
+        "title": "CoursesTakenIn"
       },
       "HTTPValidationError": {
         "properties": {
@@ -351,6 +406,20 @@
         "type": "object",
         "required": ["result", "message"],
         "title": "RequirementsResults"
+      },
+      "TagSchema": {
+        "properties": {
+          "code": { "type": "string", "title": "Code" },
+          "color": {
+            "allOf": [{ "$ref": "#/components/schemas/ColorsEnum" }],
+            "default": "red"
+          },
+          "shortName": { "type": "string", "title": "Shortname" },
+          "longName": { "type": "string", "title": "Longname" }
+        },
+        "type": "object",
+        "required": ["code", "shortName", "longName"],
+        "title": "TagSchema"
       },
       "ValidationError": {
         "properties": {

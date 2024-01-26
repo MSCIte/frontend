@@ -1,18 +1,16 @@
 import { useMemo, useState } from "react";
-import { Course, courseList } from "~/sampleData";
-import { stringSimilarity } from "~/utils";
 import { CourseBlock } from "./CourseBlock";
 import clsx from "clsx";
+import {
+  CourseWithTagsSchema,
+  useSearchCoursesCoursesSearchGet,
+} from "~/api/endpoints";
 
 interface CourseSelectionPaneProps {
-  initialCourse?: Course;
-  onCourseAccept?: (course: Course) => void;
+  initialCourse?: CourseWithTagsSchema;
+  onCourseAccept?: (course: CourseWithTagsSchema) => void;
   onCancel?: () => void;
 }
-
-const stringSearchScore = (searchQuery: string, s1: string, s2: string) => {
-  return stringSimilarity(searchQuery, s2) - stringSimilarity(searchQuery, s1);
-};
 
 // This will be inside another pane (rounded courners padding etc.)
 // could be a modal (when you add a course), or maybe replaces the right sidebar in year/term view
@@ -20,41 +18,20 @@ export const CourseSelectionPane = ({
   initialCourse,
   onCourseAccept,
 }: CourseSelectionPaneProps) => {
-  // TODO: Call backend API
-  const entireCourseList = courseList;
-
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCourse, setSelectedCourse] = useState<Course | undefined>(
-    initialCourse || entireCourseList[0],
-  );
+  const [selectedCourse, setSelectedCourse] = useState<
+    CourseWithTagsSchema | undefined
+  >(initialCourse);
+
+  const { data } = useSearchCoursesCoursesSearchGet({
+    q: searchQuery,
+  });
 
   // Ideally backend can search across title, description, tags, etc.
+  // Here we fill in the tags maybe (?)
   const selectedCourseList = useMemo(() => {
-    if (!searchQuery) {
-      return entireCourseList;
-    } else {
-      // slice to avoid mutating the original array
-      return entireCourseList.slice(0).sort((a, b) => {
-        let cmpScore = 0;
-        cmpScore += stringSearchScore(searchQuery, a.longName, b.longName);
-        cmpScore +=
-          2 * stringSearchScore(searchQuery, a.courseCode, b.courseCode);
-        cmpScore += stringSearchScore(
-          searchQuery,
-          a.tags.map((tag) => tag.name).join(" "),
-          b.tags.map((tag) => tag.name).join(" "),
-        );
-        if (a.description && b.description) {
-          cmpScore += stringSearchScore(
-            searchQuery,
-            a.description,
-            b.description,
-          );
-        }
-        return cmpScore;
-      });
-    }
-  }, [searchQuery, entireCourseList]);
+    return data?.data;
+  }, [data]);
 
   const SearchElement = (
     <div className="bg-gray-100 sticky top-0">
@@ -100,7 +77,7 @@ export const CourseSelectionPane = ({
         {SearchElement}
         <div className="col-span-1 bg-gray-100 rounded-lg p-4  space-y-2">
           <div className="space-y-2">
-            {selectedCourseList.map((course) => (
+            {selectedCourseList?.map((course) => (
               <CourseBlock
                 course={course}
                 onClick={() => setSelectedCourse(course)}
@@ -111,19 +88,19 @@ export const CourseSelectionPane = ({
       </div>
       <div className="flex flex-col col-span-2 p-8 space-y-4">
         <h1 className="text-3xl">
-          {selectedCourse?.courseCode}: {selectedCourse?.longName}
+          {selectedCourse?.courseCode}: {selectedCourse?.courseName}
         </h1>
         <div className="space-x-2">
           <span>Degree Requirements: </span>
-          {selectedCourse?.tags.map((tag) => (
+          {selectedCourse?.tags?.map((tag) => (
             <span
-              key={tag.name}
+              key={tag.code}
               className={clsx(
                 "inline-block rounded-full text-white py-1 px-2",
-                `bg-${tag.color}-400`,
+                `bg-${tag.color}-400`
               )}
             >
-              {tag.name}
+              {tag.longName}
             </span>
           ))}
         </div>

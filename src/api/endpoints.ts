@@ -28,6 +28,13 @@ export interface ValidationError {
   type: string;
 }
 
+export interface TagSchema {
+  code: string;
+  color?: ColorsEnum;
+  longName: string;
+  shortName: string;
+}
+
 export interface RequirementsResults {
   message: string;
   result: boolean;
@@ -37,8 +44,30 @@ export interface HTTPValidationError {
   detail?: ValidationError[];
 }
 
-export interface CoursesTakenBody {
+export interface CoursesTakenIn {
   courseCodesTaken: string[];
+}
+
+export type CourseWithTagsSchemaPrerequisites = string | null;
+
+export type CourseWithTagsSchemaLocation = string | null;
+
+export type CourseWithTagsSchemaCredit = number | null;
+
+export type CourseWithTagsSchemaCorequisites = string | null;
+
+export type CourseWithTagsSchemaAntirequisites = string | null;
+
+export interface CourseWithTagsSchema {
+  antirequisites?: CourseWithTagsSchemaAntirequisites;
+  corequisites?: CourseWithTagsSchemaCorequisites;
+  courseCode: string;
+  courseName: string;
+  credit?: CourseWithTagsSchemaCredit;
+  description?: string;
+  location?: CourseWithTagsSchemaLocation;
+  prerequisites?: CourseWithTagsSchemaPrerequisites;
+  tags?: TagSchema[];
 }
 
 export type CourseSchemaPrerequisites = string | null;
@@ -54,13 +83,28 @@ export type CourseSchemaAntirequisites = string | null;
 export interface CourseSchema {
   antirequisites?: CourseSchemaAntirequisites;
   corequisites?: CourseSchemaCorequisites;
-  courseCode?: string;
-  courseName?: string;
+  courseCode: string;
+  courseName: string;
   credit?: CourseSchemaCredit;
   description?: string;
   location?: CourseSchemaLocation;
   prerequisites?: CourseSchemaPrerequisites;
 }
+
+export type ColorsEnum = (typeof ColorsEnum)[keyof typeof ColorsEnum];
+
+ 
+export const ColorsEnum = {
+  red: "red",
+  green: "green",
+  orange: "orange",
+  yellow: "yellow",
+  blue: "blue",
+  purple: "purple",
+  pink: "pink",
+  indigo: "indigo",
+  gray: "gray",
+} as const;
 
 /**
  * @summary Read Root
@@ -589,7 +633,7 @@ export const useDegreeMissingReqsDegreeDegreeIdMissingReqsGet = <
  */
 export const coursesCanTakeCoursesCanTakeCourseCodeGet = (
   courseCode: string,
-  coursesTakenBody: CoursesTakenBody,
+  coursesTakenIn: CoursesTakenIn,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<RequirementsResults>> => {
   return axios.default.get(`/courses/can-take/${courseCode}`, options);
@@ -597,9 +641,9 @@ export const coursesCanTakeCoursesCanTakeCourseCodeGet = (
 
 export const getCoursesCanTakeCoursesCanTakeCourseCodeGetQueryKey = (
   courseCode: string,
-  coursesTakenBody: CoursesTakenBody,
+  coursesTakenIn: CoursesTakenIn,
 ) => {
-  return [`/courses/can-take/${courseCode}`, coursesTakenBody] as const;
+  return [`/courses/can-take/${courseCode}`, coursesTakenIn] as const;
 };
 
 export const getCoursesCanTakeCoursesCanTakeCourseCodeGetQueryOptions = <
@@ -607,7 +651,7 @@ export const getCoursesCanTakeCoursesCanTakeCourseCodeGetQueryOptions = <
   TError = AxiosError<HTTPValidationError>,
 >(
   courseCode: string,
-  coursesTakenBody: CoursesTakenBody,
+  coursesTakenIn: CoursesTakenIn,
   options?: {
     query?: Partial<
       UseQueryOptions<
@@ -625,13 +669,13 @@ export const getCoursesCanTakeCoursesCanTakeCourseCodeGetQueryOptions = <
     queryOptions?.queryKey ??
     getCoursesCanTakeCoursesCanTakeCourseCodeGetQueryKey(
       courseCode,
-      coursesTakenBody,
+      coursesTakenIn,
     );
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof coursesCanTakeCoursesCanTakeCourseCodeGet>>
   > = ({ signal }) =>
-    coursesCanTakeCoursesCanTakeCourseCodeGet(courseCode, coursesTakenBody, {
+    coursesCanTakeCoursesCanTakeCourseCodeGet(courseCode, coursesTakenIn, {
       signal,
       ...axiosOptions,
     });
@@ -662,7 +706,7 @@ export const useCoursesCanTakeCoursesCanTakeCourseCodeGet = <
   TError = AxiosError<HTTPValidationError>,
 >(
   courseCode: string,
-  coursesTakenBody: CoursesTakenBody,
+  coursesTakenIn: CoursesTakenIn,
   options?: {
     query?: Partial<
       UseQueryOptions<
@@ -676,7 +720,7 @@ export const useCoursesCanTakeCoursesCanTakeCourseCodeGet = <
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const queryOptions = getCoursesCanTakeCoursesCanTakeCourseCodeGetQueryOptions(
     courseCode,
-    coursesTakenBody,
+    coursesTakenIn,
     options,
   );
 
@@ -695,7 +739,7 @@ export const useCoursesCanTakeCoursesCanTakeCourseCodeGet = <
 export const searchCoursesCoursesSearchGet = (
   params?: SearchCoursesCoursesSearchGetParams,
   options?: AxiosRequestConfig,
-): Promise<AxiosResponse<CourseSchema[]>> => {
+): Promise<AxiosResponse<CourseWithTagsSchema[]>> => {
   return axios.default.get(`/courses/search`, {
     ...options,
     params: { ...params, ...options?.params },
@@ -867,8 +911,8 @@ export const getOptionsReqsOptionOptIdReqsGetMock = () =>
       faker.helpers.arrayElement([faker.word.sample(), {}]),
       undefined,
     ]),
-    courseCode: faker.helpers.arrayElement([faker.word.sample(), undefined]),
-    courseName: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+    courseCode: faker.word.sample(),
+    courseName: faker.word.sample(),
     credit: faker.helpers.arrayElement([
       faker.helpers.arrayElement([
         faker.number.int({ min: undefined, max: undefined }),
@@ -900,8 +944,8 @@ export const getOptionsMissingReqsOptionOptIdMissingReqsGetMock = () =>
       faker.helpers.arrayElement([faker.word.sample(), {}]),
       undefined,
     ]),
-    courseCode: faker.helpers.arrayElement([faker.word.sample(), undefined]),
-    courseName: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+    courseCode: faker.word.sample(),
+    courseName: faker.word.sample(),
     credit: faker.helpers.arrayElement([
       faker.helpers.arrayElement([
         faker.number.int({ min: undefined, max: undefined }),
@@ -933,8 +977,8 @@ export const getDegreeReqsDegreeDegreeIdReqsGetMock = () =>
       faker.helpers.arrayElement([faker.word.sample(), {}]),
       undefined,
     ]),
-    courseCode: faker.helpers.arrayElement([faker.word.sample(), undefined]),
-    courseName: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+    courseCode: faker.word.sample(),
+    courseName: faker.word.sample(),
     credit: faker.helpers.arrayElement([
       faker.helpers.arrayElement([
         faker.number.int({ min: undefined, max: undefined }),
@@ -966,8 +1010,8 @@ export const getDegreeMissingReqsDegreeDegreeIdMissingReqsGetMock = () =>
       faker.helpers.arrayElement([faker.word.sample(), {}]),
       undefined,
     ]),
-    courseCode: faker.helpers.arrayElement([faker.word.sample(), undefined]),
-    courseName: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+    courseCode: faker.word.sample(),
+    courseName: faker.word.sample(),
     credit: faker.helpers.arrayElement([
       faker.helpers.arrayElement([
         faker.number.int({ min: undefined, max: undefined }),
@@ -1004,8 +1048,8 @@ export const getSearchCoursesCoursesSearchGetMock = () =>
       faker.helpers.arrayElement([faker.word.sample(), {}]),
       undefined,
     ]),
-    courseCode: faker.helpers.arrayElement([faker.word.sample(), undefined]),
-    courseName: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+    courseCode: faker.word.sample(),
+    courseName: faker.word.sample(),
     credit: faker.helpers.arrayElement([
       faker.helpers.arrayElement([
         faker.number.int({ min: undefined, max: undefined }),
@@ -1020,6 +1064,23 @@ export const getSearchCoursesCoursesSearchGetMock = () =>
     ]),
     prerequisites: faker.helpers.arrayElement([
       faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+    tags: faker.helpers.arrayElement([
+      Array.from(
+        { length: faker.number.int({ min: 1, max: 10 }) },
+        (_, i) => i + 1,
+      ).map(() => ({
+        code: faker.word.sample(),
+        color: faker.helpers.arrayElement([
+          faker.helpers.arrayElement([
+            faker.helpers.arrayElement(Object.values(ColorsEnum)),
+          ]),
+          undefined,
+        ]),
+        longName: faker.word.sample(),
+        shortName: faker.word.sample(),
+      })),
       undefined,
     ]),
   }));
