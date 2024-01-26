@@ -46,17 +46,12 @@ export const AllTermsTableView = ({
                   {Object.keys(courseData).map((term) => {
                     const course = courseData?.[term]?.[i];
                     if (course) {
-                      const { courseCode, longName, tags } = course;
                       return (
                         <td
                           key={`${term}-${course.courseCode}`}
                           className="h-full"
                         >
-                          <CourseSmall
-                            courseCode={courseCode}
-                            longName={longName}
-                            tags={tags}
-                          />
+                          <CourseSmall {...course} />
                         </td>
                       );
                     } else if (courseData?.[term]?.[i - 1]) {
