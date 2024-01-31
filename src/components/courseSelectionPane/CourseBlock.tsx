@@ -10,10 +10,10 @@ interface CourseBlockProps {
 
 export const CourseBlock = ({ course, onClick }: CourseBlockProps) => {
   return (
-    <Pane className="hover:bg-gray-200 p-0">
+    <Pane className="p-0 hover:bg-gray-200">
       {/* TODO: make courses selected based on an ID */}
       <button
-        className="text-left w-full hover:underline p-2"
+        className="w-full p-2 text-left hover:underline"
         key={course.courseCode}
         onClick={onClick}
       >

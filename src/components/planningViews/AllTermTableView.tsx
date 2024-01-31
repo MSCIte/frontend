@@ -59,7 +59,7 @@ export const AllTermsTableView = ({
                       return (
                         <td key={`${term}-${i}`} className="align-top">
                           <button
-                            className="bg-white rounded-lg w-full flex justify-center items-center"
+                            className="flex w-full items-center justify-center rounded-lg bg-white"
                             onClick={() => setNewCourse(term, i)}
                           >
                             <div className="text-4xl">+</div>

@@ -11,7 +11,7 @@ export const CoursePills = ({ courseCode, tags }: CoursePillsProps) =>
     <div
       key={courseCode + tag.longName}
       className={clsx(
-        "rounded-full text-white text-xs px-2 py-1 mr-1 inline-block",
+        "mr-1 inline-block rounded-full px-2 py-1 text-xs text-white",
         `bg-${tag.color}`,
       )}
       style={{ background: tag.color }}

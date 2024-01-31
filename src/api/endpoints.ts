@@ -93,7 +93,7 @@ export interface CourseSchema {
 
 export type ColorsEnum = (typeof ColorsEnum)[keyof typeof ColorsEnum];
 
- 
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ColorsEnum = {
   red: "red",
   green: "green",

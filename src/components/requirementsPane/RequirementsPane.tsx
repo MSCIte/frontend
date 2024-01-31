@@ -30,7 +30,7 @@ const colorVariants = {
 export const RequirementsPane = (props: RequirementsPaneProps) => {
   return (
     <Pane>
-      <h3 className="font-medium text-xl">{props.title}</h3>
+      <h3 className="text-xl font-medium">{props.title}</h3>
       <div className="mt-4">
         {props.data.map((requirement, ind) => (
           <div className="my-2" key={`req-${props.title}-${ind}`}>
@@ -54,7 +54,7 @@ export const RequirementsPane = (props: RequirementsPaneProps) => {
                     : 75
                 }
                 className={clsx(
-                  "w-full h-2 bg-slate-200 rounded [&::-webkit-progress-bar]:rounded [&::-webkit-progress-value]:rounded ",
+                  "h-2 w-full rounded bg-slate-200 [&::-webkit-progress-bar]:rounded [&::-webkit-progress-value]:rounded ",
                   `[&::-webkit-progress-bar]:bg-slate-300`,
                   colorVariants?.[
                     requirement.color as keyof typeof colorVariants

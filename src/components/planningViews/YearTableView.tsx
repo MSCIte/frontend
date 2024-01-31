@@ -87,7 +87,7 @@ export const YearTableView = ({
                         return (
                           <td key={`${term}-${i}`} className="align-top">
                             <button
-                              className="bg-white rounded-lg w-full flex justify-center items-center"
+                              className="flex w-full items-center justify-center rounded-lg bg-white"
                               onClick={() => setNewCourse(term, i)}
                             >
                               <div className="text-4xl">+</div>
@@ -104,12 +104,12 @@ export const YearTableView = ({
           </tbody>
         </table>
       </div>
-      <Pane className=" md:max-w-72 lg:max-w-96 xl:max-w-fit py-4 px-6 space-y-4">
+      <Pane className=" space-y-4 px-6 py-4 md:max-w-72 lg:max-w-96 xl:max-w-fit">
         <h2 className="text-4xl">{selectedCourse?.courseCode}</h2>
         <h3 className="text-2xl">{selectedCourse?.longName}</h3>
         <div
           className={clsx(
-            "w-28 h-6 rounded-xl",
+            "h-6 w-28 rounded-xl",
             selectedCourse?.tags?.[0].color &&
               `bg-${selectedCourse?.tags?.[0].color}-400`,
           )}

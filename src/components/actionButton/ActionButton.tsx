@@ -13,8 +13,8 @@ export const ActionButton = (props: ActionButtonProps) => {
     <div className={props.className}>
       <button
         className={clsx(
-          "rounded bg-transparent border-gray-400 border text-white hover:bg-gray-200 hover:border-gray-200 py-1 px-2 flex items-center justify-center space-x-2",
-          props.isActive && "bg-gray-200 border-transparent cursor-default",
+          "flex items-center justify-center space-x-2 rounded border border-gray-400 bg-transparent px-2 py-1 text-white hover:border-gray-200 hover:bg-gray-200",
+          props.isActive && "cursor-default border-transparent bg-gray-200",
         )}
         onClick={props.onClick}
       >

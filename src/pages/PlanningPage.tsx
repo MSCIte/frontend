@@ -33,9 +33,9 @@ export const PlanningPage = () => {
   return (
     <div className="flex">
       <Sidebar />
-      <div className="px-4 py-2 overflow-x-auto">
+      <div className="overflow-x-auto px-4 py-2">
         <h1 className="text-3xl">My Plan</h1>
-        <div className="flex justify-between my-2">
+        <div className="my-2 flex justify-between">
           <ul className="space-x-4">
             <ActionButton
               className="inline-block"
@@ -59,7 +59,7 @@ export const PlanningPage = () => {
               icon={<TermView />}
             />
 
-            <div className="inline-block text-gray-500 space-x-4">
+            <div className="inline-block space-x-4 text-gray-500">
               <button
                 onClick={() => {
                   if (selectedTerm >= moveStep) {
@@ -80,7 +80,7 @@ export const PlanningPage = () => {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-6 h-6"
+                  className="h-6 w-6"
                 >
                   <path
                     strokeLinecap="round"
@@ -116,7 +116,7 @@ export const PlanningPage = () => {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-6 h-6"
+                  className="h-6 w-6"
                 >
                   <path
                     strokeLinecap="round"
@@ -139,7 +139,7 @@ export const PlanningPage = () => {
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="w-6 h-6"
+                    className="h-6 w-6"
                   >
                     <path
                       strokeLinecap="round"

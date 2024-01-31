@@ -2,6 +2,11 @@
 
 ## Development
 
+### Prereqs
+1. Install nodejs >= 20
+2. Install pnpm. We use this instead of npm or yarn. https://pnpm.io/installation
+
+### WOpt
 Install with `pnpm i`
 
 Create OpenAPI client:

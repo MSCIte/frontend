@@ -34,17 +34,17 @@ export const CourseSelectionPane = ({
   }, [data]);
 
   const SearchElement = (
-    <div className="bg-gray-100 sticky top-0">
+    <div className="sticky top-0 bg-gray-100">
       <label
         htmlFor="courseSearch"
-        className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+        className="sr-only mb-2 text-sm font-medium text-gray-900 dark:text-white"
       >
         Search
       </label>
       <div className="relative">
-        <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+        <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3">
           <svg
-            className="w-4 h-4 text-gray-500 dark:text-gray-400"
+            className="h-4 w-4 text-gray-500 dark:text-gray-400"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -62,7 +62,7 @@ export const CourseSelectionPane = ({
         <input
           type="search"
           id="courseSearch"
-          className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-4 ps-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
           placeholder="Search for a course"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -72,10 +72,10 @@ export const CourseSelectionPane = ({
   );
 
   return (
-    <div className="grid grid-cols-3 gap-4 mx-4 overflow-y-hidden h-full">
+    <div className="mx-4 grid h-full grid-cols-3 gap-4 overflow-y-hidden">
       <div className="overflow-y-scroll">
         {SearchElement}
-        <div className="col-span-1 bg-gray-100 rounded-lg p-4  space-y-2">
+        <div className="col-span-1 space-y-2 rounded-lg bg-gray-100  p-4">
           <div className="space-y-2">
             {selectedCourseList?.map((course) => (
               <CourseBlock
@@ -86,7 +86,7 @@ export const CourseSelectionPane = ({
           </div>
         </div>
       </div>
-      <div className="flex flex-col col-span-2 p-8 space-y-4">
+      <div className="col-span-2 flex flex-col space-y-4 p-8">
         <h1 className="text-3xl">
           {selectedCourse?.courseCode}: {selectedCourse?.courseName}
         </h1>
@@ -96,8 +96,8 @@ export const CourseSelectionPane = ({
             <span
               key={tag.code}
               className={clsx(
-                "inline-block rounded-full text-white py-1 px-2",
-                `bg-${tag.color}-400`
+                "inline-block rounded-full px-2 py-1 text-white",
+                `bg-${tag.color}-400`,
               )}
             >
               {tag.longName}
@@ -110,7 +110,7 @@ export const CourseSelectionPane = ({
         </div>
 
         <button
-          className="bg-gray-300 p-2 rounded-lg mr-0 ml-auto !mt-auto"
+          className="!mt-auto ml-auto mr-0 rounded-lg bg-gray-300 p-2"
           onClick={() => onCourseAccept?.(selectedCourse!)}
         >
           + Add to Course List
