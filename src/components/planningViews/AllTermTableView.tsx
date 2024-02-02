@@ -13,14 +13,28 @@ export const AllTermsTableView = ({
       if (!newCourseData[term][index]) {
         newCourseData[term].push({
           courseCode: "CCC 100",
-          longName: "New Course",
-          tags: [{ name: "Chemistry", color: "red" }],
+          courseName: "Chemistry for Chemists",
+          tags: [
+            {
+              longName: "Chemistry for chemists",
+              shortName: "Chm",
+              code: "CHEM 100",
+              color: "red",
+            },
+          ],
         });
       } else {
         newCourseData[term][index] = {
           courseCode: "CCC 100",
-          longName: "New Course",
-          tags: [{ name: "Chemistry", color: "red" }],
+          courseName: "Chemistry for Chemists",
+          tags: [
+            {
+              longName: "Chemistry for chemists",
+              shortName: "Chm",
+              code: "CHEM 100",
+              color: "red",
+            },
+          ],
         };
       }
       return newCourseData;
@@ -29,7 +43,7 @@ export const AllTermsTableView = ({
 
   return (
     <div className="w-full overflow-x-auto">
-      <table className="border-separate border-spacing-2 overflow-x-auto ">
+      <table className="border-separate border-spacing-2 overflow-x-auto">
         <thead>
           <tr>
             {Object.keys(courseData).map((key) => (
@@ -37,7 +51,7 @@ export const AllTermsTableView = ({
             ))}
           </tr>
         </thead>
-        <tbody>
+        <tbody className="h-20 overflow-scroll">
           {Array(maxCoursesInATerm + 1)
             .fill(0)
             .map((_, i) => {

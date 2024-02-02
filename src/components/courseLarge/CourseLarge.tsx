@@ -1,4 +1,4 @@
-import { TagSchema } from "~/api/endpoints";
+import { CourseWithTagsSchema, TagSchema } from "~/api/endpoints";
 import { Pane } from "../pane/Pane";
 import styles from "./CourseLarge.module.css";
 export interface Tag {
@@ -7,30 +7,28 @@ export interface Tag {
 }
 
 interface CourseProps {
-  courseCode: string;
-  longName: string;
-  tags: TagSchema[];
-  courseColor?: string;
+  course: CourseWithTagsSchema;
   onClick?: () => void;
 }
 
-export const CourseLarge = (props: CourseProps) => {
+export const CourseLarge = ({ course, onClick }: CourseProps) => {
   return (
-    <Pane className={styles.accentColor} onClick={props?.onClick}>
-      <div className={styles.header}>{props.courseCode}</div>
+    <Pane className={styles.accentColor} onClick={onClick}>
+      <div className={styles.header}>{course.courseCode}</div>
       <div>
-        <div className={styles.description}>{props.longName}</div>
+        <div className={styles.description}>{course.courseName}</div>
       </div>
       <div className={styles.pillWrapper}>
-        {props.tags.map((tag) => (
-          <div
-            className={styles.textPill}
-            key={`${props.courseCode}-${tag.longName}`}
-            style={{ border: `1px solid ${tag.color}` }}
-          >
-            {tag.longName}
-          </div>
-        ))}
+        {course?.tags &&
+          course.tags.map((tag) => (
+            <div
+              className={styles.textPill}
+              key={`${course.courseCode}-${tag.longName}`}
+              style={{ border: `1px solid ${tag.color}` }}
+            >
+              {tag.longName}
+            </div>
+          ))}
       </div>
       {/* </div> */}
     </Pane>

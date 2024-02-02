@@ -80,13 +80,12 @@ export const Sidebar = () => {
   return (
     <div
       className={clsx(
-        "flex flex-shrink-0 flex-grow-0 flex-col overflow-hidden transition-width ",
+        "flex flex-shrink-0 flex-grow-0 flex-col overflow-hidden transition-width h-[calc(100vh-6rem)]",
         isExpanded ? "w-80 border-r-2" : "w-16",
       )}
-      style={{ height: "calc(100vh - 6rem)" }}
     >
-      <div className="h-full p-4">
-        <div className="flex justify-around">
+      <div className="h-full">
+        <div className="p-4 flex justify-around">
           <h2 className={clsx("text-xl", !isExpanded && "hidden")}>
             Academic Summary
           </h2>
@@ -99,7 +98,12 @@ export const Sidebar = () => {
           <div className={clsx("lineDownCenter mt-4 h-full w-full")} />
         )}
 
-        <div className={clsx("mt-4 space-y-4", !isExpanded && "hidden")}>
+        <div
+          className={clsx(
+            "p-4 space-y-4 overflow-y-scroll h-[calc(100%-4rem)]",
+            !isExpanded && "hidden",
+          )}
+        >
           {sampleRequirementsData.map((requirement, ind) => (
             <RequirementsPane key={`${requirement}-${ind}`} {...requirement} />
           ))}

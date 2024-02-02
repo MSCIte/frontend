@@ -12,9 +12,11 @@ export const CourseSmall = (props: CourseWithTagsSchema) => {
         <div>
           <div className={styles.description}>{props.courseName}</div>
         </div>
-        <div className="mr-0 flex flex-row-reverse">
-          <CoursePills courseCode={props.courseCode} tags={props.tags} />
-        </div>
+        {props.tags && (
+          <div className="mr-0 flex flex-row-reverse">
+            <CoursePills courseCode={props.courseCode} tags={props.tags} />
+          </div>
+        )}
       </div>
     </Pane>
   );

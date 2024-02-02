@@ -33,7 +33,7 @@ export const PlanningPage = () => {
   return (
     <div className="flex">
       <Sidebar />
-      <div className="overflow-x-auto px-4 py-2">
+      <div className="overflow-x-auto px-4 py-2 h-[calc(100%-30rem)]">
         <h1 className="text-3xl">My Plan</h1>
         <div className="my-2 flex justify-between">
           <ul className="space-x-4">

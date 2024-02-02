@@ -8,15 +8,20 @@ import TermView from "~/assets/termView.svg?react";
 import { Sidebar } from "~/components/sidebar/Sidebar";
 import { CourseSelectionPane } from "~/components/courseSelectionPane/CourseSelectionPane";
 import { Pane } from "~/components/pane/Pane";
+import { CourseWithTagsSchema } from "~/api/endpoints";
 
-const courseData = {
+const courseData: CourseWithTagsSchema = {
   courseCode: "CHE 100",
-  longName:
-    "Chemical Engineering Concepts I mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+  courseName: "Chemical Engineering Concepts I",
   tags: [
-    { name: "Chemistry", color: "red" },
-    { name: "Physics", color: "blue" },
-    { name: "Math", color: "green" },
+    { code: "asdf", shortName: "afafa", longName: "Chemistry", color: "red" },
+    { code: "asdf", shortName: "afafa", longName: "Chemistry", color: "blue" },
+    {
+      code: "asdf",
+      shortName: "afafa",
+      longName: "Chemistry",
+      color: "indigo",
+    },
   ],
 };
 
@@ -56,7 +61,7 @@ export const DemoPage = () => {
         <CourseSmall {...courseData} />
       </div>
       <div style={{ width: "20rem" }}>
-        <CourseLarge {...courseData} />
+        <CourseLarge course={courseData} />
       </div>
       <div>
         <RequirementsPane {...requirements} />
