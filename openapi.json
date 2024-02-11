@@ -35,7 +35,13 @@
             "name": "opt_id",
             "in": "path",
             "required": true,
-            "schema": { "type": "integer", "title": "Opt Id" }
+            "schema": { "type": "string", "title": "Opt Id" }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Year" }
           }
         ],
         "responses": {
@@ -43,11 +49,7 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": { "$ref": "#/components/schemas/CourseSchema" },
-                  "title": "Response Options Reqs Option  Opt Id  Reqs Get"
-                }
+                "schema": { "$ref": "#/components/schemas/OptionsSchema" }
               }
             }
           },
@@ -71,9 +73,23 @@
             "name": "opt_id",
             "in": "path",
             "required": true,
-            "schema": { "type": "integer", "title": "Opt Id" }
+            "schema": { "type": "string", "title": "Opt Id" }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Year" }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CoursesTakenIn" }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -81,7 +97,7 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": { "$ref": "#/components/schemas/CourseSchema" },
+                  "items": { "$ref": "#/components/schemas/OptionRequirement" },
                   "title": "Response Options Missing Reqs Option  Opt Id  Missing Reqs Get"
                 }
               }
@@ -98,16 +114,22 @@
         }
       }
     },
-    "/degree/{degree_id}/reqs": {
+    "/degree/{degree_name}/reqs": {
       "get": {
         "summary": "Degree Reqs",
-        "operationId": "degree_reqs_degree__degree_id__reqs_get",
+        "operationId": "degree_reqs_degree__degree_name__reqs_get",
         "parameters": [
           {
-            "name": "degree_id",
+            "name": "degree_name",
             "in": "path",
             "required": true,
-            "schema": { "type": "integer", "title": "Degree Id" }
+            "schema": { "type": "string", "title": "Degree Name" }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Year" }
           }
         ],
         "responses": {
@@ -115,11 +137,7 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": { "$ref": "#/components/schemas/CourseSchema" },
-                  "title": "Response Degree Reqs Degree  Degree Id  Reqs Get"
-                }
+                "schema": { "$ref": "#/components/schemas/DegreeReqs" }
               }
             }
           },
@@ -128,6 +146,26 @@
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/degree": {
+      "get": {
+        "summary": "Degrees",
+        "operationId": "degrees_degree_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": { "type": "string" },
+                  "type": "array",
+                  "title": "Response Degrees Degree Get"
+                }
               }
             }
           }
@@ -143,19 +181,29 @@
             "name": "degree_id",
             "in": "path",
             "required": true,
-            "schema": { "title": "Degree Id" }
+            "schema": { "type": "string", "title": "Degree Id" }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Year" }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CoursesTakenIn" }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": { "$ref": "#/components/schemas/CourseSchema" },
-                  "title": "Response Degree Missing Reqs Degree  Degree Id  Missing Reqs Get"
-                }
+                "schema": { "$ref": "#/components/schemas/DegreeMissingReqs" }
               }
             }
           },
@@ -276,6 +324,15 @@
   },
   "components": {
     "schemas": {
+      "AdditionalReqCount": {
+        "properties": {
+          "completed": { "type": "string", "title": "Completed" },
+          "total": { "type": "string", "title": "Total" }
+        },
+        "type": "object",
+        "required": ["completed", "total"],
+        "title": "AdditionalReqCount"
+      },
       "ColorsEnum": {
         "type": "string",
         "enum": [
@@ -290,45 +347,6 @@
           "gray"
         ],
         "title": "ColorsEnum"
-      },
-      "CourseSchema": {
-        "properties": {
-          "courseCode": { "type": "string", "title": "Coursecode" },
-          "courseName": { "type": "string", "title": "Coursename" },
-          "credit": {
-            "anyOf": [{ "type": "integer" }, { "type": "null" }],
-            "title": "Credit",
-            "default": -1000
-          },
-          "description": {
-            "type": "string",
-            "title": "Description",
-            "default": ""
-          },
-          "location": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Location",
-            "default": ""
-          },
-          "prerequisites": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Prerequisites",
-            "default": ""
-          },
-          "antirequisites": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Antirequisites",
-            "default": ""
-          },
-          "corequisites": {
-            "anyOf": [{ "type": "string" }, { "type": "null" }],
-            "title": "Corequisites",
-            "default": ""
-          }
-        },
-        "type": "object",
-        "required": ["courseCode", "courseName"],
-        "title": "CourseSchema"
       },
       "CourseWithTagsSchema": {
         "properties": {
@@ -387,6 +405,57 @@
         "required": ["courseCodesTaken"],
         "title": "CoursesTakenIn"
       },
+      "DegreeMissingReqs": {
+        "properties": {
+          "mandatoryCourses": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Mandatorycourses"
+          },
+          "additionalReqs": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/AdditionalReqCount"
+            },
+            "type": "object",
+            "title": "Additionalreqs"
+          }
+        },
+        "type": "object",
+        "required": ["mandatoryCourses", "additionalReqs"],
+        "title": "DegreeMissingReqs"
+      },
+      "DegreeReqs": {
+        "properties": {
+          "mandatoryCourses": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Mandatorycourses"
+          },
+          "additionalReqs": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DegreeRequirement"
+            },
+            "type": "object",
+            "title": "Additionalreqs"
+          }
+        },
+        "type": "object",
+        "required": ["mandatoryCourses", "additionalReqs"],
+        "title": "DegreeReqs"
+      },
+      "DegreeRequirement": {
+        "properties": {
+          "courses": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Courses"
+          },
+          "numberOfCourses": { "type": "integer", "title": "Numberofcourses" }
+        },
+        "type": "object",
+        "required": ["courses", "numberOfCourses"],
+        "title": "DegreeRequirement"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -397,6 +466,32 @@
         },
         "type": "object",
         "title": "HTTPValidationError"
+      },
+      "OptionRequirement": {
+        "properties": {
+          "courses": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Courses"
+          },
+          "numberOfCourses": { "type": "integer", "title": "Numberofcourses" }
+        },
+        "type": "object",
+        "required": ["courses", "numberOfCourses"],
+        "title": "OptionRequirement"
+      },
+      "OptionsSchema": {
+        "properties": {
+          "optionName": { "type": "string", "title": "Optionname" },
+          "requirements": {
+            "items": { "$ref": "#/components/schemas/OptionRequirement" },
+            "type": "array",
+            "title": "Requirements"
+          }
+        },
+        "type": "object",
+        "required": ["optionName", "requirements"],
+        "title": "OptionsSchema"
       },
       "RequirementsResults": {
         "properties": {

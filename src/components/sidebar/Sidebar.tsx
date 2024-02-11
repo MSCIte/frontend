@@ -80,12 +80,12 @@ export const Sidebar = () => {
   return (
     <div
       className={clsx(
-        "flex flex-shrink-0 flex-grow-0 flex-col overflow-hidden transition-width h-[calc(100vh-6rem)]",
+        "flex h-[calc(100vh-6rem)] flex-shrink-0 flex-grow-0 flex-col overflow-hidden transition-width",
         isExpanded ? "w-80 border-r-2" : "w-16",
       )}
     >
       <div className="h-full">
-        <div className="p-4 flex justify-around">
+        <div className="flex justify-around p-4">
           <h2 className={clsx("text-xl", !isExpanded && "hidden")}>
             Academic Summary
           </h2>
@@ -100,7 +100,7 @@ export const Sidebar = () => {
 
         <div
           className={clsx(
-            "p-4 space-y-4 overflow-y-scroll h-[calc(100%-4rem)]",
+            "h-[calc(100%-4rem)] space-y-4 overflow-y-scroll p-4",
             !isExpanded && "hidden",
           )}
         >

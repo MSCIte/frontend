@@ -20,6 +20,22 @@ export type SearchCoursesCoursesSearchGetParams = {
   offset?: number | null;
 };
 
+export type DegreeMissingReqsDegreeDegreeIdMissingReqsGetParams = {
+  year: string;
+};
+
+export type DegreeReqsDegreeDegreeNameReqsGetParams = {
+  year: string;
+};
+
+export type OptionsMissingReqsOptionOptIdMissingReqsGetParams = {
+  year: string;
+};
+
+export type OptionsReqsOptionOptIdReqsGetParams = {
+  year: string;
+};
+
 export type ValidationErrorLocItem = string | number;
 
 export interface ValidationError {
@@ -40,8 +56,39 @@ export interface RequirementsResults {
   result: boolean;
 }
 
+export interface OptionRequirement {
+  courses: string[];
+  numberOfCourses: number;
+}
+
+export interface OptionsSchema {
+  optionName: string;
+  requirements: OptionRequirement[];
+}
+
 export interface HTTPValidationError {
   detail?: ValidationError[];
+}
+
+export interface DegreeRequirement {
+  courses: string[];
+  numberOfCourses: number;
+}
+
+export type DegreeReqsAdditionalReqs = { [key: string]: DegreeRequirement };
+
+export interface DegreeReqs {
+  additionalReqs: DegreeReqsAdditionalReqs;
+  mandatoryCourses: string[];
+}
+
+export type DegreeMissingReqsAdditionalReqs = {
+  [key: string]: AdditionalReqCount;
+};
+
+export interface DegreeMissingReqs {
+  additionalReqs: DegreeMissingReqsAdditionalReqs;
+  mandatoryCourses: string[];
 }
 
 export interface CoursesTakenIn {
@@ -70,27 +117,6 @@ export interface CourseWithTagsSchema {
   tags?: TagSchema[];
 }
 
-export type CourseSchemaPrerequisites = string | null;
-
-export type CourseSchemaLocation = string | null;
-
-export type CourseSchemaCredit = number | null;
-
-export type CourseSchemaCorequisites = string | null;
-
-export type CourseSchemaAntirequisites = string | null;
-
-export interface CourseSchema {
-  antirequisites?: CourseSchemaAntirequisites;
-  corequisites?: CourseSchemaCorequisites;
-  courseCode: string;
-  courseName: string;
-  credit?: CourseSchemaCredit;
-  description?: string;
-  location?: CourseSchemaLocation;
-  prerequisites?: CourseSchemaPrerequisites;
-}
-
 export type ColorsEnum = (typeof ColorsEnum)[keyof typeof ColorsEnum];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
@@ -105,6 +131,11 @@ export const ColorsEnum = {
   indigo: "indigo",
   gray: "gray",
 } as const;
+
+export interface AdditionalReqCount {
+  completed: string;
+  total: string;
+}
 
 /**
  * @summary Read Root
@@ -240,21 +271,29 @@ export const useReadItemQueryGet = <
  * @summary Options Reqs
  */
 export const optionsReqsOptionOptIdReqsGet = (
-  optId: number,
+  optId: string,
+  params: OptionsReqsOptionOptIdReqsGetParams,
   options?: AxiosRequestConfig,
-): Promise<AxiosResponse<CourseSchema[]>> => {
-  return axios.default.get(`/option/${optId}/reqs`, options);
+): Promise<AxiosResponse<OptionsSchema>> => {
+  return axios.default.get(`/option/${optId}/reqs`, {
+    ...options,
+    params: { ...params, ...options?.params },
+  });
 };
 
-export const getOptionsReqsOptionOptIdReqsGetQueryKey = (optId: number) => {
-  return [`/option/${optId}/reqs`] as const;
+export const getOptionsReqsOptionOptIdReqsGetQueryKey = (
+  optId: string,
+  params: OptionsReqsOptionOptIdReqsGetParams,
+) => {
+  return [`/option/${optId}/reqs`, ...(params ? [params] : [])] as const;
 };
 
 export const getOptionsReqsOptionOptIdReqsGetQueryOptions = <
   TData = Awaited<ReturnType<typeof optionsReqsOptionOptIdReqsGet>>,
   TError = AxiosError<HTTPValidationError>,
 >(
-  optId: number,
+  optId: string,
+  params: OptionsReqsOptionOptIdReqsGetParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
@@ -269,12 +308,13 @@ export const getOptionsReqsOptionOptIdReqsGetQueryOptions = <
   const { query: queryOptions, axios: axiosOptions } = options ?? {};
 
   const queryKey =
-    queryOptions?.queryKey ?? getOptionsReqsOptionOptIdReqsGetQueryKey(optId);
+    queryOptions?.queryKey ??
+    getOptionsReqsOptionOptIdReqsGetQueryKey(optId, params);
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof optionsReqsOptionOptIdReqsGet>>
   > = ({ signal }) =>
-    optionsReqsOptionOptIdReqsGet(optId, { signal, ...axiosOptions });
+    optionsReqsOptionOptIdReqsGet(optId, params, { signal, ...axiosOptions });
 
   return {
     queryKey,
@@ -301,7 +341,8 @@ export const useOptionsReqsOptionOptIdReqsGet = <
   TData = Awaited<ReturnType<typeof optionsReqsOptionOptIdReqsGet>>,
   TError = AxiosError<HTTPValidationError>,
 >(
-  optId: number,
+  optId: string,
+  params: OptionsReqsOptionOptIdReqsGetParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
@@ -315,6 +356,7 @@ export const useOptionsReqsOptionOptIdReqsGet = <
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const queryOptions = getOptionsReqsOptionOptIdReqsGetQueryOptions(
     optId,
+    params,
     options,
   );
 
@@ -331,16 +373,27 @@ export const useOptionsReqsOptionOptIdReqsGet = <
  * @summary Options Missing Reqs
  */
 export const optionsMissingReqsOptionOptIdMissingReqsGet = (
-  optId: number,
+  optId: string,
+  coursesTakenIn: CoursesTakenIn,
+  params: OptionsMissingReqsOptionOptIdMissingReqsGetParams,
   options?: AxiosRequestConfig,
-): Promise<AxiosResponse<CourseSchema[]>> => {
-  return axios.default.get(`/option/${optId}/missing_reqs`, options);
+): Promise<AxiosResponse<OptionRequirement[]>> => {
+  return axios.default.get(`/option/${optId}/missing_reqs`, {
+    ...options,
+    params: { ...params, ...options?.params },
+  });
 };
 
 export const getOptionsMissingReqsOptionOptIdMissingReqsGetQueryKey = (
-  optId: number,
+  optId: string,
+  coursesTakenIn: CoursesTakenIn,
+  params: OptionsMissingReqsOptionOptIdMissingReqsGetParams,
 ) => {
-  return [`/option/${optId}/missing_reqs`] as const;
+  return [
+    `/option/${optId}/missing_reqs`,
+    ...(params ? [params] : []),
+    coursesTakenIn,
+  ] as const;
 };
 
 export const getOptionsMissingReqsOptionOptIdMissingReqsGetQueryOptions = <
@@ -349,7 +402,9 @@ export const getOptionsMissingReqsOptionOptIdMissingReqsGetQueryOptions = <
   >,
   TError = AxiosError<HTTPValidationError>,
 >(
-  optId: number,
+  optId: string,
+  coursesTakenIn: CoursesTakenIn,
+  params: OptionsMissingReqsOptionOptIdMissingReqsGetParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
@@ -365,12 +420,16 @@ export const getOptionsMissingReqsOptionOptIdMissingReqsGetQueryOptions = <
 
   const queryKey =
     queryOptions?.queryKey ??
-    getOptionsMissingReqsOptionOptIdMissingReqsGetQueryKey(optId);
+    getOptionsMissingReqsOptionOptIdMissingReqsGetQueryKey(
+      optId,
+      coursesTakenIn,
+      params,
+    );
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof optionsMissingReqsOptionOptIdMissingReqsGet>>
   > = ({ signal }) =>
-    optionsMissingReqsOptionOptIdMissingReqsGet(optId, {
+    optionsMissingReqsOptionOptIdMissingReqsGet(optId, coursesTakenIn, params, {
       signal,
       ...axiosOptions,
     });
@@ -403,7 +462,9 @@ export const useOptionsMissingReqsOptionOptIdMissingReqsGet = <
   >,
   TError = AxiosError<HTTPValidationError>,
 >(
-  optId: number,
+  optId: string,
+  coursesTakenIn: CoursesTakenIn,
+  params: OptionsMissingReqsOptionOptIdMissingReqsGetParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
@@ -416,7 +477,12 @@ export const useOptionsMissingReqsOptionOptIdMissingReqsGet = <
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const queryOptions =
-    getOptionsMissingReqsOptionOptIdMissingReqsGetQueryOptions(optId, options);
+    getOptionsMissingReqsOptionOptIdMissingReqsGetQueryOptions(
+      optId,
+      coursesTakenIn,
+      params,
+      options,
+    );
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -430,28 +496,34 @@ export const useOptionsMissingReqsOptionOptIdMissingReqsGet = <
 /**
  * @summary Degree Reqs
  */
-export const degreeReqsDegreeDegreeIdReqsGet = (
-  degreeId: number,
+export const degreeReqsDegreeDegreeNameReqsGet = (
+  degreeName: string,
+  params: DegreeReqsDegreeDegreeNameReqsGetParams,
   options?: AxiosRequestConfig,
-): Promise<AxiosResponse<CourseSchema[]>> => {
-  return axios.default.get(`/degree/${degreeId}/reqs`, options);
+): Promise<AxiosResponse<DegreeReqs>> => {
+  return axios.default.get(`/degree/${degreeName}/reqs`, {
+    ...options,
+    params: { ...params, ...options?.params },
+  });
 };
 
-export const getDegreeReqsDegreeDegreeIdReqsGetQueryKey = (
-  degreeId: number,
+export const getDegreeReqsDegreeDegreeNameReqsGetQueryKey = (
+  degreeName: string,
+  params: DegreeReqsDegreeDegreeNameReqsGetParams,
 ) => {
-  return [`/degree/${degreeId}/reqs`] as const;
+  return [`/degree/${degreeName}/reqs`, ...(params ? [params] : [])] as const;
 };
 
-export const getDegreeReqsDegreeDegreeIdReqsGetQueryOptions = <
-  TData = Awaited<ReturnType<typeof degreeReqsDegreeDegreeIdReqsGet>>,
+export const getDegreeReqsDegreeDegreeNameReqsGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof degreeReqsDegreeDegreeNameReqsGet>>,
   TError = AxiosError<HTTPValidationError>,
 >(
-  degreeId: number,
+  degreeName: string,
+  params: DegreeReqsDegreeDegreeNameReqsGetParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof degreeReqsDegreeDegreeIdReqsGet>>,
+        Awaited<ReturnType<typeof degreeReqsDegreeDegreeNameReqsGet>>,
         TError,
         TData
       >
@@ -463,43 +535,47 @@ export const getDegreeReqsDegreeDegreeIdReqsGetQueryOptions = <
 
   const queryKey =
     queryOptions?.queryKey ??
-    getDegreeReqsDegreeDegreeIdReqsGetQueryKey(degreeId);
+    getDegreeReqsDegreeDegreeNameReqsGetQueryKey(degreeName, params);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof degreeReqsDegreeDegreeIdReqsGet>>
+    Awaited<ReturnType<typeof degreeReqsDegreeDegreeNameReqsGet>>
   > = ({ signal }) =>
-    degreeReqsDegreeDegreeIdReqsGet(degreeId, { signal, ...axiosOptions });
+    degreeReqsDegreeDegreeNameReqsGet(degreeName, params, {
+      signal,
+      ...axiosOptions,
+    });
 
   return {
     queryKey,
     queryFn,
-    enabled: !!degreeId,
+    enabled: !!degreeName,
     ...queryOptions,
   } as UseQueryOptions<
-    Awaited<ReturnType<typeof degreeReqsDegreeDegreeIdReqsGet>>,
+    Awaited<ReturnType<typeof degreeReqsDegreeDegreeNameReqsGet>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type DegreeReqsDegreeDegreeIdReqsGetQueryResult = NonNullable<
-  Awaited<ReturnType<typeof degreeReqsDegreeDegreeIdReqsGet>>
+export type DegreeReqsDegreeDegreeNameReqsGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof degreeReqsDegreeDegreeNameReqsGet>>
 >;
-export type DegreeReqsDegreeDegreeIdReqsGetQueryError =
+export type DegreeReqsDegreeDegreeNameReqsGetQueryError =
   AxiosError<HTTPValidationError>;
 
 /**
  * @summary Degree Reqs
  */
-export const useDegreeReqsDegreeDegreeIdReqsGet = <
-  TData = Awaited<ReturnType<typeof degreeReqsDegreeDegreeIdReqsGet>>,
+export const useDegreeReqsDegreeDegreeNameReqsGet = <
+  TData = Awaited<ReturnType<typeof degreeReqsDegreeDegreeNameReqsGet>>,
   TError = AxiosError<HTTPValidationError>,
 >(
-  degreeId: number,
+  degreeName: string,
+  params: DegreeReqsDegreeDegreeNameReqsGetParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
-        Awaited<ReturnType<typeof degreeReqsDegreeDegreeIdReqsGet>>,
+        Awaited<ReturnType<typeof degreeReqsDegreeDegreeNameReqsGet>>,
         TError,
         TData
       >
@@ -507,10 +583,76 @@ export const useDegreeReqsDegreeDegreeIdReqsGet = <
     axios?: AxiosRequestConfig;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getDegreeReqsDegreeDegreeIdReqsGetQueryOptions(
-    degreeId,
+  const queryOptions = getDegreeReqsDegreeDegreeNameReqsGetQueryOptions(
+    degreeName,
+    params,
     options,
   );
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+};
+
+/**
+ * @summary Degrees
+ */
+export const degreesDegreeGet = (
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<string[]>> => {
+  return axios.default.get(`/degree`, options);
+};
+
+export const getDegreesDegreeGetQueryKey = () => {
+  return [`/degree`] as const;
+};
+
+export const getDegreesDegreeGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof degreesDegreeGet>>,
+  TError = AxiosError<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<Awaited<ReturnType<typeof degreesDegreeGet>>, TError, TData>
+  >;
+  axios?: AxiosRequestConfig;
+}) => {
+  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getDegreesDegreeGetQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof degreesDegreeGet>>
+  > = ({ signal }) => degreesDegreeGet({ signal, ...axiosOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof degreesDegreeGet>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type DegreesDegreeGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof degreesDegreeGet>>
+>;
+export type DegreesDegreeGetQueryError = AxiosError<unknown>;
+
+/**
+ * @summary Degrees
+ */
+export const useDegreesDegreeGet = <
+  TData = Awaited<ReturnType<typeof degreesDegreeGet>>,
+  TError = AxiosError<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<Awaited<ReturnType<typeof degreesDegreeGet>>, TError, TData>
+  >;
+  axios?: AxiosRequestConfig;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getDegreesDegreeGetQueryOptions(options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -525,16 +667,27 @@ export const useDegreeReqsDegreeDegreeIdReqsGet = <
  * @summary Degree Missing Reqs
  */
 export const degreeMissingReqsDegreeDegreeIdMissingReqsGet = (
-  degreeId: unknown,
+  degreeId: string,
+  coursesTakenIn: CoursesTakenIn,
+  params: DegreeMissingReqsDegreeDegreeIdMissingReqsGetParams,
   options?: AxiosRequestConfig,
-): Promise<AxiosResponse<CourseSchema[]>> => {
-  return axios.default.get(`/degree/${degreeId}/missing_reqs`, options);
+): Promise<AxiosResponse<DegreeMissingReqs>> => {
+  return axios.default.get(`/degree/${degreeId}/missing_reqs`, {
+    ...options,
+    params: { ...params, ...options?.params },
+  });
 };
 
 export const getDegreeMissingReqsDegreeDegreeIdMissingReqsGetQueryKey = (
-  degreeId: unknown,
+  degreeId: string,
+  coursesTakenIn: CoursesTakenIn,
+  params: DegreeMissingReqsDegreeDegreeIdMissingReqsGetParams,
 ) => {
-  return [`/degree/${degreeId}/missing_reqs`] as const;
+  return [
+    `/degree/${degreeId}/missing_reqs`,
+    ...(params ? [params] : []),
+    coursesTakenIn,
+  ] as const;
 };
 
 export const getDegreeMissingReqsDegreeDegreeIdMissingReqsGetQueryOptions = <
@@ -543,7 +696,9 @@ export const getDegreeMissingReqsDegreeDegreeIdMissingReqsGetQueryOptions = <
   >,
   TError = AxiosError<HTTPValidationError>,
 >(
-  degreeId: unknown,
+  degreeId: string,
+  coursesTakenIn: CoursesTakenIn,
+  params: DegreeMissingReqsDegreeDegreeIdMissingReqsGetParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
@@ -561,15 +716,21 @@ export const getDegreeMissingReqsDegreeDegreeIdMissingReqsGetQueryOptions = <
 
   const queryKey =
     queryOptions?.queryKey ??
-    getDegreeMissingReqsDegreeDegreeIdMissingReqsGetQueryKey(degreeId);
+    getDegreeMissingReqsDegreeDegreeIdMissingReqsGetQueryKey(
+      degreeId,
+      coursesTakenIn,
+      params,
+    );
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof degreeMissingReqsDegreeDegreeIdMissingReqsGet>>
   > = ({ signal }) =>
-    degreeMissingReqsDegreeDegreeIdMissingReqsGet(degreeId, {
-      signal,
-      ...axiosOptions,
-    });
+    degreeMissingReqsDegreeDegreeIdMissingReqsGet(
+      degreeId,
+      coursesTakenIn,
+      params,
+      { signal, ...axiosOptions },
+    );
 
   return {
     queryKey,
@@ -599,7 +760,9 @@ export const useDegreeMissingReqsDegreeDegreeIdMissingReqsGet = <
   >,
   TError = AxiosError<HTTPValidationError>,
 >(
-  degreeId: unknown,
+  degreeId: string,
+  coursesTakenIn: CoursesTakenIn,
+  params: DegreeMissingReqsDegreeDegreeIdMissingReqsGetParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
@@ -616,6 +779,8 @@ export const useDegreeMissingReqsDegreeDegreeIdMissingReqsGet = <
   const queryOptions =
     getDegreeMissingReqsDegreeDegreeIdMissingReqsGetQueryOptions(
       degreeId,
+      coursesTakenIn,
+      params,
       options,
     );
 
@@ -898,137 +1063,65 @@ export const useSamplePathSamplePathGet = <
   return query;
 };
 
-export const getOptionsReqsOptionOptIdReqsGetMock = () =>
-  Array.from(
+export const getOptionsReqsOptionOptIdReqsGetMock = () => ({
+  optionName: faker.word.sample(),
+  requirements: Array.from(
     { length: faker.number.int({ min: 1, max: 10 }) },
     (_, i) => i + 1,
   ).map(() => ({
-    antirequisites: faker.helpers.arrayElement([
-      faker.helpers.arrayElement([faker.word.sample(), {}]),
-      undefined,
-    ]),
-    corequisites: faker.helpers.arrayElement([
-      faker.helpers.arrayElement([faker.word.sample(), {}]),
-      undefined,
-    ]),
-    courseCode: faker.word.sample(),
-    courseName: faker.word.sample(),
-    credit: faker.helpers.arrayElement([
-      faker.helpers.arrayElement([
-        faker.number.int({ min: undefined, max: undefined }),
-        {},
-      ]),
-      undefined,
-    ]),
-    description: faker.helpers.arrayElement([faker.word.sample(), undefined]),
-    location: faker.helpers.arrayElement([
-      faker.helpers.arrayElement([faker.word.sample(), {}]),
-      undefined,
-    ]),
-    prerequisites: faker.helpers.arrayElement([
-      faker.helpers.arrayElement([faker.word.sample(), {}]),
-      undefined,
-    ]),
-  }));
+    courses: Array.from(
+      { length: faker.number.int({ min: 1, max: 10 }) },
+      (_, i) => i + 1,
+    ).map(() => faker.word.sample()),
+    numberOfCourses: faker.number.int({ min: undefined, max: undefined }),
+  })),
+});
 
 export const getOptionsMissingReqsOptionOptIdMissingReqsGetMock = () =>
   Array.from(
     { length: faker.number.int({ min: 1, max: 10 }) },
     (_, i) => i + 1,
   ).map(() => ({
-    antirequisites: faker.helpers.arrayElement([
-      faker.helpers.arrayElement([faker.word.sample(), {}]),
-      undefined,
-    ]),
-    corequisites: faker.helpers.arrayElement([
-      faker.helpers.arrayElement([faker.word.sample(), {}]),
-      undefined,
-    ]),
-    courseCode: faker.word.sample(),
-    courseName: faker.word.sample(),
-    credit: faker.helpers.arrayElement([
-      faker.helpers.arrayElement([
-        faker.number.int({ min: undefined, max: undefined }),
-        {},
-      ]),
-      undefined,
-    ]),
-    description: faker.helpers.arrayElement([faker.word.sample(), undefined]),
-    location: faker.helpers.arrayElement([
-      faker.helpers.arrayElement([faker.word.sample(), {}]),
-      undefined,
-    ]),
-    prerequisites: faker.helpers.arrayElement([
-      faker.helpers.arrayElement([faker.word.sample(), {}]),
-      undefined,
-    ]),
+    courses: Array.from(
+      { length: faker.number.int({ min: 1, max: 10 }) },
+      (_, i) => i + 1,
+    ).map(() => faker.word.sample()),
+    numberOfCourses: faker.number.int({ min: undefined, max: undefined }),
   }));
 
-export const getDegreeReqsDegreeDegreeIdReqsGetMock = () =>
-  Array.from(
+export const getDegreeReqsDegreeDegreeNameReqsGetMock = () => ({
+  additionalReqs: {
+    [faker.string.alphanumeric(5)]: {
+      courses: Array.from(
+        { length: faker.number.int({ min: 1, max: 10 }) },
+        (_, i) => i + 1,
+      ).map(() => faker.word.sample()),
+      numberOfCourses: faker.number.int({ min: undefined, max: undefined }),
+    },
+  },
+  mandatoryCourses: Array.from(
     { length: faker.number.int({ min: 1, max: 10 }) },
     (_, i) => i + 1,
-  ).map(() => ({
-    antirequisites: faker.helpers.arrayElement([
-      faker.helpers.arrayElement([faker.word.sample(), {}]),
-      undefined,
-    ]),
-    corequisites: faker.helpers.arrayElement([
-      faker.helpers.arrayElement([faker.word.sample(), {}]),
-      undefined,
-    ]),
-    courseCode: faker.word.sample(),
-    courseName: faker.word.sample(),
-    credit: faker.helpers.arrayElement([
-      faker.helpers.arrayElement([
-        faker.number.int({ min: undefined, max: undefined }),
-        {},
-      ]),
-      undefined,
-    ]),
-    description: faker.helpers.arrayElement([faker.word.sample(), undefined]),
-    location: faker.helpers.arrayElement([
-      faker.helpers.arrayElement([faker.word.sample(), {}]),
-      undefined,
-    ]),
-    prerequisites: faker.helpers.arrayElement([
-      faker.helpers.arrayElement([faker.word.sample(), {}]),
-      undefined,
-    ]),
-  }));
+  ).map(() => faker.word.sample()),
+});
 
-export const getDegreeMissingReqsDegreeDegreeIdMissingReqsGetMock = () =>
-  Array.from(
+export const getDegreesDegreeGetMock = () =>
+  Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, () =>
+    faker.word.sample(),
+  );
+
+export const getDegreeMissingReqsDegreeDegreeIdMissingReqsGetMock = () => ({
+  additionalReqs: {
+    [faker.string.alphanumeric(5)]: {
+      completed: faker.word.sample(),
+      total: faker.word.sample(),
+    },
+  },
+  mandatoryCourses: Array.from(
     { length: faker.number.int({ min: 1, max: 10 }) },
     (_, i) => i + 1,
-  ).map(() => ({
-    antirequisites: faker.helpers.arrayElement([
-      faker.helpers.arrayElement([faker.word.sample(), {}]),
-      undefined,
-    ]),
-    corequisites: faker.helpers.arrayElement([
-      faker.helpers.arrayElement([faker.word.sample(), {}]),
-      undefined,
-    ]),
-    courseCode: faker.word.sample(),
-    courseName: faker.word.sample(),
-    credit: faker.helpers.arrayElement([
-      faker.helpers.arrayElement([
-        faker.number.int({ min: undefined, max: undefined }),
-        {},
-      ]),
-      undefined,
-    ]),
-    description: faker.helpers.arrayElement([faker.word.sample(), undefined]),
-    location: faker.helpers.arrayElement([
-      faker.helpers.arrayElement([faker.word.sample(), {}]),
-      undefined,
-    ]),
-    prerequisites: faker.helpers.arrayElement([
-      faker.helpers.arrayElement([faker.word.sample(), {}]),
-      undefined,
-    ]),
-  }));
+  ).map(() => faker.word.sample()),
+});
 
 export const getCoursesCanTakeCoursesCanTakeCourseCodeGetMock = () => ({
   message: faker.word.sample(),
@@ -1128,10 +1221,10 @@ export const getFastAPIMock = () => [
       },
     );
   }),
-  http.get("*/degree/:degreeId/reqs", async () => {
+  http.get("*/degree/:degreeName/reqs", async () => {
     await delay(1000);
     return new HttpResponse(
-      JSON.stringify(getDegreeReqsDegreeDegreeIdReqsGetMock()),
+      JSON.stringify(getDegreeReqsDegreeDegreeNameReqsGetMock()),
       {
         status: 200,
         headers: {
@@ -1139,6 +1232,15 @@ export const getFastAPIMock = () => [
         },
       },
     );
+  }),
+  http.get("*/degree", async () => {
+    await delay(1000);
+    return new HttpResponse(JSON.stringify(getDegreesDegreeGetMock()), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   }),
   http.get("*/degree/:degreeId/missing_reqs", async () => {
     await delay(1000);
