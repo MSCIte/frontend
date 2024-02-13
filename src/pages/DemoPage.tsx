@@ -9,6 +9,7 @@ import { Sidebar } from "~/components/sidebar/Sidebar";
 import { CourseSelectionPane } from "~/components/courseSelectionPane/CourseSelectionPane";
 import { Pane } from "~/components/pane/Pane";
 import { CourseWithTagsSchema } from "~/api/endpoints";
+import { Navbar } from "~/components/navbar/NavBar";
 
 const courseData: CourseWithTagsSchema = {
   courseCode: "CHE 100",
@@ -52,6 +53,7 @@ const requirements = {
 export const DemoPage = () => {
   return (
     <div className="main space-y-10">
+      <Navbar />
       <Pane style={{ width: "80rem", height: "50rem" }}>
         <CourseSelectionPane />
       </Pane>
