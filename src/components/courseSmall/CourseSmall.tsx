@@ -4,7 +4,12 @@ import styles from "./CourseSmall.module.css";
 import { CoursePills } from "../courseSmallPill/CourseSmallPill";
 import { CourseWithTagsSchema } from "~/api/endpoints";
 
-export const CourseSmall = (props: CourseWithTagsSchema) => {
+interface CourseSmallSchema extends CourseWithTagsSchema {
+  onDelete: () => void;
+  onReplace: () => void;
+}
+
+export const CourseSmall = (props: CourseSmallSchema) => {
   return (
     <Pane className="h-36 w-36">
       <div className="flex h-full flex-col justify-between">

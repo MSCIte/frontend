@@ -12,16 +12,13 @@ import { queryClient } from "./queryClient"; // Import the queryClient variable
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="h-[calc(100vh-24px)] overflow-hidden">
-        <Navbar />
-        <Switch>
-          <Route path="/about" component={AboutPage} />
-          <Route path="/faq" component={FAQPage} />
-          <Route path="/plan" component={PlanningPage} />
-          <Route path="/demo" component={DemoPage} />
-          <Route path="/" component={LandingPage} />
-        </Switch>
-      </div>
+      <Switch>
+        <Route path="/about" component={AboutPage} />
+        <Route path="/faq" component={FAQPage} />
+        <Route path="/plan" component={PlanningPage} />
+        <Route path="/demo" component={DemoPage} />
+        <Route path="/" component={LandingPage} />
+      </Switch>
     </QueryClientProvider>
   );
 }

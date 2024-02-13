@@ -1,4 +1,4 @@
-import { FAQBlock } from "~/components/faqBlock/FAQBlock";
+import { Navbar } from "~/components/navbar/NavBar";
 
 const FAQData = [
   {
@@ -70,11 +70,23 @@ const FAQData = [
 export const FAQPage = () => {
   return (
     <div>
-      <h1>Frequently Asked Questions</h1>
-      <div className="space-y-4">
-        {FAQData.map((faq) => (
-          <FAQBlock {...faq} />
-        ))}
+      <Navbar />
+      <div className="m-auto my-8 max-w-screen-lg">
+        <h1 className="text-3xl font-medium">Frequently Asked Questions</h1>
+        <div className="mt-6 space-y-4">
+          {FAQData.map((faq) => (
+            <div>
+              <div className="flex space-x-4  border-l-4 border-purple-500 bg-gray-400 p-3 text-black">
+                <div className="text-3xl">Q.</div>
+                <p>{faq.question}</p>
+              </div>
+              <div className="flex space-x-4 border-l-4 border-gray-500 bg-white p-3 text-black">
+                <div className="text-3xl">A. </div>
+                <p>{faq.answer}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
