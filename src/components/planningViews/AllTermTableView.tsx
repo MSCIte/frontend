@@ -1,94 +1,114 @@
+import { useState } from "react";
 import { CourseSmall } from "../courseSmall/CourseSmall";
 import { CourseViewProps } from "~/pages/PlanningPage";
+import { CourseSelectionPane } from "../courseSelectionPane/CourseSelectionPane";
+import { CourseWithTagsSchema } from "~/api/endpoints";
 
 export const AllTermsTableView = ({
   courseData,
   maxCoursesInATerm,
   setCourseData,
 }: CourseViewProps) => {
-  const setNewCourse = (term: string, index: number) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedTerm, setSelectedTerm] = useState<string>("1A");
+  const [selectedCourse, setSelectedCourse] = useState<CourseWithTagsSchema>({
+    courseCode: "",
+    courseName: "",
+  });
+
+  const openModal = (term: string, selectedCourse?: CourseWithTagsSchema) => {
+    setSelectedTerm(term);
+    if (selectedCourse) {
+      setSelectedCourse(selectedCourse);
+    }
+    setIsModalOpen(true);
+  };
+
+  const onAcceptCourse = (course: CourseWithTagsSchema) => {
+    setCourseData((prev) => {
+      if (course.courseCode === selectedCourse.courseCode) {
+        return prev;
+      }
+
+      const newCourseData = { ...prev };
+      newCourseData[selectedTerm] = {
+        ...newCourseData[selectedTerm],
+        [course.courseCode]: course,
+      };
+      delete newCourseData[selectedTerm][selectedCourse.courseCode];
+      return newCourseData;
+    });
+    setIsModalOpen(false);
+    unsetCourseSelections();
+  };
+
+  const onDeleteCourse = (term: string, courseCode: string) => {
+    console.log("onDeleteCourse", term, courseCode);
     setCourseData((prev) => {
       const newCourseData = { ...prev };
-      // check to see if the length is long enough
-      if (!newCourseData[term][index]) {
-        newCourseData[term].push({
-          courseCode: "CCC 100",
-          courseName: "Chemistry for Chemists",
-          tags: [
-            {
-              longName: "Chemistry for chemists",
-              shortName: "Chm",
-              code: "CHEM 100",
-              color: "red",
-            },
-          ],
-        });
-      } else {
-        newCourseData[term][index] = {
-          courseCode: "CCC 100",
-          courseName: "Chemistry for Chemists",
-          tags: [
-            {
-              longName: "Chemistry for chemists",
-              shortName: "Chm",
-              code: "CHEM 100",
-              color: "red",
-            },
-          ],
-        };
-      }
+      delete newCourseData[term][courseCode.replace(" ", "")];
       return newCourseData;
     });
   };
 
+  const unsetCourseSelections = () => {
+    setSelectedTerm("");
+    setSelectedCourse({ courseCode: "", courseName: "" });
+  };
+
   return (
-    <div className="w-full overflow-x-auto">
-      <table className="border-separate border-spacing-2 overflow-x-auto">
-        <thead>
-          <tr>
-            {Object.keys(courseData).map((key) => (
-              <th key={key}>{key}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody className="h-20 overflow-scroll">
-          {Array(maxCoursesInATerm + 1)
-            .fill(0)
-            .map((_, i) => {
-              return (
-                <tr key={`course-${i}`}>
-                  {Object.keys(courseData).map((term) => {
-                    const course = courseData?.[term]?.[i];
-                    if (course) {
-                      return (
-                        <td
-                          key={`${term}-${course.courseCode}`}
-                          className="h-full"
-                        >
-                          <CourseSmall {...course} />
-                        </td>
-                      );
-                    } else if (courseData?.[term]?.[i - 1]) {
-                      // if the previous box in the term has a course, we add a plus button
-                      return (
-                        <td key={`${term}-${i}`} className="align-top">
-                          <button
-                            className="flex w-full items-center justify-center rounded-lg bg-white"
-                            onClick={() => setNewCourse(term, i)}
-                          >
-                            <div className="text-4xl">+</div>
-                          </button>
-                        </td>
-                      );
-                    } else {
-                      return <td key={`${term}-${i}`} />;
-                    }
-                  })}
-                </tr>
-              );
-            })}
-        </tbody>
-      </table>
+    <div className="h-[calc(100vh-10rem)] w-full overflow-x-auto">
+      <CourseSelectionPane
+        initialCourse={selectedCourse}
+        isOpen={isModalOpen}
+        setIsOpen={setIsModalOpen}
+        onCourseAccept={onAcceptCourse}
+        onCancel={unsetCourseSelections}
+      />
+      <div className="flex space-x-4">
+        {Object.keys(courseData).map((term) => {
+          return (
+            <div key={term} className="flex w-36 flex-col">
+              <h2 className="my-2 text-center text-xl font-semibold">{term}</h2>
+              <div className="h-96 space-y-4">
+                {Object.values(courseData?.[term])?.map((course) => {
+                  if (course) {
+                    return (
+                      <CourseSmall
+                        key={`${term}-${course.courseCode}`}
+                        onDelete={() => {
+                          console.log("clicked");
+                          onDeleteCourse(term, course.courseCode);
+                        }}
+                        onReplace={() => {}}
+                        onClick={() => {
+                          openModal(term, course);
+                        }}
+                        {...course}
+                      />
+                    );
+                  }
+                })}
+                <button
+                  className="flex w-full items-center justify-center rounded-lg bg-white"
+                  onClick={() => openModal(term)}
+                >
+                  <div className="text-4xl">+</div>
+                </button>
+              </div>
+            </div>
+          );
+        })}
+
+        <div className="flex w-36 flex-col">
+          <h2 className="my-2 border-none bg-none text-center text-xl font-semibold">
+            Next Term
+          </h2>
+          <button className="h-96 rounded-md border-2 border-dashed border-gray-400 bg-gray-200">
+            + New Term
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

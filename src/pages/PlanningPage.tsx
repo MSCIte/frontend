@@ -4,12 +4,14 @@ import AllTermsView from "~/assets/allTermsView.svg?react";
 import YearView from "~/assets/yearView.svg?react";
 import TermView from "~/assets/termView.svg?react";
 import { CourseData, courseData as initialData } from "~/sampleData";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { AllTermsTableView } from "~/components/planningViews/AllTermTableView";
 import { TermTableView } from "~/components/planningViews/TermTableView";
 import { YearTableView } from "~/components/planningViews/YearTableView";
 import clsx from "clsx";
 import { Navbar } from "~/components/navbar/NavBar";
+import { OnboardingModal } from "~/components/onboardingModal/OnboardingModal";
+import { usePlanStore } from "~/stores";
 
 export interface CourseViewProps {
   courseData: CourseData;
@@ -31,12 +33,25 @@ export const PlanningPage = () => {
   const moveStep =
     selectedView === "year" ? 2 : selectedView === "term" ? 1 : 0;
 
+  const { isOnboardingModalOpen, setIsOnboardingModalOpen } = usePlanStore();
+
+  useEffect(() => {
+    if (!localStorage.getItem("plan-storage")) {
+      setIsOnboardingModalOpen(true);
+    }
+  }, []);
+
   return (
-    <div className=" h-[calc(100vh-24px)]  overflow-hidden">
+    <div className=" h-[calc(100vh-24px)] overflow-hidden ">
       <Navbar />
+      <OnboardingModal
+        isOpen={isOnboardingModalOpen}
+        setIsOpen={setIsOnboardingModalOpen}
+      />
+
       <div className="flex">
         <Sidebar />
-        <div className="h-[calc(100%-30rem)] overflow-x-auto px-4 py-2">
+        <div className="h-[calc(100vh-4rem)] w-full overflow-x-auto overflow-y-clip px-4 py-2">
           <h1 className="text-3xl">My Plan</h1>
           <div className="my-2 flex justify-between">
             <ul className="space-x-4">
@@ -152,6 +167,7 @@ export const PlanningPage = () => {
                     </svg>
                   </div>
                 }
+                onClick={() => localStorage.clear()}
               />
             </div>
           </div>

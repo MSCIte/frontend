@@ -74,19 +74,13 @@
             "in": "path",
             "required": true,
             "schema": { "type": "string", "title": "Opt Id" }
-          },
-          {
-            "name": "year",
-            "in": "query",
-            "required": true,
-            "schema": { "type": "string", "title": "Year" }
           }
         ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/CoursesTakenIn" }
+              "schema": { "$ref": "#/components/schemas/DegreeMissingIn" }
             }
           }
         },
@@ -182,19 +176,13 @@
             "in": "path",
             "required": true,
             "schema": { "type": "string", "title": "Degree Id" }
-          },
-          {
-            "name": "year",
-            "in": "query",
-            "required": true,
-            "schema": { "type": "string", "title": "Year" }
           }
         ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": { "$ref": "#/components/schemas/CoursesTakenIn" }
+              "schema": { "$ref": "#/components/schemas/DegreeMissingIn" }
             }
           }
         },
@@ -264,6 +252,18 @@
         "operationId": "search_courses_courses_search_get",
         "parameters": [
           {
+            "name": "degree_name",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Degree Name" }
+          },
+          {
+            "name": "degree_year",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "integer", "title": "Degree Year" }
+          },
+          {
             "name": "q",
             "in": "query",
             "required": false,
@@ -277,9 +277,25 @@
             "in": "query",
             "required": false,
             "schema": {
-              "anyOf": [{ "type": "integer" }, { "type": "null" }],
-              "default": 0,
-              "title": "Offset"
+              "anyOf": [
+                { "type": "integer", "minimum": 0 },
+                { "type": "null" }
+              ],
+              "title": "Number of courses to offset the results from",
+              "default": 0
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                { "type": "integer", "maximum": 100, "exclusiveMinimum": 0 },
+                { "type": "null" }
+              ],
+              "title": "Number of results returned",
+              "default": 20
             }
           }
         ],
@@ -297,6 +313,40 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/courses/tags": {
+      "get": {
+        "summary": "Tags",
+        "operationId": "tags_courses_tags_get",
+        "parameters": [
+          {
+            "name": "degree_name",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Degree Name" }
+          },
+          {
+            "name": "degree_year",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "title": "Degree Year" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
           },
           "422": {
             "description": "Validation Error",
@@ -404,6 +454,19 @@
         "type": "object",
         "required": ["courseCodesTaken"],
         "title": "CoursesTakenIn"
+      },
+      "DegreeMissingIn": {
+        "properties": {
+          "courseCodesTaken": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Coursecodestaken"
+          },
+          "year": { "type": "string", "title": "Year" }
+        },
+        "type": "object",
+        "required": ["courseCodesTaken", "year"],
+        "title": "DegreeMissingIn"
       },
       "DegreeMissingReqs": {
         "properties": {

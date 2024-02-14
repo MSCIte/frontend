@@ -9,13 +9,15 @@ export interface Course {
 }
 
 export interface CourseData {
-  [key: string]: CourseWithTagsSchema[];
+  [termId: string]: {
+    [courseCode: string]: CourseWithTagsSchema;
+  };
 }
 
 //   /bg-(red|green|glue|orange|yellow|blue|purple|pink|indigo|gray)-[0-9]{1,2}00/,
 export const courseData: CourseData = {
-  "1A": [
-    {
+  "1A": {
+    CHE100: {
       courseCode: "CHE 100",
       courseName: "Chemical Engineering Concepts I",
       description:
@@ -41,7 +43,7 @@ export const courseData: CourseData = {
         },
       ],
     },
-    {
+    CHE102: {
       courseCode: "CHE 102",
       courseName: "Chemistry for Engineers",
       tags: [
@@ -53,7 +55,7 @@ export const courseData: CourseData = {
         },
       ],
     },
-    {
+    CHE180: {
       courseCode: "CHE 180",
       courseName: "Computer Literacy & Programming",
       tags: [
@@ -65,7 +67,7 @@ export const courseData: CourseData = {
         },
       ],
     },
-    {
+    MATH115: {
       courseCode: "MATH 115",
       courseName: "Linear Algebra for Engineering",
       tags: [
@@ -77,7 +79,7 @@ export const courseData: CourseData = {
         },
       ],
     },
-    {
+    CHE120: {
       courseCode: "CHE 120",
       courseName: "Chemical Engineering Design Stu...",
       tags: [
@@ -89,7 +91,7 @@ export const courseData: CourseData = {
         },
       ],
     },
-    {
+    MATH116: {
       courseCode: "MATH 116",
       courseName: "Calculus I for Engineering",
       tags: [
@@ -101,9 +103,10 @@ export const courseData: CourseData = {
         },
       ],
     },
-  ],
-  "1B": [
-    {
+  },
+
+  "1B": {
+    CHE101: {
       courseCode: "CHE 101",
       courseName: "Chemical Engineering Concepts I",
       tags: [
@@ -115,7 +118,7 @@ export const courseData: CourseData = {
         },
       ],
     },
-    {
+    CHE161: {
       courseCode: "CHE 161",
       courseName: "Chemistry for Engineers",
       tags: [
@@ -127,7 +130,7 @@ export const courseData: CourseData = {
         },
       ],
     },
-    {
+    CHE181: {
       courseCode: "CHE 181",
       courseName: "Computer Literacy & Programming",
       tags: [
@@ -139,7 +142,7 @@ export const courseData: CourseData = {
         },
       ],
     },
-    {
+    MATH118: {
       courseCode: "MATH 118",
       courseName: "Linear Algebra for Engineering",
       tags: [
@@ -151,7 +154,7 @@ export const courseData: CourseData = {
         },
       ],
     },
-    {
+    PHY115: {
       courseCode: "PHY 115",
       courseName: "Chemical Engineering Design Stu...",
       tags: [
@@ -163,7 +166,7 @@ export const courseData: CourseData = {
         },
       ],
     },
-    {
+    SPCOM: {
       courseCode: "SPCOM",
       courseName: "Calculus I for Engineering",
       tags: [
@@ -175,9 +178,10 @@ export const courseData: CourseData = {
         },
       ],
     },
-  ],
-  "2A": [
-    {
+  },
+
+  "2A": {
+    CHE200: {
       courseCode: "CHE 200",
       courseName: "Chemical Engineering Concepts I",
       tags: [
@@ -189,7 +193,7 @@ export const courseData: CourseData = {
         },
       ],
     },
-    {
+    CHE220: {
       courseCode: "CHE 220",
       courseName: "Chemistry for Engineers",
       tags: [
@@ -201,7 +205,7 @@ export const courseData: CourseData = {
         },
       ],
     },
-    {
+    CHE230: {
       courseCode: "CHE 230",
       courseName: "Computer Literacy & Programming",
       tags: [
@@ -213,9 +217,9 @@ export const courseData: CourseData = {
         },
       ],
     },
-  ],
-  "2B": [
-    {
+  },
+  "2B": {
+    CHE211: {
       courseCode: "CHE 211",
       courseName: "Chemical Engineering Concepts I",
       tags: [
@@ -227,7 +231,7 @@ export const courseData: CourseData = {
         },
       ],
     },
-    {
+    CHE225: {
       courseCode: "CHE 225",
       courseName: "Chemistry for Engineers",
       tags: [
@@ -239,7 +243,7 @@ export const courseData: CourseData = {
         },
       ],
     },
-    {
+    CHE231: {
       courseCode: "CHE 231",
       courseName: "Computer Literacy & Programming",
       tags: [
@@ -251,7 +255,7 @@ export const courseData: CourseData = {
         },
       ],
     },
-    {
+    CHE291: {
       courseCode: "CHE 291",
       courseName: "Linear Algebra for Engineering",
       tags: [
@@ -263,7 +267,7 @@ export const courseData: CourseData = {
         },
       ],
     },
-    {
+    MATH218: {
       courseCode: "MATH 218",
       courseName: "Chemical Engineering Design Stu...",
       tags: [
@@ -275,303 +279,7 @@ export const courseData: CourseData = {
         },
       ],
     },
-  ],
-  "3A": [
-    {
-      courseCode: "CHE 200",
-      courseName: "Chemical Engineering Concepts I",
-      tags: [
-        {
-          code: "mand",
-          longName: "Mandatory",
-          shortName: "Mand",
-          color: "blue",
-        },
-      ],
-    },
-    {
-      courseCode: "CHE 220",
-      courseName: "Chemistry for Engineers",
-      tags: [
-        {
-          code: "mand",
-          longName: "Mandatory",
-          shortName: "Mand",
-          color: "blue",
-        },
-      ],
-    },
-    {
-      courseCode: "CHE 230",
-      courseName: "Computer Literacy & Programming",
-      tags: [
-        {
-          code: "mand",
-          longName: "Mandatory",
-          shortName: "Mand",
-          color: "blue",
-        },
-      ],
-    },
-    {
-      courseCode: "CHE 290",
-      courseName: "Linear Algebra for Engineering",
-      tags: [
-        {
-          code: "mand",
-          longName: "Mandatory",
-          shortName: "Mand",
-          color: "blue",
-        },
-      ],
-    },
-    {
-      courseCode: "CHE 262",
-      courseName: "Chemical Engineering Design Stu...",
-      tags: [
-        {
-          code: "mand",
-          longName: "Mandatory",
-          shortName: "Mand",
-          color: "blue",
-        },
-      ],
-    },
-    {
-      courseCode: "MSCI 211",
-      courseName: "Organizational Behavior",
-      tags: [
-        {
-          code: "mand",
-          longName: "Mandatory",
-          shortName: "Mand",
-          color: "blue",
-        },
-      ],
-    },
-  ],
-  "3B": [
-    {
-      courseCode: "CHE 200",
-      courseName: "Chemical Engineering Concepts I",
-      tags: [
-        {
-          code: "mand",
-          longName: "Mandatory",
-          shortName: "Mand",
-          color: "blue",
-        },
-      ],
-    },
-    {
-      courseCode: "CHE 220",
-      courseName: "Chemistry for Engineers",
-      tags: [
-        {
-          code: "mand",
-          longName: "Mandatory",
-          shortName: "Mand",
-          color: "blue",
-        },
-      ],
-    },
-    {
-      courseCode: "CHE 230",
-      courseName: "Computer Literacy & Programming",
-      tags: [
-        {
-          code: "mand",
-          longName: "Mandatory",
-          shortName: "Mand",
-          color: "blue",
-        },
-      ],
-    },
-    {
-      courseCode: "CHE 290",
-      courseName: "Linear Algebra for Engineering",
-      tags: [
-        {
-          code: "mand",
-          longName: "Mandatory",
-          shortName: "Mand",
-          color: "blue",
-        },
-      ],
-    },
-    {
-      courseCode: "CHE 262",
-      courseName: "Chemical Engineering Design Stu...",
-      tags: [
-        {
-          code: "mand",
-          longName: "Mandatory",
-          shortName: "Mand",
-          color: "blue",
-        },
-      ],
-    },
-    {
-      courseCode: "CHE 521",
-      courseName: "Process Optimization",
-      tags: [
-        {
-          code: "mand",
-          longName: "Mandatory",
-          shortName: "Mand",
-          color: "blue",
-        },
-      ],
-    },
-  ],
-  "4A": [
-    {
-      courseCode: "CHE 200",
-      courseName: "Chemical Engineering Concepts I",
-      tags: [
-        {
-          code: "mand",
-          longName: "Mandatory",
-          shortName: "Mand",
-          color: "blue",
-        },
-      ],
-    },
-    {
-      courseCode: "CHE 220",
-      courseName: "Chemistry for Engineers",
-      tags: [
-        {
-          code: "mand",
-          longName: "Mandatory",
-          shortName: "Mand",
-          color: "blue",
-        },
-      ],
-    },
-    {
-      courseCode: "CHE 230",
-      courseName: "Computer Literacy & Programming",
-      tags: [
-        {
-          code: "mand",
-          longName: "Mandatory",
-          shortName: "Mand",
-          color: "blue",
-        },
-      ],
-    },
-    {
-      courseCode: "CHE 290",
-      courseName: "Linear Algebra for Engineering",
-      tags: [
-        {
-          code: "mand",
-          longName: "Mandatory",
-          shortName: "Mand",
-          color: "blue",
-        },
-      ],
-    },
-    {
-      courseCode: "MSCI 263",
-      courseName: "Managerial Economics",
-      tags: [
-        {
-          code: "mand",
-          longName: "Mandatory",
-          shortName: "Mand",
-          color: "blue",
-        },
-      ],
-    },
-    {
-      courseCode: "MSCI 311",
-      courseName: "Organizational Design & Technol...",
-      tags: [
-        {
-          code: "mand",
-          longName: "Mandatory",
-          shortName: "Mand",
-          color: "blue",
-        },
-      ],
-    },
-  ],
-  "4B": [
-    {
-      courseCode: "CHE 200",
-      courseName: "Chemical Engineering Concepts I",
-      tags: [
-        {
-          code: "mand",
-          longName: "Mandatory",
-          shortName: "Mand",
-          color: "blue",
-        },
-      ],
-    },
-    {
-      courseCode: "CHE 220",
-      courseName: "Chemistry for Engineers",
-      tags: [
-        {
-          code: "mand",
-          longName: "Mandatory",
-          shortName: "Mand",
-          color: "blue",
-        },
-      ],
-    },
-    {
-      courseCode: "CHE 230",
-      courseName: "Computer Literacy & Programming",
-      tags: [
-        {
-          code: "mand",
-          longName: "Mandatory",
-          shortName: "Mand",
-          color: "blue",
-        },
-      ],
-    },
-    {
-      courseCode: "CHE 290",
-      courseName: "Linear Algebra for Engineering",
-      tags: [
-        {
-          code: "mand",
-          longName: "Mandatory",
-          shortName: "Mand",
-          color: "blue",
-        },
-      ],
-    },
-    {
-      courseCode: "MSCI 261",
-      courseName: "Managerial Economics",
-      tags: [
-        {
-          code: "mand",
-          longName: "Mandatory",
-          shortName: "Mand",
-          color: "blue",
-        },
-      ],
-    },
-    {
-      courseCode: "MSCI 332",
-      courseName: "Deterministic Optimization",
-      tags: [
-        {
-          code: "mand",
-          longName: "Mandatory",
-          shortName: "Mand",
-          color: "blue",
-        },
-      ],
-    },
-  ],
+  },
 };
 
 export const courseList: CourseWithTagsSchema[] = [

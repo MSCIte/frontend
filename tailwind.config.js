@@ -10,6 +10,13 @@ export default {
         width: "width",
         "margin-right": "margin-right",
       },
+      height: {
+        128: "32rem",
+      },
+      width: {
+        320: "80rem",
+        128: "32rem",
+      },
     },
   },
   safelist: [

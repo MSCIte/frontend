@@ -2,6 +2,9 @@ import clsx from "clsx";
 import { useCallback, useState } from "react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 import { RequirementsPane } from "../requirementsPane/RequirementsPane";
+import { Pane } from "../pane/Pane";
+import { OnboardingModal } from "../onboardingModal/OnboardingModal";
+import { usePlanStore } from "~/stores";
 
 const sampleRequirementsData = [
   {
@@ -73,6 +76,8 @@ const sampleRequirementsData = [
 export const Sidebar = () => {
   const [isExpanded, setIsExpanded] = useState(true);
 
+  const { setIsOnboardingModalOpen } = usePlanStore();
+
   const toggleSidebar = useCallback(() => {
     setIsExpanded(!isExpanded);
   }, [isExpanded]);
@@ -107,6 +112,17 @@ export const Sidebar = () => {
           {sampleRequirementsData.map((requirement, ind) => (
             <RequirementsPane key={`${requirement}-${ind}`} {...requirement} />
           ))}
+
+          <Pane>
+            <div className="flex justify-center">
+              <button
+                className="rounded-lg bg-white p-2"
+                onClick={() => setIsOnboardingModalOpen(true)}
+              >
+                Change Major
+              </button>
+            </div>
+          </Pane>
         </div>
       </div>
     </div>

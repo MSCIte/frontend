@@ -15,20 +15,20 @@ import * as axios from "axios";
 import type { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { faker } from "@faker-js/faker";
 import { HttpResponse, delay, http } from "msw";
-export type SearchCoursesCoursesSearchGetParams = {
-  q?: string | null;
-  offset?: number | null;
+export type TagsCoursesTagsGetParams = {
+  degree_name: string;
+  degree_year: string;
 };
 
-export type DegreeMissingReqsDegreeDegreeIdMissingReqsGetParams = {
-  year: string;
+export type SearchCoursesCoursesSearchGetParams = {
+  degree_name: string;
+  degree_year: number;
+  q?: string | null;
+  offset?: number | null;
+  page_size?: number | null;
 };
 
 export type DegreeReqsDegreeDegreeNameReqsGetParams = {
-  year: string;
-};
-
-export type OptionsMissingReqsOptionOptIdMissingReqsGetParams = {
   year: string;
 };
 
@@ -89,6 +89,11 @@ export type DegreeMissingReqsAdditionalReqs = {
 export interface DegreeMissingReqs {
   additionalReqs: DegreeMissingReqsAdditionalReqs;
   mandatoryCourses: string[];
+}
+
+export interface DegreeMissingIn {
+  courseCodesTaken: string[];
+  year: string;
 }
 
 export interface CoursesTakenIn {
@@ -374,26 +379,17 @@ export const useOptionsReqsOptionOptIdReqsGet = <
  */
 export const optionsMissingReqsOptionOptIdMissingReqsGet = (
   optId: string,
-  coursesTakenIn: CoursesTakenIn,
-  params: OptionsMissingReqsOptionOptIdMissingReqsGetParams,
+  degreeMissingIn: DegreeMissingIn,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<OptionRequirement[]>> => {
-  return axios.default.get(`/option/${optId}/missing_reqs`, {
-    ...options,
-    params: { ...params, ...options?.params },
-  });
+  return axios.default.get(`/option/${optId}/missing_reqs`, options);
 };
 
 export const getOptionsMissingReqsOptionOptIdMissingReqsGetQueryKey = (
   optId: string,
-  coursesTakenIn: CoursesTakenIn,
-  params: OptionsMissingReqsOptionOptIdMissingReqsGetParams,
+  degreeMissingIn: DegreeMissingIn,
 ) => {
-  return [
-    `/option/${optId}/missing_reqs`,
-    ...(params ? [params] : []),
-    coursesTakenIn,
-  ] as const;
+  return [`/option/${optId}/missing_reqs`, degreeMissingIn] as const;
 };
 
 export const getOptionsMissingReqsOptionOptIdMissingReqsGetQueryOptions = <
@@ -403,8 +399,7 @@ export const getOptionsMissingReqsOptionOptIdMissingReqsGetQueryOptions = <
   TError = AxiosError<HTTPValidationError>,
 >(
   optId: string,
-  coursesTakenIn: CoursesTakenIn,
-  params: OptionsMissingReqsOptionOptIdMissingReqsGetParams,
+  degreeMissingIn: DegreeMissingIn,
   options?: {
     query?: Partial<
       UseQueryOptions<
@@ -422,14 +417,13 @@ export const getOptionsMissingReqsOptionOptIdMissingReqsGetQueryOptions = <
     queryOptions?.queryKey ??
     getOptionsMissingReqsOptionOptIdMissingReqsGetQueryKey(
       optId,
-      coursesTakenIn,
-      params,
+      degreeMissingIn,
     );
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof optionsMissingReqsOptionOptIdMissingReqsGet>>
   > = ({ signal }) =>
-    optionsMissingReqsOptionOptIdMissingReqsGet(optId, coursesTakenIn, params, {
+    optionsMissingReqsOptionOptIdMissingReqsGet(optId, degreeMissingIn, {
       signal,
       ...axiosOptions,
     });
@@ -463,8 +457,7 @@ export const useOptionsMissingReqsOptionOptIdMissingReqsGet = <
   TError = AxiosError<HTTPValidationError>,
 >(
   optId: string,
-  coursesTakenIn: CoursesTakenIn,
-  params: OptionsMissingReqsOptionOptIdMissingReqsGetParams,
+  degreeMissingIn: DegreeMissingIn,
   options?: {
     query?: Partial<
       UseQueryOptions<
@@ -479,8 +472,7 @@ export const useOptionsMissingReqsOptionOptIdMissingReqsGet = <
   const queryOptions =
     getOptionsMissingReqsOptionOptIdMissingReqsGetQueryOptions(
       optId,
-      coursesTakenIn,
-      params,
+      degreeMissingIn,
       options,
     );
 
@@ -668,26 +660,17 @@ export const useDegreesDegreeGet = <
  */
 export const degreeMissingReqsDegreeDegreeIdMissingReqsGet = (
   degreeId: string,
-  coursesTakenIn: CoursesTakenIn,
-  params: DegreeMissingReqsDegreeDegreeIdMissingReqsGetParams,
+  degreeMissingIn: DegreeMissingIn,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<DegreeMissingReqs>> => {
-  return axios.default.get(`/degree/${degreeId}/missing_reqs`, {
-    ...options,
-    params: { ...params, ...options?.params },
-  });
+  return axios.default.get(`/degree/${degreeId}/missing_reqs`, options);
 };
 
 export const getDegreeMissingReqsDegreeDegreeIdMissingReqsGetQueryKey = (
   degreeId: string,
-  coursesTakenIn: CoursesTakenIn,
-  params: DegreeMissingReqsDegreeDegreeIdMissingReqsGetParams,
+  degreeMissingIn: DegreeMissingIn,
 ) => {
-  return [
-    `/degree/${degreeId}/missing_reqs`,
-    ...(params ? [params] : []),
-    coursesTakenIn,
-  ] as const;
+  return [`/degree/${degreeId}/missing_reqs`, degreeMissingIn] as const;
 };
 
 export const getDegreeMissingReqsDegreeDegreeIdMissingReqsGetQueryOptions = <
@@ -697,8 +680,7 @@ export const getDegreeMissingReqsDegreeDegreeIdMissingReqsGetQueryOptions = <
   TError = AxiosError<HTTPValidationError>,
 >(
   degreeId: string,
-  coursesTakenIn: CoursesTakenIn,
-  params: DegreeMissingReqsDegreeDegreeIdMissingReqsGetParams,
+  degreeMissingIn: DegreeMissingIn,
   options?: {
     query?: Partial<
       UseQueryOptions<
@@ -718,19 +700,16 @@ export const getDegreeMissingReqsDegreeDegreeIdMissingReqsGetQueryOptions = <
     queryOptions?.queryKey ??
     getDegreeMissingReqsDegreeDegreeIdMissingReqsGetQueryKey(
       degreeId,
-      coursesTakenIn,
-      params,
+      degreeMissingIn,
     );
 
   const queryFn: QueryFunction<
     Awaited<ReturnType<typeof degreeMissingReqsDegreeDegreeIdMissingReqsGet>>
   > = ({ signal }) =>
-    degreeMissingReqsDegreeDegreeIdMissingReqsGet(
-      degreeId,
-      coursesTakenIn,
-      params,
-      { signal, ...axiosOptions },
-    );
+    degreeMissingReqsDegreeDegreeIdMissingReqsGet(degreeId, degreeMissingIn, {
+      signal,
+      ...axiosOptions,
+    });
 
   return {
     queryKey,
@@ -761,8 +740,7 @@ export const useDegreeMissingReqsDegreeDegreeIdMissingReqsGet = <
   TError = AxiosError<HTTPValidationError>,
 >(
   degreeId: string,
-  coursesTakenIn: CoursesTakenIn,
-  params: DegreeMissingReqsDegreeDegreeIdMissingReqsGetParams,
+  degreeMissingIn: DegreeMissingIn,
   options?: {
     query?: Partial<
       UseQueryOptions<
@@ -779,8 +757,7 @@ export const useDegreeMissingReqsDegreeDegreeIdMissingReqsGet = <
   const queryOptions =
     getDegreeMissingReqsDegreeDegreeIdMissingReqsGetQueryOptions(
       degreeId,
-      coursesTakenIn,
-      params,
+      degreeMissingIn,
       options,
     );
 
@@ -902,7 +879,7 @@ export const useCoursesCanTakeCoursesCanTakeCourseCodeGet = <
  * @summary Search Courses
  */
 export const searchCoursesCoursesSearchGet = (
-  params?: SearchCoursesCoursesSearchGetParams,
+  params: SearchCoursesCoursesSearchGetParams,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<CourseWithTagsSchema[]>> => {
   return axios.default.get(`/courses/search`, {
@@ -912,7 +889,7 @@ export const searchCoursesCoursesSearchGet = (
 };
 
 export const getSearchCoursesCoursesSearchGetQueryKey = (
-  params?: SearchCoursesCoursesSearchGetParams,
+  params: SearchCoursesCoursesSearchGetParams,
 ) => {
   return [`/courses/search`, ...(params ? [params] : [])] as const;
 };
@@ -921,7 +898,7 @@ export const getSearchCoursesCoursesSearchGetQueryOptions = <
   TData = Awaited<ReturnType<typeof searchCoursesCoursesSearchGet>>,
   TError = AxiosError<HTTPValidationError>,
 >(
-  params?: SearchCoursesCoursesSearchGetParams,
+  params: SearchCoursesCoursesSearchGetParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
@@ -963,7 +940,7 @@ export const useSearchCoursesCoursesSearchGet = <
   TData = Awaited<ReturnType<typeof searchCoursesCoursesSearchGet>>,
   TError = AxiosError<HTTPValidationError>,
 >(
-  params?: SearchCoursesCoursesSearchGetParams,
+  params: SearchCoursesCoursesSearchGetParams,
   options?: {
     query?: Partial<
       UseQueryOptions<
@@ -979,6 +956,92 @@ export const useSearchCoursesCoursesSearchGet = <
     params,
     options,
   );
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+};
+
+/**
+ * @summary Tags
+ */
+export const tagsCoursesTagsGet = (
+  params: TagsCoursesTagsGetParams,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<unknown>> => {
+  return axios.default.get(`/courses/tags`, {
+    ...options,
+    params: { ...params, ...options?.params },
+  });
+};
+
+export const getTagsCoursesTagsGetQueryKey = (
+  params: TagsCoursesTagsGetParams,
+) => {
+  return [`/courses/tags`, ...(params ? [params] : [])] as const;
+};
+
+export const getTagsCoursesTagsGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof tagsCoursesTagsGet>>,
+  TError = AxiosError<HTTPValidationError>,
+>(
+  params: TagsCoursesTagsGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof tagsCoursesTagsGet>>,
+        TError,
+        TData
+      >
+    >;
+    axios?: AxiosRequestConfig;
+  },
+) => {
+  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getTagsCoursesTagsGetQueryKey(params);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof tagsCoursesTagsGet>>
+  > = ({ signal }) => tagsCoursesTagsGet(params, { signal, ...axiosOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof tagsCoursesTagsGet>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type TagsCoursesTagsGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof tagsCoursesTagsGet>>
+>;
+export type TagsCoursesTagsGetQueryError = AxiosError<HTTPValidationError>;
+
+/**
+ * @summary Tags
+ */
+export const useTagsCoursesTagsGet = <
+  TData = Awaited<ReturnType<typeof tagsCoursesTagsGet>>,
+  TError = AxiosError<HTTPValidationError>,
+>(
+  params: TagsCoursesTagsGetParams,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof tagsCoursesTagsGet>>,
+        TError,
+        TData
+      >
+    >;
+    axios?: AxiosRequestConfig;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getTagsCoursesTagsGetQueryOptions(params, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -1277,6 +1340,15 @@ export const getFastAPIMock = () => [
         },
       },
     );
+  }),
+  http.get("*/courses/tags", async () => {
+    await delay(1000);
+    return new HttpResponse(null, {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   }),
   http.get("*/sample-path", async () => {
     await delay(1000);

@@ -10,6 +10,9 @@ import { CourseSelectionPane } from "~/components/courseSelectionPane/CourseSele
 import { Pane } from "~/components/pane/Pane";
 import { CourseWithTagsSchema } from "~/api/endpoints";
 import { Navbar } from "~/components/navbar/NavBar";
+import { Button } from "~/components/Button";
+import { useState } from "react";
+import { OnboardingModal } from "~/components/onboardingModal/OnboardingModal";
 
 const courseData: CourseWithTagsSchema = {
   courseCode: "CHE 100",
@@ -51,19 +54,47 @@ const requirements = {
 };
 
 export const DemoPage = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isOnboardingModalOpen, setIsOnboardingModalOpen] = useState(false);
   return (
     <div className="main space-y-10">
       <Navbar />
-      <Pane style={{ width: "80rem", height: "50rem" }}>
-        <CourseSelectionPane />
-      </Pane>
+
+      <OnboardingModal
+        isOpen={isOnboardingModalOpen}
+        setIsOpen={setIsOnboardingModalOpen}
+      />
+
+      <ActionButton
+        text="Open onboarding modal"
+        onClick={() => {
+          setIsOnboardingModalOpen(true);
+        }}
+      />
+
+      <Button
+        text="Open modal"
+        onClick={() => {
+          console.log("isModalOpen", isModalOpen);
+          setIsModalOpen((prevState) => {
+            console.log("prevState", prevState);
+            return !prevState;
+          });
+        }}
+      />
+      <CourseSelectionPane isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
 
       <Sidebar />
       <div style={{ width: "10rem" }}>
-        <CourseSmall {...courseData} />
+        <CourseSmall onDelete={() => {}} onReplace={() => {}} {...courseData} />
       </div>
       <div style={{ width: "20rem" }}>
-        <CourseLarge course={courseData} />
+        <CourseLarge
+          onDelete={() => {}}
+          onReplace={() => {}}
+          onClick={() => {}}
+          course={courseData}
+        />
       </div>
       <div>
         <RequirementsPane {...requirements} />

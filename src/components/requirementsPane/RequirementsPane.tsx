@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { Pane } from "../pane/Pane";
 
-interface RequirementData {
+export interface RequirementData {
   name: string;
   requirementsCompleted: number;
   requirementsTotal: number;
