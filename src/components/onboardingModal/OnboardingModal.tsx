@@ -13,7 +13,7 @@ interface OnboardingModalProps {
 export const OnboardingModal = (props: OnboardingModalProps) => {
   const { major, setMajor } = usePlanStore();
 
-  const { data: degrees } = useDegreesDegreeGet();
+  const { data: degrees, isLoading } = useDegreesDegreeGet();
 
   return (
     <Transition
@@ -74,7 +74,7 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
                   <p className="font-bold text-red-800">
                     !!! If this is changed your current plan will be erased !!!
                   </p>
-                  {!degrees ? (
+                  {!degrees?.data || isLoading ? (
                     <p>Loading...</p>
                   ) : (
                     <div>
