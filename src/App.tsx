@@ -3,11 +3,12 @@ import { QueryClientProvider } from "@tanstack/react-query"; // Import the Query
 import "./App.css";
 import { DemoPage } from "./pages/DemoPage";
 import { FAQPage } from "./pages/FAQPage";
-import { Navbar } from "./components/navbar/NavBar";
 import { LandingPage } from "./pages/LandingPage";
 import { PlanningPage } from "./pages/PlanningPage";
 import { AboutPage } from "./pages/AboutPage";
 import { queryClient } from "./queryClient"; // Import the queryClient variable
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/demo" component={DemoPage} />
         <Route path="/" component={LandingPage} />
       </Switch>
+      <ToastContainer />
     </QueryClientProvider>
   );
 }

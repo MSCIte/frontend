@@ -1,34 +1,69 @@
 import { CourseViewProps } from "~/pages/PlanningPage";
-import { CourseLarge } from "../courseLarge/CourseLarge";
-import { useSelectedCourse } from "~/hooks/useSelectedCourse";
 import { Pane } from "../pane/Pane";
 import clsx from "clsx";
+import { CourseSelectionPane } from "../courseSelectionPane/CourseSelectionPane";
+import { useState } from "react";
+import { CourseWithTagsSchema } from "~/api/endpoints";
+import { CourseLarge } from "../courseLarge/CourseLarge";
+import { toast } from "react-toastify";
 
 export const YearTableView = ({
   courseData,
   focusedTerm,
-  maxCoursesInATerm,
   setCourseData,
 }: CourseViewProps) => {
-  const setNewCourse = (term: string, index: number) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedTerm, setSelectedTerm] = useState<string>("1A");
+  const [selectedCourse, setSelectedCourse] = useState<CourseWithTagsSchema>({
+    courseCode: "",
+    courseName: "",
+  });
+  const [modalMode, setModalMode] = useState<"add" | "replace">("add");
+
+  const openModal = (
+    term: string,
+    selectedCourse?: CourseWithTagsSchema,
+    mode: "add" | "replace" = "add",
+  ) => {
+    setSelectedTerm(term);
+    if (selectedCourse) {
+      setSelectedCourse(selectedCourse);
+    }
+    setModalMode(mode);
+    setIsModalOpen(true);
+  };
+
+  const onAcceptCourse = (course: CourseWithTagsSchema) => {
     setCourseData((prev) => {
-      const newCourseData = { ...prev };
-      // check to see if the length is long enough
-      if (!newCourseData[term][index]) {
-        newCourseData[term].push({
-          courseCode: "CCC 100",
-          longName: "New Course",
-          tags: [{ name: "Chemistry", color: "red" }],
-        });
-      } else {
-        newCourseData[term][index] = {
-          courseCode: "CCC 100",
-          longName: "New Course",
-          tags: [{ name: "Chemistry", color: "red" }],
-        };
+      if (course.courseCode === selectedCourse.courseCode) {
+        return prev;
       }
+      console.log("Selected course", selectedCourse.courseCode);
+
+      const newCourseData = { ...prev };
+      newCourseData[selectedTerm] = {
+        ...newCourseData[selectedTerm],
+        [course.courseCode]: course,
+      };
+      delete newCourseData[selectedTerm][selectedCourse.courseCode];
       return newCourseData;
     });
+    setIsModalOpen(false);
+    unsetCourseSelections();
+  };
+
+  const onDeleteCourse = (term: string, courseCode: string) => {
+    console.log("onDeleteCourse", term, courseCode);
+    setCourseData((prev) => {
+      const newCourseData = { ...prev };
+      delete newCourseData[term][courseCode.replace(" ", "")];
+      return newCourseData;
+    });
+  };
+
+  const unsetCourseSelections = () => {
+    setSelectedTerm("");
+    setSelectedCourse({ courseCode: "", courseName: "" });
   };
 
   const selectedCourseData = Object.fromEntries(
@@ -42,71 +77,77 @@ export const YearTableView = ({
     }),
   );
 
-  const { selectedCourse, updateSelectedCourse } = useSelectedCourse(
-    Object.values(selectedCourseData)?.[0]?.[0] || null,
-  );
-
-  console.log(selectedCourse?.tags?.[0].color);
-
   return (
-    <div className="flex">
-      <div className="w-full overflow-x-auto">
-        <table className="border-separate border-spacing-2 overflow-x-auto ">
-          <thead>
-            <tr>
-              {Object.keys(selectedCourseData).map((key) => (
-                <th key={key}>{key}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {Array(maxCoursesInATerm + 1)
-              .fill(0)
-              .map((_, i) => {
-                return (
-                  <tr key={`course-${i}`}>
-                    {Object.keys(selectedCourseData).map((term) => {
-                      const course = selectedCourseData?.[term]?.[i];
-                      if (course) {
-                        const { courseCode, longName, tags } = course;
-                        return (
-                          <td
-                            key={`${term}-${course.courseCode}`}
-                            className="h-full"
-                          >
-                            <CourseLarge
-                              onClick={() => updateSelectedCourse(course)}
-                              courseCode={courseCode}
-                              longName={longName}
-                              tags={tags}
-                            />
-                          </td>
-                        );
-                      } else if (selectedCourseData?.[term]?.[i - 1]) {
-                        // if the previous box in the term has a course, we add a plus button
-                        return (
-                          <td key={`${term}-${i}`} className="align-top">
-                            <button
-                              className="flex w-full items-center justify-center rounded-lg bg-white"
-                              onClick={() => setNewCourse(term, i)}
-                            >
-                              <div className="text-4xl">+</div>
-                            </button>
-                          </td>
-                        );
-                      } else {
-                        return <td key={`${term}-${i}`} />;
-                      }
-                    })}
-                  </tr>
-                );
-              })}
-          </tbody>
-        </table>
+    <div className="flex h-[calc(100vh-10rem)] overflow-x-auto">
+      <CourseSelectionPane
+        initialCourse={selectedCourse}
+        isOpen={isModalOpen}
+        setIsOpen={setIsModalOpen}
+        onCourseAccept={onAcceptCourse}
+        onCancel={unsetCourseSelections}
+        mode={modalMode}
+      />
+      <div className="mr-4 flex space-x-4">
+        {Object.keys(selectedCourseData).map((term) => {
+          return (
+            <div
+              key={term}
+              className="flex w-24 flex-col md:w-36 lg:w-52 xl:w-80"
+            >
+              <h2 className="my-2 text-center text-xl font-semibold">{term}</h2>
+              <div className="h-128 space-y-4">
+                {Object.values(courseData?.[term])?.map((course) => {
+                  if (course) {
+                    return (
+                      <CourseLarge
+                        className="h-32 cursor-pointer"
+                        key={`${term}-${course.courseCode}`}
+                        onDelete={() => {
+                          console.log("clicked");
+                          onDeleteCourse(term, course.courseCode);
+                        }}
+                        onReplace={() => {
+                          setSelectedCourse(course);
+                          openModal(term, course);
+                        }}
+                        onClick={() => {}}
+                        course={course}
+                      />
+                    );
+                  }
+                })}
+                <button
+                  className="flex w-full items-center justify-center rounded-lg bg-white"
+                  onClick={() => openModal(term)}
+                >
+                  <div className="text-4xl">+</div>
+                </button>
+              </div>
+            </div>
+          );
+        })}
+
+        {
+          /* Check if it's the last or second last term */
+          focusedTerm === Object.keys(courseData).length - 1 ||
+          focusedTerm === Object.keys(courseData).length - 2 ? (
+            <div className="flex w-36 flex-col">
+              <h2 className="my-2 border-none bg-none text-center text-xl font-semibold">
+                Next Term
+              </h2>
+              <button
+                className="h-96 rounded-md border-2 border-dashed border-gray-400 bg-gray-200"
+                onClick={() => toast("Not implemented yet")}
+              >
+                + New Term
+              </button>
+            </div>
+          ) : null
+        }
       </div>
-      <Pane className=" space-y-4 px-6 py-4 md:max-w-72 lg:max-w-96 xl:max-w-fit">
+      <Pane className=" w-full space-y-4 px-6 py-4 md:min-w-72 lg:min-w-96 xl:min-w-fit">
         <h2 className="text-4xl">{selectedCourse?.courseCode}</h2>
-        <h3 className="text-2xl">{selectedCourse?.longName}</h3>
+        <h3 className="text-2xl">{selectedCourse?.courseName}</h3>
         <div
           className={clsx(
             "h-6 w-28 rounded-xl",

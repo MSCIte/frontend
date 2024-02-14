@@ -13,7 +13,7 @@ export const Navbar = () => {
     { name: "Plan", href: "/plan", current: isPlan },
     { name: "About", href: "/about", current: isAbout },
     { name: "FAQ", href: "/faq", current: isFAQ },
-    { name: "Demo", href: "/demo", current: isDemo },
+    { name: "Component Playground", href: "/demo", current: isDemo },
   ];
 
   return (

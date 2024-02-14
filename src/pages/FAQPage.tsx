@@ -74,8 +74,8 @@ export const FAQPage = () => {
       <div className="m-auto my-8 max-w-screen-lg">
         <h1 className="text-3xl font-medium">Frequently Asked Questions</h1>
         <div className="mt-6 space-y-4">
-          {FAQData.map((faq) => (
-            <div>
+          {FAQData.map((faq, ind) => (
+            <div key={`faq=${ind}`}>
               <div className="flex space-x-4  border-l-4 border-purple-500 bg-gray-400 p-3 text-black">
                 <div className="text-3xl">Q.</div>
                 <p>{faq.question}</p>

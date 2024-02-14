@@ -3,13 +3,20 @@ import { Sidebar } from "~/components/sidebar/Sidebar";
 import AllTermsView from "~/assets/allTermsView.svg?react";
 import YearView from "~/assets/yearView.svg?react";
 import TermView from "~/assets/termView.svg?react";
-import { CourseData, courseData as initialData } from "~/sampleData";
-import { Dispatch, SetStateAction, useState } from "react";
+import { CourseData } from "~/sampleData";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { AllTermsTableView } from "~/components/planningViews/AllTermTableView";
 import { TermTableView } from "~/components/planningViews/TermTableView";
 import { YearTableView } from "~/components/planningViews/YearTableView";
 import clsx from "clsx";
 import { Navbar } from "~/components/navbar/NavBar";
+import { OnboardingModal } from "~/components/onboardingModal/OnboardingModal";
+import { usePlanStore } from "~/stores";
+import { useTagsCoursesTagsGet } from "~/api/endpoints";
+
+import { ArrowPathIcon } from "@heroicons/react/24/solid";
+import { sortByKeys } from "~/utils";
+import { toast } from "react-toastify";
 
 export interface CourseViewProps {
   courseData: CourseData;
@@ -26,17 +33,71 @@ export const PlanningPage = () => {
     "all",
   );
   const [selectedTerm, setSelectedTerm] = useState<number>(0);
-  const [courseData, setCourseData] = useState(initialData);
 
   const moveStep =
     selectedView === "year" ? 2 : selectedView === "term" ? 1 : 0;
 
+  const {
+    isOnboardingModalOpen,
+    setIsOnboardingModalOpen,
+    courses,
+    setCourses,
+    major,
+  } = usePlanStore();
+
+  useEffect(() => {
+    if (!localStorage.getItem("onboardingComplete")) {
+      console.log("opening onboarding modal");
+      setIsOnboardingModalOpen(true);
+    }
+  }, [setIsOnboardingModalOpen]);
+
+  const { data: coursesWithTags } = useTagsCoursesTagsGet({
+    degree_name: major.name,
+    degree_year: major.year.toString(),
+  });
+
+  const resetCourses = () => {
+    if (coursesWithTags?.data) {
+      const newCourses = coursesWithTags.data.reduce<CourseData>(
+        (acc, course) => {
+          if (course?.tags) {
+            for (const tag of course.tags) {
+              if (
+                ["1A", "1B", "2A", "2B", "3A", "3B", "4A", "4B"].includes(
+                  tag.code,
+                )
+              ) {
+                if (!acc[tag.code]) {
+                  acc[tag.code] = {};
+                }
+                acc[tag.code][course.courseCode] = course;
+              }
+            }
+          }
+
+          return acc;
+        },
+        {} as CourseData,
+      );
+
+      const newCoursesSorted = sortByKeys(newCourses);
+      console.log("setting courses", newCourses);
+      setCourses(newCoursesSorted);
+    }
+  };
+
   return (
-    <div className=" h-[calc(100vh-24px)]  overflow-hidden">
+    <div className=" h-[calc(100vh-24px)] overflow-hidden ">
       <Navbar />
+      <OnboardingModal
+        isOpen={isOnboardingModalOpen}
+        setIsOpen={setIsOnboardingModalOpen}
+      />
+
       <div className="flex">
         <Sidebar />
-        <div className="h-[calc(100%-30rem)] overflow-x-auto px-4 py-2">
+        <div className="h-[calc(100vh-4rem)] w-full overflow-x-auto overflow-y-clip px-4 py-2">
           <h1 className="text-3xl">My Plan</h1>
           <div className="my-2 flex justify-between">
             <ul className="space-x-4">
@@ -96,19 +157,16 @@ export const PlanningPage = () => {
                   onClick={() => {
                     if (
                       selectedTerm <=
-                      Object.keys(courseData).length - 1 - moveStep
+                      Object.keys(courses).length - 1 - moveStep
                     ) {
                       setSelectedTerm(selectedTerm + moveStep);
-                    } else if (
-                      selectedTerm <
-                      Object.keys(courseData).length - 1
-                    ) {
-                      setSelectedTerm(Object.keys(courseData).length - 1);
+                    } else if (selectedTerm < Object.keys(courses).length - 1) {
+                      setSelectedTerm(Object.keys(courses).length - 1);
                     }
                   }}
                   className={clsx(
                     // Disable if we're at the last term
-                    (selectedTerm === Object.keys(courseData).length - 1 ||
+                    (selectedTerm === Object.keys(courses).length - 1 ||
                       selectedView === "all") &&
                       "cursor-default text-gray-300",
                   )}
@@ -131,7 +189,17 @@ export const PlanningPage = () => {
               </div>
             </ul>
 
-            <div>
+            <div className="flex space-x-4">
+              <ActionButton
+                text="Reset Courses"
+                icon={<ArrowPathIcon className="h-6 w-6 text-gray-400" />}
+                onClick={() => resetCourses()}
+              />
+              <ActionButton
+                text="Clear Localstorage"
+                icon={<ArrowPathIcon className="h-6 w-6 text-gray-400" />}
+                onClick={() => localStorage.clear()}
+              />
               <ActionButton
                 text="Share"
                 icon={
@@ -152,6 +220,7 @@ export const PlanningPage = () => {
                     </svg>
                   </div>
                 }
+                onClick={() => toast("Not implemented yet")}
               />
             </div>
           </div>
@@ -160,26 +229,26 @@ export const PlanningPage = () => {
 
           {selectedView === "all" ? (
             <AllTermsTableView
-              courseData={courseData}
+              courseData={courses}
               maxCoursesInATerm={maxCoursesInATerm}
-              setCourseData={setCourseData}
+              setCourseData={setCourses}
               focusedTerm={selectedTerm}
               setFocusedTerm={setSelectedTerm}
             />
           ) : selectedView === "year" ? (
             <YearTableView
-              courseData={courseData}
+              courseData={courses}
               maxCoursesInATerm={maxCoursesInATerm}
-              setCourseData={setCourseData}
+              setCourseData={setCourses}
               focusedTerm={selectedTerm}
               setFocusedTerm={setSelectedTerm}
             />
           ) : (
             // Term view
             <TermTableView
-              courseData={courseData}
+              courseData={courses}
               maxCoursesInATerm={maxCoursesInATerm}
-              setCourseData={setCourseData}
+              setCourseData={setCourses}
               focusedTerm={selectedTerm}
               setFocusedTerm={setSelectedTerm}
             />

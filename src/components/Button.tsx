@@ -1,4 +1,3 @@
-import React from "react";
 import { twMerge } from "tailwind-merge";
 
 interface ButtonProps {
@@ -10,7 +9,11 @@ interface ButtonProps {
 export const Button = (props: ButtonProps) => {
   return (
     <button
-      className={twMerge("rounded-md p-3 bg-blue-500 text-white", props?.className)}
+      className={twMerge(
+        "rounded-md bg-blue-500 p-3 text-white",
+        props?.className,
+      )}
+      onClick={props.onClick}
     >
       {props.text}
     </button>
