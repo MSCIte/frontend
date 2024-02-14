@@ -124,7 +124,7 @@ export interface CourseWithTagsSchema {
 
 export type ColorsEnum = (typeof ColorsEnum)[keyof typeof ColorsEnum];
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
+ 
 export const ColorsEnum = {
   red: "red",
   green: "green",
@@ -972,7 +972,7 @@ export const useSearchCoursesCoursesSearchGet = <
 export const tagsCoursesTagsGet = (
   params: TagsCoursesTagsGetParams,
   options?: AxiosRequestConfig,
-): Promise<AxiosResponse<unknown>> => {
+): Promise<AxiosResponse<CourseWithTagsSchema[]>> => {
   return axios.default.get(`/courses/tags`, {
     ...options,
     params: { ...params, ...options?.params },
@@ -1241,6 +1241,56 @@ export const getSearchCoursesCoursesSearchGetMock = () =>
     ]),
   }));
 
+export const getTagsCoursesTagsGetMock = () =>
+  Array.from(
+    { length: faker.number.int({ min: 1, max: 10 }) },
+    (_, i) => i + 1,
+  ).map(() => ({
+    antirequisites: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+    corequisites: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+    courseCode: faker.word.sample(),
+    courseName: faker.word.sample(),
+    credit: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([
+        faker.number.int({ min: undefined, max: undefined }),
+        {},
+      ]),
+      undefined,
+    ]),
+    description: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+    location: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+    prerequisites: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+    tags: faker.helpers.arrayElement([
+      Array.from(
+        { length: faker.number.int({ min: 1, max: 10 }) },
+        (_, i) => i + 1,
+      ).map(() => ({
+        code: faker.word.sample(),
+        color: faker.helpers.arrayElement([
+          faker.helpers.arrayElement([
+            faker.helpers.arrayElement(Object.values(ColorsEnum)),
+          ]),
+          undefined,
+        ]),
+        longName: faker.word.sample(),
+        shortName: faker.word.sample(),
+      })),
+      undefined,
+    ]),
+  }));
+
 export const getFastAPIMock = () => [
   http.get("*/", async () => {
     await delay(1000);
@@ -1343,7 +1393,7 @@ export const getFastAPIMock = () => [
   }),
   http.get("*/courses/tags", async () => {
     await delay(1000);
-    return new HttpResponse(null, {
+    return new HttpResponse(JSON.stringify(getTagsCoursesTagsGetMock()), {
       status: 200,
       headers: {
         "Content-Type": "application/json",

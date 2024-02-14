@@ -3,7 +3,6 @@ import { useCallback, useState } from "react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 import { RequirementsPane } from "../requirementsPane/RequirementsPane";
 import { Pane } from "../pane/Pane";
-import { OnboardingModal } from "../onboardingModal/OnboardingModal";
 import { usePlanStore } from "~/stores";
 
 const sampleRequirementsData = [

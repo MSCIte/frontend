@@ -4,13 +4,12 @@ import clsx from "clsx";
 import { CourseSelectionPane } from "../courseSelectionPane/CourseSelectionPane";
 import { useState } from "react";
 import { CourseWithTagsSchema } from "~/api/endpoints";
-import { CourseSmall } from "../courseSmall/CourseSmall";
 import { CourseLarge } from "../courseLarge/CourseLarge";
+import { toast } from "react-toastify";
 
 export const YearTableView = ({
   courseData,
   focusedTerm,
-  maxCoursesInATerm,
   setCourseData,
 }: CourseViewProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -136,7 +135,7 @@ export const YearTableView = ({
               <h2 className="my-2 border-none bg-none text-center text-xl font-semibold">
                 Next Term
               </h2>
-              <button className="h-96 rounded-md border-2 border-dashed border-gray-400 bg-gray-200">
+              <button className="h-96 rounded-md border-2 border-dashed border-gray-400 bg-gray-200" onClick={() => toast("Not implemented yet")}>
                 + New Term
               </button>
             </div>

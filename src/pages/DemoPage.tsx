@@ -7,7 +7,6 @@ import YearView from "~/assets/yearView.svg?react";
 import TermView from "~/assets/termView.svg?react";
 import { Sidebar } from "~/components/sidebar/Sidebar";
 import { CourseSelectionPane } from "~/components/courseSelectionPane/CourseSelectionPane";
-import { Pane } from "~/components/pane/Pane";
 import { CourseWithTagsSchema } from "~/api/endpoints";
 import { Navbar } from "~/components/navbar/NavBar";
 import { Button } from "~/components/Button";
@@ -70,6 +69,7 @@ export const DemoPage = () => {
         onClick={() => {
           setIsOnboardingModalOpen(true);
         }}
+        icon={undefined}
       />
 
       <Button

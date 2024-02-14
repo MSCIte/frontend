@@ -3,10 +3,10 @@ import { CourseSmall } from "../courseSmall/CourseSmall";
 import { CourseViewProps } from "~/pages/PlanningPage";
 import { CourseSelectionPane } from "../courseSelectionPane/CourseSelectionPane";
 import { CourseWithTagsSchema } from "~/api/endpoints";
+import { toast } from "react-toastify";
 
 export const AllTermsTableView = ({
   courseData,
-  maxCoursesInATerm,
   setCourseData,
 }: CourseViewProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -104,7 +104,7 @@ export const AllTermsTableView = ({
           <h2 className="my-2 border-none bg-none text-center text-xl font-semibold">
             Next Term
           </h2>
-          <button className="h-96 rounded-md border-2 border-dashed border-gray-400 bg-gray-200">
+          <button className="h-96 rounded-md border-2 border-dashed border-gray-400 bg-gray-200" onClick={() => toast("Not implemented yet")}>
             + New Term
           </button>
         </div>

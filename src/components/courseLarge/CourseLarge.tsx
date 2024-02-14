@@ -1,4 +1,4 @@
-import { CourseWithTagsSchema, TagSchema } from "~/api/endpoints";
+import { CourseWithTagsSchema } from "~/api/endpoints";
 import { Pane } from "../pane/Pane";
 import styles from "./CourseLarge.module.css";
 import clsx from "clsx";

@@ -346,7 +346,17 @@
         "responses": {
           "200": {
             "description": "Successful Response",
-            "content": { "application/json": { "schema": {} } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CourseWithTagsSchema"
+                  },
+                  "title": "Response Tags Courses Tags Get"
+                }
+              }
+            }
           },
           "422": {
             "description": "Validation Error",

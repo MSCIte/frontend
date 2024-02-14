@@ -5,11 +5,11 @@ import clsx from "clsx";
 import { useState } from "react";
 import { CourseWithTagsSchema } from "~/api/endpoints";
 import { CourseSelectionPane } from "../courseSelectionPane/CourseSelectionPane";
+import { toast } from "react-toastify";
 
 export const TermTableView = ({
   courseData,
   focusedTerm,
-  maxCoursesInATerm,
   setCourseData,
 }: CourseViewProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -117,7 +117,10 @@ export const TermTableView = ({
               <h2 className="my-2 border-none bg-none text-center text-xl font-semibold">
                 Next Term
               </h2>
-              <button className="h-96 rounded-md border-2 border-dashed border-gray-400 bg-gray-200">
+              <button
+                className="h-96 rounded-md border-2 border-dashed border-gray-400 bg-gray-200"
+                onClick={() => toast("Not implemented yet")}
+              >
                 + New Term
               </button>
             </div>

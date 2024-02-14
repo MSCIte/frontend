@@ -2,7 +2,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { useDegreesDegreeGet } from "~/api/endpoints";
 import { usePlanStore } from "~/stores";
 import { Pane } from "../pane/Pane";
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { Button } from "../Button";
 
 interface OnboardingModalProps {
@@ -30,6 +30,7 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
         open={props.isOpen}
         onClose={() => {
           props.setIsOpen(false);
+          localStorage.setItem("onboardingComplete", "true");
         }}
         className="relative z-50"
       >
@@ -69,6 +70,9 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
                   <p className="">
                     We also use this information to set the tags for your degree
                     completion.
+                  </p>
+                  <p className="font-bold text-red-800">
+                    !!! If this is changed your current plan will be erased !!!
                   </p>
                   {!degrees ? (
                     <p>Loading...</p>
@@ -120,16 +124,16 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
                           placeholder="90210"
                           required
                         />
-
-                        <input />
                       </div>
                     </div>
                   )}
 
                   <Button
                     text="Get Started"
+                    className="mx-auto block"
                     onClick={() => {
                       props.setIsOpen(false);
+                      localStorage.setItem("onboardingComplete", "true");
                     }}
                   />
                 </div>

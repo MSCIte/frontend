@@ -1,11 +1,8 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
-import { CourseWithTagsSchema } from "./api/endpoints";
 import { CourseData } from "./sampleData";
 
-// 1A, 1B etc.
-type TermId = string;
 // MSCI 100, MSCI 211, etc.
 type CourseCode = string;
 
@@ -21,6 +18,9 @@ interface PlanState {
   setMajor: (major: PlanState["major"]) => void;
   setOption: (option: PlanState["option"]) => void;
   courses: CourseData;
+  setCourses: (
+    courses: CourseData | ((prev: CourseData) => CourseData),
+  ) => void;
   completedCourseCodes: () => CourseCode[];
   isOnboardingModalOpen: boolean;
   setIsOnboardingModalOpen: (isOpen: boolean) => void;
@@ -41,6 +41,14 @@ export const usePlanStore = create<PlanState>()(
         setMajor: (major) => set({ major }),
         setOption: (option) => set({ option }),
         courses: {},
+        setCourses: (courses) => {
+          if (typeof courses === "function") {
+            set({ courses: courses(get().courses) });
+            return;
+          } else {
+            set({ courses });
+          }
+        },
         completedCourseCodes: () => {
           return Object.values(get().courses)
             .map((courseList) =>

@@ -9,7 +9,6 @@ import { usePlanStore } from "~/stores";
 import {
   useDegreeMissingReqsDegreeDegreeIdMissingReqsGet,
   useDegreeReqsDegreeDegreeNameReqsGet,
-  useOptionsReqsOptionOptIdReqsGet,
 } from "~/api/endpoints";
 
 // const sampleRequirementsData = [
@@ -82,7 +81,7 @@ import {
 export const Sidebar = () => {
   const [isExpanded, setIsExpanded] = useState(true);
 
-  const { major, option, completedCourseCodes } = usePlanStore();
+  const { major, completedCourseCodes } = usePlanStore();
 
   const { data: degreeReqs } = useDegreeReqsDegreeDegreeNameReqsGet(
     major.name,
@@ -104,7 +103,7 @@ export const Sidebar = () => {
 
     // additional reqs
     // degreeReqs.data.additionalReqs
-    let reqData: RequirementData[] = [];
+    const reqData: RequirementData[] = [];
 
     reqData.push({
       name: "Mandatory Courses",
@@ -126,11 +125,7 @@ export const Sidebar = () => {
       },
     );
     return reqData;
-  }, [degreeReqs]);
-
-  const { data: optionReqs } = useOptionsReqsOptionOptIdReqsGet(option.name, {
-    year: option.year.toString(),
-  });
+  }, [degreeReqs, degreeMissingReqs?.data]);
 
   const toggleSidebar = useCallback(() => {
     setIsExpanded(!isExpanded);

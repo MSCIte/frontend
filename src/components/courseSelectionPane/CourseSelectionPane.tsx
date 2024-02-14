@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { CourseBlock } from "./CourseBlock";
 import clsx from "clsx";
 import {
@@ -37,7 +37,7 @@ export const CourseSelectionPane = ({
 
   const searchButtonRef = useRef<HTMLInputElement>(null);
 
-  const { major, option } = usePlanStore();
+  const { major } = usePlanStore();
 
   const { data } = useSearchCoursesCoursesSearchGet({
     q: searchQuery,
@@ -50,7 +50,7 @@ export const CourseSelectionPane = ({
     if (initialCourse?.courseCode && !searchQuery) {
       setSearchQuery(initialCourse?.courseCode);
     }
-  }, [initialCourse]);
+  }, [initialCourse, searchQuery]);
 
   const SearchElement = (
     <div className="sticky top-0 bg-gray-100">

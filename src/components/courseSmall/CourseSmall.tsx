@@ -1,6 +1,4 @@
-import clsx from "clsx";
 import { Pane } from "../pane/Pane";
-import styles from "./CourseSmall.module.css";
 import { CoursePills } from "../courseSmallPill/CourseSmallPill";
 import { CourseWithTagsSchema } from "~/api/endpoints";
 import { TrashIcon } from "@heroicons/react/24/solid";
