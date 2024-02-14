@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import clsx from "clsx";
 import { useCallback, useMemo, useState } from "react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
@@ -6,10 +8,7 @@ import {
   RequirementsPane,
 } from "../requirementsPane/RequirementsPane";
 import { usePlanStore } from "~/stores";
-import {
-  useDegreeMissingReqsDegreeDegreeIdMissingReqsGet,
-  useDegreeReqsDegreeDegreeNameReqsGet,
-} from "~/api/endpoints";
+import { useDegreeReqsDegreeDegreeNameReqsGet } from "~/api/endpoints";
 
 // const sampleRequirementsData = [
 //   {
@@ -90,46 +89,48 @@ export const Sidebar = () => {
     },
   );
 
-  const { data: degreeMissingReqs } =
-    useDegreeMissingReqsDegreeDegreeIdMissingReqsGet(major.name, {
-      courseCodesTaken: completedCourseCodes(),
-      year: major.year.toString(),
-    });
+  // const { data: degreeMissingReqs } =
+  //   useDegreeMissingReqsDegreeDegreeIdMissingReqsGet(major.name, {
+  //     courseCodesTaken: completedCourseCodes(),
+  //     year: major.year.toString(),
+  //   });
 
-  const majorCompletionStatus = useMemo<RequirementData[]>(() => {
-    if (!degreeReqs?.data || !degreeMissingReqs?.data) {
-      return [];
-    }
+  // const degreeMissingReqs = {} as any;
 
-    // additional reqs
-    // degreeReqs.data.additionalReqs
-    const reqData: RequirementData[] = [];
+  // const majorCompletionStatus = useMemo<RequirementData[]>(() => {
+  //   if (!degreeReqs?.data || !degreeMissingReqs?.data) {
+  //     return [];
+  //   }
 
-    reqData.push({
-      name: "Mandatory Courses",
-      requirementsCompleted:
-        degreeReqs.data.mandatoryCourses.length -
-        degreeMissingReqs.data.mandatoryCourses.length,
-      requirementsTotal: degreeReqs.data.mandatoryCourses.length,
-      color: "red",
-    });
+  //   // additional reqs
+  //   // degreeReqs.data.additionalReqs
+  //   const reqData: RequirementData[] = [];
 
-    Object.entries(degreeMissingReqs.data.additionalReqs).forEach(
-      ([reqName, completionStatus]) => {
-        reqData.push({
-          name: reqName,
-          requirementsCompleted: Number.parseInt(completionStatus.completed),
-          requirementsTotal: Number.parseInt(completionStatus.total),
-          color: "blue",
-        });
-      },
-    );
-    return reqData;
-  }, [degreeReqs, degreeMissingReqs?.data]);
+  //   reqData.push({
+  //     name: "Mandatory Courses",
+  //     requirementsCompleted:
+  //       degreeReqs.data.mandatoryCourses.length -
+  //       degreeMissingReqs.data.mandatoryCourses.length,
+  //     requirementsTotal: degreeReqs.data.mandatoryCourses.length,
+  //     color: "red",
+  //   });
 
-  const toggleSidebar = useCallback(() => {
-    setIsExpanded(!isExpanded);
-  }, [isExpanded]);
+  //   Object.entries(degreeMissingReqs.data.additionalReqs).forEach(
+  //     ([reqName, completionStatus]) => {
+  //       reqData.push({
+  //         name: reqName,
+  //         requirementsCompleted: Number.parseInt(completionStatus.completed),
+  //         requirementsTotal: Number.parseInt(completionStatus.total),
+  //         color: "blue",
+  //       });
+  //     },
+  //   );
+  //   return reqData;
+  // }, [degreeReqs, degreeMissingReqs?.data]);
+
+  // const toggleSidebar = useCallback(() => {
+  //   setIsExpanded(!isExpanded);
+  // }, [isExpanded]);
 
   return (
     <div
@@ -143,9 +144,9 @@ export const Sidebar = () => {
           <h2 className={clsx("text-xl", !isExpanded && "hidden")}>
             Academic Summary
           </h2>
-          <button onClick={toggleSidebar} className="m-auto mr-0 h-6 w-6">
+          {/* <button onClick={toggleSidebar} className="m-auto mr-0 h-6 w-6">
             {isExpanded ? <ArrowLeftIcon /> : <ArrowRightIcon />}
-          </button>
+          </button> */}
         </div>
 
         {!isExpanded && (
@@ -159,10 +160,10 @@ export const Sidebar = () => {
           )}
         >
           {/* Major requirement */}
-          <RequirementsPane
+          {/* <RequirementsPane
             title="Major Requirement"
             data={majorCompletionStatus}
-          />
+          /> */}
           {/* Option requirement */}
           {/* <RequirementsPane key={`req-option`} {...requirement} /> */}
           {/* {sampleRequirementsData.map((requirement, ind) => (

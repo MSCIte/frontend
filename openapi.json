@@ -65,9 +65,9 @@
       }
     },
     "/option/{opt_id}/missing_reqs": {
-      "get": {
+      "post": {
         "summary": "Options Missing Reqs",
-        "operationId": "options_missing_reqs_option__opt_id__missing_reqs_get",
+        "operationId": "options_missing_reqs_option__opt_id__missing_reqs_post",
         "parameters": [
           {
             "name": "opt_id",
@@ -92,7 +92,7 @@
                 "schema": {
                   "type": "array",
                   "items": { "$ref": "#/components/schemas/OptionRequirement" },
-                  "title": "Response Options Missing Reqs Option  Opt Id  Missing Reqs Get"
+                  "title": "Response Options Missing Reqs Option  Opt Id  Missing Reqs Post"
                 }
               }
             }
@@ -167,9 +167,9 @@
       }
     },
     "/degree/{degree_id}/missing_reqs": {
-      "get": {
+      "post": {
         "summary": "Degree Missing Reqs",
-        "operationId": "degree_missing_reqs_degree__degree_id__missing_reqs_get",
+        "operationId": "degree_missing_reqs_degree__degree_id__missing_reqs_post",
         "parameters": [
           {
             "name": "degree_id",
@@ -207,9 +207,9 @@
       }
     },
     "/courses/can-take/{course_code}": {
-      "get": {
+      "post": {
         "summary": "Courses Can Take",
-        "operationId": "courses_can_take_courses_can_take__course_code__get",
+        "operationId": "courses_can_take_courses_can_take__course_code__post",
         "parameters": [
           {
             "name": "course_code",

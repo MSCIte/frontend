@@ -4,10 +4,12 @@
  * FastAPI
  * OpenAPI spec version: 0.1.0
  */
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type {
+  MutationFunction,
   QueryFunction,
   QueryKey,
+  UseMutationOptions,
   UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
@@ -377,112 +379,81 @@ export const useOptionsReqsOptionOptIdReqsGet = <
 /**
  * @summary Options Missing Reqs
  */
-export const optionsMissingReqsOptionOptIdMissingReqsGet = (
+export const optionsMissingReqsOptionOptIdMissingReqsPost = (
   optId: string,
   degreeMissingIn: DegreeMissingIn,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<OptionRequirement[]>> => {
-  return axios.default.get(`/option/${optId}/missing_reqs`, options);
+  return axios.default.post(
+    `/option/${optId}/missing_reqs`,
+    degreeMissingIn,
+    options,
+  );
 };
 
-export const getOptionsMissingReqsOptionOptIdMissingReqsGetQueryKey = (
-  optId: string,
-  degreeMissingIn: DegreeMissingIn,
-) => {
-  return [`/option/${optId}/missing_reqs`, degreeMissingIn] as const;
-};
-
-export const getOptionsMissingReqsOptionOptIdMissingReqsGetQueryOptions = <
-  TData = Awaited<
-    ReturnType<typeof optionsMissingReqsOptionOptIdMissingReqsGet>
-  >,
+export const getOptionsMissingReqsOptionOptIdMissingReqsPostMutationOptions = <
   TError = AxiosError<HTTPValidationError>,
->(
-  optId: string,
-  degreeMissingIn: DegreeMissingIn,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof optionsMissingReqsOptionOptIdMissingReqsGet>>,
-        TError,
-        TData
-      >
-    >;
-    axios?: AxiosRequestConfig;
-  },
-) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
-
-  const queryKey =
-    queryOptions?.queryKey ??
-    getOptionsMissingReqsOptionOptIdMissingReqsGetQueryKey(
-      optId,
-      degreeMissingIn,
-    );
-
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof optionsMissingReqsOptionOptIdMissingReqsGet>>
-  > = ({ signal }) =>
-    optionsMissingReqsOptionOptIdMissingReqsGet(optId, degreeMissingIn, {
-      signal,
-      ...axiosOptions,
-    });
-
-  return {
-    queryKey,
-    queryFn,
-    enabled: !!optId,
-    ...queryOptions,
-  } as UseQueryOptions<
-    Awaited<ReturnType<typeof optionsMissingReqsOptionOptIdMissingReqsGet>>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof optionsMissingReqsOptionOptIdMissingReqsPost>>,
     TError,
-    TData
-  > & { queryKey: QueryKey };
+    { optId: string; data: DegreeMissingIn },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof optionsMissingReqsOptionOptIdMissingReqsPost>>,
+  TError,
+  { optId: string; data: DegreeMissingIn },
+  TContext
+> => {
+  const { mutation: mutationOptions, axios: axiosOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof optionsMissingReqsOptionOptIdMissingReqsPost>>,
+    { optId: string; data: DegreeMissingIn }
+  > = (props) => {
+    const { optId, data } = props ?? {};
+
+    return optionsMissingReqsOptionOptIdMissingReqsPost(
+      optId,
+      data,
+      axiosOptions,
+    );
+  };
+
+  return { mutationFn, ...mutationOptions };
 };
 
-export type OptionsMissingReqsOptionOptIdMissingReqsGetQueryResult =
+export type OptionsMissingReqsOptionOptIdMissingReqsPostMutationResult =
   NonNullable<
-    Awaited<ReturnType<typeof optionsMissingReqsOptionOptIdMissingReqsGet>>
+    Awaited<ReturnType<typeof optionsMissingReqsOptionOptIdMissingReqsPost>>
   >;
-export type OptionsMissingReqsOptionOptIdMissingReqsGetQueryError =
+export type OptionsMissingReqsOptionOptIdMissingReqsPostMutationBody =
+  DegreeMissingIn;
+export type OptionsMissingReqsOptionOptIdMissingReqsPostMutationError =
   AxiosError<HTTPValidationError>;
 
 /**
  * @summary Options Missing Reqs
  */
-export const useOptionsMissingReqsOptionOptIdMissingReqsGet = <
-  TData = Awaited<
-    ReturnType<typeof optionsMissingReqsOptionOptIdMissingReqsGet>
-  >,
+export const useOptionsMissingReqsOptionOptIdMissingReqsPost = <
   TError = AxiosError<HTTPValidationError>,
->(
-  optId: string,
-  degreeMissingIn: DegreeMissingIn,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof optionsMissingReqsOptionOptIdMissingReqsGet>>,
-        TError,
-        TData
-      >
-    >;
-    axios?: AxiosRequestConfig;
-  },
-): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions =
-    getOptionsMissingReqsOptionOptIdMissingReqsGetQueryOptions(
-      optId,
-      degreeMissingIn,
-      options,
-    );
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof optionsMissingReqsOptionOptIdMissingReqsPost>>,
+    TError,
+    { optId: string; data: DegreeMissingIn },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}) => {
+  const mutationOptions =
+    getOptionsMissingReqsOptionOptIdMissingReqsPostMutationOptions(options);
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
-
-  query.queryKey = queryOptions.queryKey;
-
-  return query;
+  return useMutation(mutationOptions);
 };
 
 /**
@@ -658,221 +629,163 @@ export const useDegreesDegreeGet = <
 /**
  * @summary Degree Missing Reqs
  */
-export const degreeMissingReqsDegreeDegreeIdMissingReqsGet = (
+export const degreeMissingReqsDegreeDegreeIdMissingReqsPost = (
   degreeId: string,
   degreeMissingIn: DegreeMissingIn,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<DegreeMissingReqs>> => {
-  return axios.default.get(`/degree/${degreeId}/missing_reqs`, options);
+  return axios.default.post(
+    `/degree/${degreeId}/missing_reqs`,
+    degreeMissingIn,
+    options,
+  );
 };
 
-export const getDegreeMissingReqsDegreeDegreeIdMissingReqsGetQueryKey = (
-  degreeId: string,
-  degreeMissingIn: DegreeMissingIn,
-) => {
-  return [`/degree/${degreeId}/missing_reqs`, degreeMissingIn] as const;
-};
-
-export const getDegreeMissingReqsDegreeDegreeIdMissingReqsGetQueryOptions = <
-  TData = Awaited<
-    ReturnType<typeof degreeMissingReqsDegreeDegreeIdMissingReqsGet>
-  >,
-  TError = AxiosError<HTTPValidationError>,
->(
-  degreeId: string,
-  degreeMissingIn: DegreeMissingIn,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<
-          ReturnType<typeof degreeMissingReqsDegreeDegreeIdMissingReqsGet>
-        >,
-        TError,
-        TData
-      >
+export const getDegreeMissingReqsDegreeDegreeIdMissingReqsPostMutationOptions =
+  <TError = AxiosError<HTTPValidationError>, TContext = unknown>(options?: {
+    mutation?: UseMutationOptions<
+      Awaited<
+        ReturnType<typeof degreeMissingReqsDegreeDegreeIdMissingReqsPost>
+      >,
+      TError,
+      { degreeId: string; data: DegreeMissingIn },
+      TContext
     >;
     axios?: AxiosRequestConfig;
-  },
-) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
-
-  const queryKey =
-    queryOptions?.queryKey ??
-    getDegreeMissingReqsDegreeDegreeIdMissingReqsGetQueryKey(
-      degreeId,
-      degreeMissingIn,
-    );
-
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof degreeMissingReqsDegreeDegreeIdMissingReqsGet>>
-  > = ({ signal }) =>
-    degreeMissingReqsDegreeDegreeIdMissingReqsGet(degreeId, degreeMissingIn, {
-      signal,
-      ...axiosOptions,
-    });
-
-  return {
-    queryKey,
-    queryFn,
-    enabled: !!degreeId,
-    ...queryOptions,
-  } as UseQueryOptions<
-    Awaited<ReturnType<typeof degreeMissingReqsDegreeDegreeIdMissingReqsGet>>,
+  }): UseMutationOptions<
+    Awaited<ReturnType<typeof degreeMissingReqsDegreeDegreeIdMissingReqsPost>>,
     TError,
-    TData
-  > & { queryKey: QueryKey };
-};
+    { degreeId: string; data: DegreeMissingIn },
+    TContext
+  > => {
+    const { mutation: mutationOptions, axios: axiosOptions } = options ?? {};
 
-export type DegreeMissingReqsDegreeDegreeIdMissingReqsGetQueryResult =
+    const mutationFn: MutationFunction<
+      Awaited<
+        ReturnType<typeof degreeMissingReqsDegreeDegreeIdMissingReqsPost>
+      >,
+      { degreeId: string; data: DegreeMissingIn }
+    > = (props) => {
+      const { degreeId, data } = props ?? {};
+
+      return degreeMissingReqsDegreeDegreeIdMissingReqsPost(
+        degreeId,
+        data,
+        axiosOptions,
+      );
+    };
+
+    return { mutationFn, ...mutationOptions };
+  };
+
+export type DegreeMissingReqsDegreeDegreeIdMissingReqsPostMutationResult =
   NonNullable<
-    Awaited<ReturnType<typeof degreeMissingReqsDegreeDegreeIdMissingReqsGet>>
+    Awaited<ReturnType<typeof degreeMissingReqsDegreeDegreeIdMissingReqsPost>>
   >;
-export type DegreeMissingReqsDegreeDegreeIdMissingReqsGetQueryError =
+export type DegreeMissingReqsDegreeDegreeIdMissingReqsPostMutationBody =
+  DegreeMissingIn;
+export type DegreeMissingReqsDegreeDegreeIdMissingReqsPostMutationError =
   AxiosError<HTTPValidationError>;
 
 /**
  * @summary Degree Missing Reqs
  */
-export const useDegreeMissingReqsDegreeDegreeIdMissingReqsGet = <
-  TData = Awaited<
-    ReturnType<typeof degreeMissingReqsDegreeDegreeIdMissingReqsGet>
-  >,
+export const useDegreeMissingReqsDegreeDegreeIdMissingReqsPost = <
   TError = AxiosError<HTTPValidationError>,
->(
-  degreeId: string,
-  degreeMissingIn: DegreeMissingIn,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<
-          ReturnType<typeof degreeMissingReqsDegreeDegreeIdMissingReqsGet>
-        >,
-        TError,
-        TData
-      >
-    >;
-    axios?: AxiosRequestConfig;
-  },
-): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions =
-    getDegreeMissingReqsDegreeDegreeIdMissingReqsGetQueryOptions(
-      degreeId,
-      degreeMissingIn,
-      options,
-    );
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof degreeMissingReqsDegreeDegreeIdMissingReqsPost>>,
+    TError,
+    { degreeId: string; data: DegreeMissingIn },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}) => {
+  const mutationOptions =
+    getDegreeMissingReqsDegreeDegreeIdMissingReqsPostMutationOptions(options);
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
-
-  query.queryKey = queryOptions.queryKey;
-
-  return query;
+  return useMutation(mutationOptions);
 };
 
 /**
  * @summary Courses Can Take
  */
-export const coursesCanTakeCoursesCanTakeCourseCodeGet = (
+export const coursesCanTakeCoursesCanTakeCourseCodePost = (
   courseCode: string,
   coursesTakenIn: CoursesTakenIn,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<RequirementsResults>> => {
-  return axios.default.get(`/courses/can-take/${courseCode}`, options);
+  return axios.default.post(
+    `/courses/can-take/${courseCode}`,
+    coursesTakenIn,
+    options,
+  );
 };
 
-export const getCoursesCanTakeCoursesCanTakeCourseCodeGetQueryKey = (
-  courseCode: string,
-  coursesTakenIn: CoursesTakenIn,
-) => {
-  return [`/courses/can-take/${courseCode}`, coursesTakenIn] as const;
-};
-
-export const getCoursesCanTakeCoursesCanTakeCourseCodeGetQueryOptions = <
-  TData = Awaited<ReturnType<typeof coursesCanTakeCoursesCanTakeCourseCodeGet>>,
+export const getCoursesCanTakeCoursesCanTakeCourseCodePostMutationOptions = <
   TError = AxiosError<HTTPValidationError>,
->(
-  courseCode: string,
-  coursesTakenIn: CoursesTakenIn,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof coursesCanTakeCoursesCanTakeCourseCodeGet>>,
-        TError,
-        TData
-      >
-    >;
-    axios?: AxiosRequestConfig;
-  },
-) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
-
-  const queryKey =
-    queryOptions?.queryKey ??
-    getCoursesCanTakeCoursesCanTakeCourseCodeGetQueryKey(
-      courseCode,
-      coursesTakenIn,
-    );
-
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof coursesCanTakeCoursesCanTakeCourseCodeGet>>
-  > = ({ signal }) =>
-    coursesCanTakeCoursesCanTakeCourseCodeGet(courseCode, coursesTakenIn, {
-      signal,
-      ...axiosOptions,
-    });
-
-  return {
-    queryKey,
-    queryFn,
-    enabled: !!courseCode,
-    ...queryOptions,
-  } as UseQueryOptions<
-    Awaited<ReturnType<typeof coursesCanTakeCoursesCanTakeCourseCodeGet>>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof coursesCanTakeCoursesCanTakeCourseCodePost>>,
     TError,
-    TData
-  > & { queryKey: QueryKey };
+    { courseCode: string; data: CoursesTakenIn },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof coursesCanTakeCoursesCanTakeCourseCodePost>>,
+  TError,
+  { courseCode: string; data: CoursesTakenIn },
+  TContext
+> => {
+  const { mutation: mutationOptions, axios: axiosOptions } = options ?? {};
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof coursesCanTakeCoursesCanTakeCourseCodePost>>,
+    { courseCode: string; data: CoursesTakenIn }
+  > = (props) => {
+    const { courseCode, data } = props ?? {};
+
+    return coursesCanTakeCoursesCanTakeCourseCodePost(
+      courseCode,
+      data,
+      axiosOptions,
+    );
+  };
+
+  return { mutationFn, ...mutationOptions };
 };
 
-export type CoursesCanTakeCoursesCanTakeCourseCodeGetQueryResult = NonNullable<
-  Awaited<ReturnType<typeof coursesCanTakeCoursesCanTakeCourseCodeGet>>
->;
-export type CoursesCanTakeCoursesCanTakeCourseCodeGetQueryError =
+export type CoursesCanTakeCoursesCanTakeCourseCodePostMutationResult =
+  NonNullable<
+    Awaited<ReturnType<typeof coursesCanTakeCoursesCanTakeCourseCodePost>>
+  >;
+export type CoursesCanTakeCoursesCanTakeCourseCodePostMutationBody =
+  CoursesTakenIn;
+export type CoursesCanTakeCoursesCanTakeCourseCodePostMutationError =
   AxiosError<HTTPValidationError>;
 
 /**
  * @summary Courses Can Take
  */
-export const useCoursesCanTakeCoursesCanTakeCourseCodeGet = <
-  TData = Awaited<ReturnType<typeof coursesCanTakeCoursesCanTakeCourseCodeGet>>,
+export const useCoursesCanTakeCoursesCanTakeCourseCodePost = <
   TError = AxiosError<HTTPValidationError>,
->(
-  courseCode: string,
-  coursesTakenIn: CoursesTakenIn,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof coursesCanTakeCoursesCanTakeCourseCodeGet>>,
-        TError,
-        TData
-      >
-    >;
-    axios?: AxiosRequestConfig;
-  },
-): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getCoursesCanTakeCoursesCanTakeCourseCodeGetQueryOptions(
-    courseCode,
-    coursesTakenIn,
-    options,
-  );
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof coursesCanTakeCoursesCanTakeCourseCodePost>>,
+    TError,
+    { courseCode: string; data: CoursesTakenIn },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}) => {
+  const mutationOptions =
+    getCoursesCanTakeCoursesCanTakeCourseCodePostMutationOptions(options);
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
-
-  query.queryKey = queryOptions.queryKey;
-
-  return query;
+  return useMutation(mutationOptions);
 };
 
 /**
@@ -1140,7 +1053,7 @@ export const getOptionsReqsOptionOptIdReqsGetMock = () => ({
   })),
 });
 
-export const getOptionsMissingReqsOptionOptIdMissingReqsGetMock = () =>
+export const getOptionsMissingReqsOptionOptIdMissingReqsPostMock = () =>
   Array.from(
     { length: faker.number.int({ min: 1, max: 10 }) },
     (_, i) => i + 1,
@@ -1173,7 +1086,7 @@ export const getDegreesDegreeGetMock = () =>
     faker.word.sample(),
   );
 
-export const getDegreeMissingReqsDegreeDegreeIdMissingReqsGetMock = () => ({
+export const getDegreeMissingReqsDegreeDegreeIdMissingReqsPostMock = () => ({
   additionalReqs: {
     [faker.string.alphanumeric(5)]: {
       completed: faker.word.sample(),
@@ -1186,7 +1099,7 @@ export const getDegreeMissingReqsDegreeDegreeIdMissingReqsGetMock = () => ({
   ).map(() => faker.word.sample()),
 });
 
-export const getCoursesCanTakeCoursesCanTakeCourseCodeGetMock = () => ({
+export const getCoursesCanTakeCoursesCanTakeCourseCodePostMock = () => ({
   message: faker.word.sample(),
   result: faker.datatype.boolean(),
 });
@@ -1322,10 +1235,10 @@ export const getFastAPIMock = () => [
       },
     );
   }),
-  http.get("*/option/:optId/missing_reqs", async () => {
+  http.post("*/option/:optId/missing_reqs", async () => {
     await delay(1000);
     return new HttpResponse(
-      JSON.stringify(getOptionsMissingReqsOptionOptIdMissingReqsGetMock()),
+      JSON.stringify(getOptionsMissingReqsOptionOptIdMissingReqsPostMock()),
       {
         status: 200,
         headers: {
@@ -1355,10 +1268,10 @@ export const getFastAPIMock = () => [
       },
     });
   }),
-  http.get("*/degree/:degreeId/missing_reqs", async () => {
+  http.post("*/degree/:degreeId/missing_reqs", async () => {
     await delay(1000);
     return new HttpResponse(
-      JSON.stringify(getDegreeMissingReqsDegreeDegreeIdMissingReqsGetMock()),
+      JSON.stringify(getDegreeMissingReqsDegreeDegreeIdMissingReqsPostMock()),
       {
         status: 200,
         headers: {
@@ -1367,10 +1280,10 @@ export const getFastAPIMock = () => [
       },
     );
   }),
-  http.get("*/courses/can-take/:courseCode", async () => {
+  http.post("*/courses/can-take/:courseCode", async () => {
     await delay(1000);
     return new HttpResponse(
-      JSON.stringify(getCoursesCanTakeCoursesCanTakeCourseCodeGetMock()),
+      JSON.stringify(getCoursesCanTakeCoursesCanTakeCourseCodePostMock()),
       {
         status: 200,
         headers: {
