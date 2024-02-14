@@ -76,7 +76,7 @@ export const TermTableView = ({
           return (
             <div
               key={term}
-              className="xl:w-128 flex w-36 flex-col md:w-52 lg:w-80"
+              className="flex w-36 flex-col md:w-52 lg:w-80 xl:w-128"
             >
               <h2 className="my-2 text-center text-xl font-semibold">{term}</h2>
               <div className="h-128 space-y-4">
