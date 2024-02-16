@@ -1,39 +1,59 @@
-import { CourseViewProps } from "~/pages/PlanningPage";
-import { Pane } from "../pane/Pane";
-import clsx from "clsx";
+import { CourseViewProps, ModalMode } from "~/pages/PlanningPage";
 import { CourseSelectionPane } from "../courseSelectionPane/CourseSelectionPane";
 import { useState } from "react";
 import { CourseWithTagsSchema } from "~/api/endpoints";
-import { CourseLarge } from "../courseLarge/CourseLarge";
 import { toast } from "react-toastify";
-import { TermTitle } from "./TermTitle";
+import { TermColumn } from "./TermColumn";
+import { CourseInfoPane } from "./CourseInfoPane";
 
 export const YearTableView = ({
   courseData,
   focusedTerm,
   setCourseData,
 }: CourseViewProps) => {
+  const selectedCourseData = Object.fromEntries(
+    Object.entries(courseData).filter((_, ind) => {
+      if (ind % 2 === 0) {
+        // otherwise, allow this term and the previous
+        return ind === focusedTerm || ind === focusedTerm - 1;
+      } else {
+        return ind === focusedTerm || ind === focusedTerm + 1;
+      }
+    }),
+  );
+
+  const firstSelectedCourse =
+    selectedCourseData[Object.keys(selectedCourseData)[0]][
+      Object.keys(selectedCourseData[Object.keys(selectedCourseData)[0]])[0]
+    ];
+  const [selectedCourse, setSelectedCourse] = useState<CourseWithTagsSchema>(
+    firstSelectedCourse || {
+      courseCode: "",
+      courseName: "",
+    },
+  );
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTerm, setSelectedTerm] = useState<string>("1A");
-  const [selectedCourse, setSelectedCourse] = useState<CourseWithTagsSchema>({
-    courseCode: "",
-    courseName: "",
-  });
-  const [modalMode, setModalMode] = useState<"add" | "replace">("add");
+  const [modalMode, setModalMode] = useState<ModalMode>("add");
 
   const openModal = (
     term: string,
-    selectedCourse?: CourseWithTagsSchema,
-    mode: "add" | "replace" = "add",
+    options?: {
+      course?: CourseWithTagsSchema;
+      mode?: ModalMode;
+    },
   ) => {
     setSelectedTerm(term);
-    if (selectedCourse) {
-      setSelectedCourse(selectedCourse);
+    if (options?.course) {
+      setSelectedCourse(options.course);
     }
-    setModalMode(mode);
+    if (options?.mode) {
+      setModalMode(options.mode);
+    }
+
     setIsModalOpen(true);
   };
-
   const onAcceptCourse = (course: CourseWithTagsSchema) => {
     setCourseData((prev) => {
       if (course.courseCode === selectedCourse.courseCode) {
@@ -67,17 +87,6 @@ export const YearTableView = ({
     setSelectedCourse({ courseCode: "", courseName: "" });
   };
 
-  const selectedCourseData = Object.fromEntries(
-    Object.entries(courseData).filter((_, ind) => {
-      if (ind % 2 === 0) {
-        // otherwise, allow this term and the previous
-        return ind === focusedTerm || ind === focusedTerm - 1;
-      } else {
-        return ind === focusedTerm || ind === focusedTerm + 1;
-      }
-    }),
-  );
-
   return (
     <div className="flex h-[calc(100vh-10rem)] overflow-x-auto">
       <CourseSelectionPane
@@ -91,40 +100,15 @@ export const YearTableView = ({
       <div className="mr-4 flex space-x-4">
         {Object.keys(selectedCourseData).map((term) => {
           return (
-            <div
+            <TermColumn
               key={term}
-              className="flex w-24 flex-col md:w-36 lg:w-52 xl:w-80"
-            >
-              <TermTitle termName={term} />
-              <div className="h-128 space-y-4">
-                {Object.values(courseData?.[term])?.map((course) => {
-                  if (course) {
-                    return (
-                      <CourseLarge
-                        className="h-32 cursor-pointer"
-                        key={`${term}-${course.courseCode}`}
-                        onDelete={() => {
-                          console.log("clicked");
-                          onDeleteCourse(term, course.courseCode);
-                        }}
-                        onReplace={() => {
-                          setSelectedCourse(course);
-                          openModal(term, course);
-                        }}
-                        onClick={() => {}}
-                        course={course}
-                      />
-                    );
-                  }
-                })}
-                <button
-                  className="flex w-full items-center justify-center rounded-lg bg-white"
-                  onClick={() => openModal(term)}
-                >
-                  <div className="text-4xl">+</div>
-                </button>
-              </div>
-            </div>
+              term={term}
+              onDeleteCourse={onDeleteCourse}
+              openModal={openModal}
+              courseData={selectedCourseData}
+              setSelectedCourse={setSelectedCourse}
+              courseWidth="medium"
+            />
           );
         })}
 
@@ -146,18 +130,7 @@ export const YearTableView = ({
           ) : null
         }
       </div>
-      <Pane className=" w-full space-y-4 px-6 py-4 md:min-w-72 lg:min-w-96 xl:min-w-fit">
-        <h2 className="text-4xl">{selectedCourse?.courseCode}</h2>
-        <h3 className="text-2xl">{selectedCourse?.courseName}</h3>
-        <div
-          className={clsx(
-            "h-6 w-28 rounded-xl",
-            selectedCourse?.tags?.[0].color &&
-              `bg-${selectedCourse?.tags?.[0].color}-400`,
-          )}
-        />
-        <div>{selectedCourse?.description}</div>
-      </Pane>
+      <CourseInfoPane selectedCourse={selectedCourse} />
     </div>
   );
 };

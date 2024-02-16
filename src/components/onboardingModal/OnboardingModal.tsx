@@ -64,7 +64,7 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
 
                   <p className="">
                     Welcome to your planner! Before you get started, enter your
-                    programd and the year you started that program to
+                    program and the year you started that program to
                     automatically fill out your mandatory courses.
                   </p>
                   <p className="">

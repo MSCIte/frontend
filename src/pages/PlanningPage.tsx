@@ -26,6 +26,8 @@ export interface CourseViewProps {
   maxCoursesInATerm: number;
 }
 
+export type ModalMode = "add" | "replace";
+
 export const PlanningPage = () => {
   const maxCoursesInATerm = 6; //TODO: get this from the backend, or get it calculated
 

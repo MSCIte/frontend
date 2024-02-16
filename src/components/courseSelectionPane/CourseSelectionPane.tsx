@@ -9,8 +9,7 @@ import { usePlanStore } from "~/stores";
 
 import { Dialog, Transition } from "@headlessui/react";
 import { Pane } from "../pane/Pane";
-
-export type CourseSelectionPaneModes = "add" | "replace";
+import { ModalMode } from "~/pages/PlanningPage";
 
 interface CourseSelectionPaneProps {
   initialCourse?: CourseWithTagsSchema;
@@ -18,7 +17,7 @@ interface CourseSelectionPaneProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   onCancel?: () => void;
-  mode?: CourseSelectionPaneModes;
+  mode?: ModalMode;
 }
 
 // This will be inside another pane (rounded courners padding etc.)
@@ -29,6 +28,7 @@ export const CourseSelectionPane = ({
   isOpen,
   setIsOpen,
   onCancel,
+  mode,
 }: CourseSelectionPaneProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCourse, setSelectedCourse] = useState<
@@ -152,34 +152,43 @@ export const CourseSelectionPane = ({
                     </div>
                   </div>
                   <div className="col-span-2 flex flex-col space-y-4 p-8">
-                    <h1 className="text-3xl">
-                      {selectedCourse?.courseCode}: {selectedCourse?.courseName}
-                    </h1>
-                    <div className="space-x-2">
-                      <span>Degree Requirements: </span>
-                      {selectedCourse?.tags?.map((tag) => (
-                        <span
-                          key={tag.code}
-                          className={clsx(
-                            "inline-block rounded-full px-2 py-1 text-white",
-                            `bg-${tag.color}-400`,
-                          )}
-                        >
-                          {tag.longName}
-                        </span>
-                      ))}
-                    </div>
-                    <div>
-                      <span>Description: </span>
-                      {selectedCourse?.description}
-                    </div>
+                    {selectedCourse?.courseCode ? (
+                      <>
+                        <h1 className="text-3xl">
+                          {selectedCourse?.courseCode}:{" "}
+                          {selectedCourse?.courseName}
+                        </h1>
+                        <div className="space-x-2">
+                          <span>Degree Requirements: </span>
+                          {selectedCourse?.tags?.map((tag) => (
+                            <span
+                              key={tag.code}
+                              className={clsx(
+                                "inline-block rounded-full px-2 py-1 text-white",
+                                `bg-${tag.color}-400`,
+                              )}
+                            >
+                              {tag.longName}
+                            </span>
+                          ))}
+                        </div>
+                        <div>
+                          <span>Description: </span>
+                          {selectedCourse?.description}
+                        </div>
 
-                    <button
-                      className="!mt-auto ml-auto mr-0 rounded-lg bg-gray-300 p-2"
-                      onClick={() => onCourseAccept?.(selectedCourse!)}
-                    >
-                      + Add to Course List
-                    </button>
+                        <button
+                          className="!mt-auto ml-auto mr-0 rounded-lg bg-gray-300 p-2"
+                          onClick={() => onCourseAccept?.(selectedCourse!)}
+                        >
+                          {mode === "replace"
+                            ? "Replace Course"
+                            : "+ Add to Course List"}
+                        </button>
+                      </>
+                    ) : (
+                      <h1 className="text-3xl">Select a Course to Add</h1>
+                    )}
                   </div>
                 </div>
               </Pane>
