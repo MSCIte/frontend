@@ -6,6 +6,7 @@ import { useState } from "react";
 import { CourseWithTagsSchema } from "~/api/endpoints";
 import { CourseLarge } from "../courseLarge/CourseLarge";
 import { toast } from "react-toastify";
+import { TermTitle } from "./TermTitle";
 
 export const YearTableView = ({
   courseData,
@@ -94,7 +95,7 @@ export const YearTableView = ({
               key={term}
               className="flex w-24 flex-col md:w-36 lg:w-52 xl:w-80"
             >
-              <h2 className="my-2 text-center text-xl font-semibold">{term}</h2>
+              <TermTitle termName={term} />
               <div className="h-128 space-y-4">
                 {Object.values(courseData?.[term])?.map((course) => {
                   if (course) {

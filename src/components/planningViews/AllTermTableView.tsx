@@ -4,6 +4,7 @@ import { CourseViewProps } from "~/pages/PlanningPage";
 import { CourseSelectionPane } from "../courseSelectionPane/CourseSelectionPane";
 import { CourseWithTagsSchema } from "~/api/endpoints";
 import { toast } from "react-toastify";
+import { TermTitle } from "./TermTitle";
 
 export const AllTermsTableView = ({
   courseData,
@@ -69,7 +70,7 @@ export const AllTermsTableView = ({
         {Object.keys(courseData).map((term) => {
           return (
             <div key={term} className="flex w-36 flex-col">
-              <h2 className="my-2 text-center text-xl font-semibold">{term}</h2>
+              <TermTitle termName={term} />
               <div className="h-96 space-y-4">
                 {Object.values(courseData?.[term])?.map((course) => {
                   if (course) {
