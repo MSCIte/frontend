@@ -11,7 +11,7 @@ export const TermTitle = (props: TermTitleProps) => {
 
   if (
     !["1A", "1B", "2A", "2B"].includes(props.termName) && // first few terms have 6 courses by default
-    Object.keys(coursesInTerm).length > 5 
+    Object.keys(coursesInTerm).length > 5
   ) {
     return (
       <h2 className="my-2 text-center text-xl font-semibold">

@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import { Pane } from "../pane/Pane";
+import { twMerge } from "tailwind-merge";
 
 export interface RequirementData {
   name: string;
@@ -11,6 +12,7 @@ export interface RequirementData {
 interface RequirementsPaneProps {
   title: string;
   data: RequirementData[];
+  className?: string;
 }
 
 const colorVariants = {
@@ -29,8 +31,8 @@ const colorVariants = {
 
 export const RequirementsPane = (props: RequirementsPaneProps) => {
   return (
-    <Pane>
-      <h3 className="text-xl font-medium">{props.title}</h3>
+    <Pane className={props?.className}>
+      <h3 className={twMerge("text-xl font-medium")}>{props.title}</h3>
       <div className="mt-4">
         {props.data.map((requirement, ind) => (
           <div className="my-2" key={`req-${props.title}-${ind}`}>

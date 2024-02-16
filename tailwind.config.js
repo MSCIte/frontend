@@ -24,6 +24,10 @@ export default {
       pattern:
         /bg-(red|green|orange|yellow|blue|purple|pink|indigo|gray)-[0-9]{1,2}00/,
     },
+    {
+      pattern:
+        /border-l-(red|green|orange|yellow|blue|purple|pink|indigo|gray)-400/,
+    },
   ],
   plugins: [],
 };

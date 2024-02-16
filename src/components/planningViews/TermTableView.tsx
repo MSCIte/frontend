@@ -1,30 +1,50 @@
-import { CourseViewProps } from "~/pages/PlanningPage";
-import { CourseLarge } from "../courseLarge/CourseLarge";
-import { Pane } from "../pane/Pane";
-import clsx from "clsx";
+import { CourseViewProps, ModalMode } from "~/pages/PlanningPage";
 import { useState } from "react";
 import { CourseWithTagsSchema } from "~/api/endpoints";
 import { CourseSelectionPane } from "../courseSelectionPane/CourseSelectionPane";
 import { toast } from "react-toastify";
-import { TermTitle } from "./TermTitle";
+import { TermColumn } from "./TermColumn";
+import { CourseInfoPane } from "./CourseInfoPane";
 
 export const TermTableView = ({
   courseData,
   focusedTerm,
   setCourseData,
 }: CourseViewProps) => {
+  const selectedCourseData = Object.fromEntries(
+    Object.entries(courseData).filter((_, ind) => ind === focusedTerm),
+  );
+
+  const firstSelectedCourse =
+    selectedCourseData[Object.keys(selectedCourseData)[0]][
+      Object.keys(selectedCourseData[Object.keys(selectedCourseData)[0]])[0]
+    ];
+  const [selectedCourse, setSelectedCourse] = useState<CourseWithTagsSchema>(
+    firstSelectedCourse || {
+      courseCode: "",
+      courseName: "",
+    },
+  );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTerm, setSelectedTerm] = useState<string>("1A");
-  const [selectedCourse, setSelectedCourse] = useState<CourseWithTagsSchema>({
-    courseCode: "",
-    courseName: "",
-  });
 
-  const openModal = (term: string, selectedCourse?: CourseWithTagsSchema) => {
+  const [modalMode, setModalMode] = useState<ModalMode>("add");
+
+  const openModal = (
+    term: string,
+    options?: {
+      course?: CourseWithTagsSchema;
+      mode?: ModalMode;
+    },
+  ) => {
     setSelectedTerm(term);
-    if (selectedCourse) {
-      setSelectedCourse(selectedCourse);
+    if (options?.course) {
+      setSelectedCourse(options.course);
     }
+    if (options?.mode) {
+      setModalMode(options.mode);
+    }
+
     setIsModalOpen(true);
   };
 
@@ -59,55 +79,29 @@ export const TermTableView = ({
     setSelectedTerm("");
     setSelectedCourse({ courseCode: "", courseName: "" });
   };
-  const selectedCourseData = Object.fromEntries(
-    Object.entries(courseData).filter((_, ind) => ind === focusedTerm),
-  );
 
   return (
-    <div className="flex h-[calc(100vh-10rem)] overflow-x-auto">
+    <div className="flex h-[calc(100vh-10rem)] w-full justify-between overflow-x-auto">
       <CourseSelectionPane
         initialCourse={selectedCourse}
         isOpen={isModalOpen}
         setIsOpen={setIsModalOpen}
         onCourseAccept={onAcceptCourse}
         onCancel={unsetCourseSelections}
+        mode={modalMode}
       />
-      <div className="mr-4 flex space-x-4">
+      <div className="mr-4 flex space-x-4 overflow-x-scroll">
         {Object.keys(selectedCourseData).map((term) => {
           return (
-            <div
+            <TermColumn
               key={term}
-              className="flex w-36 flex-col md:w-52 lg:w-80 xl:w-128"
-            >
-              <TermTitle termName={term} />
-              <div className="h-128 space-y-4">
-                {Object.values(courseData?.[term])?.map((course) => {
-                  if (course) {
-                    return (
-                      <CourseLarge
-                        className="h-32 cursor-pointer"
-                        key={`${term}-${course.courseCode}`}
-                        onDelete={() => {
-                          console.log("clicked");
-                          onDeleteCourse(term, course.courseCode);
-                        }}
-                        onReplace={() => {
-                          openModal(term, course);
-                        }}
-                        onClick={() => setSelectedCourse(course)}
-                        course={course}
-                      />
-                    );
-                  }
-                })}
-                <button
-                  className="flex w-full items-center justify-center rounded-lg bg-white"
-                  onClick={() => openModal(term)}
-                >
-                  <div className="text-4xl">+</div>
-                </button>
-              </div>
-            </div>
+              term={term}
+              onDeleteCourse={onDeleteCourse}
+              openModal={openModal}
+              courseData={selectedCourseData}
+              setSelectedCourse={setSelectedCourse}
+              courseWidth="large"
+            />
           );
         })}
 
@@ -128,18 +122,7 @@ export const TermTableView = ({
           ) : null
         }
       </div>
-      <Pane className="w-full space-y-4 px-6 py-4 md:min-w-72 lg:min-w-96 xl:min-w-fit">
-        <h2 className="text-4xl">{selectedCourse?.courseCode}</h2>
-        <h3 className="text-2xl">{selectedCourse?.courseName}</h3>
-        <div
-          className={clsx(
-            "h-6 w-28 rounded-xl",
-            selectedCourse?.tags?.[0].color &&
-              `bg-${selectedCourse?.tags?.[0].color}-400`,
-          )}
-        />
-        <div>{selectedCourse?.description}</div>
-      </Pane>
+      <CourseInfoPane selectedCourse={selectedCourse} />
     </div>
   );
 };

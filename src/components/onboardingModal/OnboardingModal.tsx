@@ -11,7 +11,7 @@ interface OnboardingModalProps {
 }
 
 export const OnboardingModal = (props: OnboardingModalProps) => {
-  const { major, setMajor } = usePlanStore();
+  const { major, setMajor, resetCourses } = usePlanStore();
 
   const { data: degrees, isLoading } = useDegreesDegreeGet();
 
@@ -64,7 +64,7 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
 
                   <p className="">
                     Welcome to your planner! Before you get started, enter your
-                    programd and the year you started that program to
+                    program and the year you started that program to
                     automatically fill out your mandatory courses.
                   </p>
                   <p className="">
@@ -133,6 +133,7 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
                     className="mx-auto block"
                     onClick={() => {
                       props.setIsOpen(false);
+                      resetCourses();
                       localStorage.setItem("onboardingComplete", "true");
                     }}
                   />
