@@ -2,7 +2,7 @@ import { CourseWithTagsSchema } from "~/api/endpoints";
 import { CourseData } from "~/sampleData";
 import { CourseSmall } from "../courseSmall/CourseSmall";
 import { TermTitle } from "./TermTitle";
-import { memo, useMemo } from "react";
+import { useMemo } from "react";
 import { CourseLarge } from "../courseLarge/CourseLarge";
 import { twMerge } from "tailwind-merge";
 import { ModalMode } from "~/pages/PlanningPage";

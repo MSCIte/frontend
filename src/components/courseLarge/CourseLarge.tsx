@@ -1,8 +1,8 @@
 import { CourseWithTagsSchema } from "~/api/endpoints";
 import { Pane } from "../pane/Pane";
 import styles from "./CourseLarge.module.css";
-import clsx from "clsx";
 import { TrashIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
+import { twMerge } from "tailwind-merge";
 export interface Tag {
   name: string;
   color: string;
@@ -17,9 +17,15 @@ interface CourseProps {
 }
 
 export const CourseLarge = (props: CourseProps) => {
+  console.log(props.course.tags?.[0].color);
   return (
     <Pane
-      className={clsx(styles.accentColor, props?.className)}
+      className={twMerge(
+        props.course.tags?.[0].color
+          ? `border-l-4 border-l-${props.course.tags?.[0].color}-400`
+          : `border-l-4 border-l-blue-400`,
+        props?.className,
+      )}
       onClick={props.onClick}
     >
       <div className="relative">
@@ -40,7 +46,7 @@ export const CourseLarge = (props: CourseProps) => {
         </div>
         <div className="absolute right-0 top-0 ">
           <button
-            className="transform text-gray-300 transition duration-200 hover:scale-110 hover:text-gray-400 "
+            className="transform text-gray-300 transition duration-200 hover:scale-105 hover:text-gray-400 "
             onClick={(e) => {
               e.stopPropagation();
               props.onReplace?.();
@@ -49,7 +55,7 @@ export const CourseLarge = (props: CourseProps) => {
             <PencilSquareIcon className="h-6 w-6 " />
           </button>
           <button
-            className="transform text-gray-300 transition duration-200 hover:scale-110 hover:text-gray-400 "
+            className="transform text-gray-300 transition duration-200 hover:scale-105 hover:text-gray-400 "
             onClick={(e) => {
               e.stopPropagation();
               props.onDelete();

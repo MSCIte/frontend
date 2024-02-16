@@ -11,7 +11,7 @@ interface OnboardingModalProps {
 }
 
 export const OnboardingModal = (props: OnboardingModalProps) => {
-  const { major, setMajor } = usePlanStore();
+  const { major, setMajor, resetCourses } = usePlanStore();
 
   const { data: degrees, isLoading } = useDegreesDegreeGet();
 
@@ -133,6 +133,7 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
                     className="mx-auto block"
                     onClick={() => {
                       props.setIsOpen(false);
+                      resetCourses();
                       localStorage.setItem("onboardingComplete", "true");
                     }}
                   />

@@ -25,7 +25,7 @@ export const CourseSmall = (props: CourseSmallSchema) => {
         </div>
         {/* Trash can button in top right */}
         <button
-          className="absolute right-0 top-0 transform text-gray-300 transition duration-200 hover:scale-110 hover:text-gray-400 "
+          className="absolute right-0 top-0 transform text-gray-300 transition duration-200 hover:scale-105 hover:text-gray-400 "
           onClick={(e) => {
             e.stopPropagation();
             props.onDelete();

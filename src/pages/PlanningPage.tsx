@@ -15,8 +15,8 @@ import { usePlanStore } from "~/stores";
 import { useTagsCoursesTagsGet } from "~/api/endpoints";
 
 import { ArrowPathIcon } from "@heroicons/react/24/solid";
+import { DocumentChartBarIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { sortByKeys } from "~/utils";
-import { toast } from "react-toastify";
 
 export interface CourseViewProps {
   courseData: CourseData;
@@ -45,6 +45,7 @@ export const PlanningPage = () => {
     courses,
     setCourses,
     major,
+    coursesToCSV,
   } = usePlanStore();
 
   useEffect(() => {
@@ -199,30 +200,15 @@ export const PlanningPage = () => {
               />
               <ActionButton
                 text="Clear Localstorage"
-                icon={<ArrowPathIcon className="h-6 w-6 text-gray-400" />}
+                icon={<TrashIcon className="h-6 w-6 text-gray-400" />}
                 onClick={() => localStorage.clear()}
               />
               <ActionButton
-                text="Share"
+                text="Export"
                 icon={
-                  <div className="text-gray-400">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="h-6 w-6"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z"
-                      />
-                    </svg>
-                  </div>
+                  <DocumentChartBarIcon className="h-6 w-6 text-gray-400" />
                 }
-                onClick={() => toast("Not implemented yet")}
+                onClick={() => coursesToCSV()}
               />
             </div>
           </div>
