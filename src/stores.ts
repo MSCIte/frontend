@@ -127,6 +127,7 @@ export const usePlanStore = create<PlanState>()(
           element.download = "mscitePlan.csv";
           document.body.appendChild(element); // Required for this to work in FireFox
           element.click();
+          element.remove(); // cleanup
         },
       }),
       {
