@@ -4,6 +4,7 @@ import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 import { RequirementsPane } from "../requirementsPane/RequirementsPane";
 import { Pane } from "../pane/Pane";
 import { usePlanStore } from "~/stores";
+import { twMerge } from "tailwind-merge";
 
 const sampleRequirementsData = [
   {
@@ -82,47 +83,45 @@ export const Sidebar = () => {
   }, [isExpanded]);
 
   return (
+    // h-[calc(100vh-6rem)]
     <div
-      className={clsx(
-        "flex h-[calc(100vh-6rem)] flex-shrink-0 flex-grow-0 flex-col overflow-hidden transition-width",
+      className={twMerge(
+        "flex h-screen flex-shrink-0 flex-grow-0 flex-col overflow-clip transition-width",
         isExpanded ? "w-80 border-r-2" : "w-16",
       )}
     >
-      <div className="h-full">
-        <div className="flex justify-around p-4">
-          <h2 className={clsx("text-xl", !isExpanded && "hidden")}>
-            Academic Summary
-          </h2>
-          <button onClick={toggleSidebar} className="m-auto mr-0 h-6 w-6">
-            {isExpanded ? <ArrowLeftIcon /> : <ArrowRightIcon />}
-          </button>
-        </div>
+      <div className="flex justify-around p-4">
+        <h2 className={clsx("text-xl", !isExpanded && "hidden")}>
+          Academic Summary
+        </h2>
+        <button onClick={toggleSidebar} className="m-auto mr-0 h-6 w-6">
+          {isExpanded ? <ArrowLeftIcon /> : <ArrowRightIcon />}
+        </button>
+      </div>
 
-        {!isExpanded && (
-          <div className={clsx("lineDownCenter mt-4 h-full w-full")} />
-        )}
+      {!isExpanded && (
+        <div className={clsx("lineDownCenter mt-4 h-full w-full")} />
+      )}
+      {/* h-[calc(100%-4rem)]  */}
+      <div className={clsx("overflow-y-auto p-4", !isExpanded && "hidden")}>
+        {sampleRequirementsData.map((requirement, ind) => (
+          <RequirementsPane
+            key={`${requirement}-${ind}`}
+            className="mb-4"
+            {...requirement}
+          />
+        ))}
 
-        <div
-          className={clsx(
-            "h-[calc(100%-4rem)] space-y-4 overflow-y-scroll p-4",
-            !isExpanded && "hidden",
-          )}
-        >
-          {sampleRequirementsData.map((requirement, ind) => (
-            <RequirementsPane key={`${requirement}-${ind}`} {...requirement} />
-          ))}
-
-          <Pane>
-            <div className="flex justify-center">
-              <button
-                className="rounded-lg bg-white p-2"
-                onClick={() => setIsOnboardingModalOpen(true)}
-              >
-                Change Major
-              </button>
-            </div>
-          </Pane>
-        </div>
+        <Pane className="mb-16">
+          <div className="flex justify-center">
+            <button
+              className="rounded-lg bg-white p-2"
+              onClick={() => setIsOnboardingModalOpen(true)}
+            >
+              Change Major
+            </button>
+          </div>
+        </Pane>
       </div>
     </div>
   );
