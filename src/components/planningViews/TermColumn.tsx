@@ -37,7 +37,7 @@ export const TermColumn = (props: TermColumnProps) => {
   return (
     <div key={props.term} className={twMerge("flex w-36 flex-col", colWidth)}>
       <TermTitle termName={props.term} />
-      <div className={twMerge("h-96 w-36 space-y-4", colWidth)}>
+      <div className={twMerge("w-36", colWidth)}>
         {coursesInTerm?.map((course) => {
           if (course) {
             if (
@@ -87,7 +87,7 @@ export const TermColumn = (props: TermColumnProps) => {
         {/* Only allow 8 courses in term max */}
         {coursesInTerm?.length <= 8 && (
           <button
-            className="flex w-full items-center justify-center rounded-lg bg-white p-1"
+            className="flex w-full items-center justify-center rounded-lg bg-white p-1 mb-4"
             onClick={() => props.openModal(props.term, { mode: "add" })}
           >
             <div className="bg-none text-4xl">+</div>

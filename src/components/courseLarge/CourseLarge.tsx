@@ -21,6 +21,7 @@ export const CourseLarge = (props: CourseProps) => {
   return (
     <Pane
       className={twMerge(
+        "mb-4",
         props.course.tags?.[0].color
           ? `border-l-4 border-l-${props.course.tags?.[0].color}-400`
           : `border-l-4 border-l-blue-400`,
