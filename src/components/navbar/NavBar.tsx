@@ -12,7 +12,7 @@ export const Navbar = () => {
   const navigation = [
     { name: "Plan", href: "/plan", current: isPlan },
     { name: "About", href: "/about", current: isAbout },
-    { name: "FAQ", href: "/faq", current: isFAQ },
+    { name: "Help", href: "/faq", current: isFAQ },
     { name: "Component Playground", href: "/demo", current: isDemo },
   ];
 
