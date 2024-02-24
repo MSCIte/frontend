@@ -380,6 +380,18 @@
           }
         }
       }
+    },
+    "/healthcheck": {
+      "get": {
+        "summary": "Read Root",
+        "operationId": "read_root_healthcheck_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": { "application/json": { "schema": {} } }
+          }
+        }
+      }
     }
   },
   "components": {
