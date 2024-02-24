@@ -11,7 +11,7 @@ export const Navbar = () => {
 
   const navigation = [
     { name: "Plan", href: "/plan", current: isPlan },
-    { name: "About", href: "/about", current: isAbout },
+    { name: "About MSCI Option", href: "/about", current: isAbout },
     { name: "Help", href: "/faq", current: isFAQ },
     { name: "Component Playground", href: "/demo", current: isDemo },
   ];
