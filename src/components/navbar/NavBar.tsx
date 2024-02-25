@@ -8,11 +8,13 @@ export const Navbar = () => {
   const isAbout = useRoute("/about")[0];
   const isFAQ = useRoute("/faq")[0];
   const isDemo = useRoute("/demo")[0];
+  const isHelp = useRoute("/help")[0];
 
   const navigation = [
     { name: "Plan", href: "/plan", current: isPlan },
-    { name: "About", href: "/about", current: isAbout },
-    { name: "Help", href: "/faq", current: isFAQ },
+    { name: "Help", href: "/help", current: isHelp },
+    { name: "About MSCI Option", href: "/about", current: isAbout },
+    { name: "FAQ", href: "/faq", current: isFAQ },
     { name: "Component Playground", href: "/demo", current: isDemo },
   ];
 
@@ -47,7 +49,7 @@ export const Navbar = () => {
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
-                      <a
+                      <Link
                         key={item.name}
                         href={item.href}
                         className={clsx(
@@ -59,7 +61,7 @@ export const Navbar = () => {
                         aria-current={item.current ? "page" : undefined}
                       >
                         {item.name}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>

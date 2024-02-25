@@ -11,13 +11,18 @@ export const CourseInfoPane = ({ selectedCourse }: InfoPaneProps) => {
     <Pane className="flex-1 space-y-4 px-6 py-4 md:min-w-40 lg:min-w-60 xl:min-w-80">
       <h2 className="text-4xl">{selectedCourse?.courseCode}</h2>
       <h3 className="text-2xl">{selectedCourse?.courseName}</h3>
-      <div
-        className={twMerge(
-          "h-6 w-28 rounded-xl",
-          selectedCourse?.tags?.[0].color &&
-            `bg-${selectedCourse?.tags?.[0].color}-400`,
-        )}
-      />
+      {selectedCourse?.tags?.map((tag) => (
+        <div
+          className={twMerge(
+            "h-6 w-28 rounded-xl text-center text-white font-bold",
+            selectedCourse?.tags?.[0].color &&
+              `bg-${selectedCourse?.tags?.[0].color}-400`,
+          )}
+        >
+          {tag?.longName}
+        </div>
+      ))}
+
       <div>{selectedCourse?.description}</div>
     </Pane>
   );
