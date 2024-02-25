@@ -497,6 +497,10 @@
             "type": "array",
             "title": "Mandatorycourses"
           },
+          "numberOfMandatoryCourses": {
+            "type": "integer",
+            "title": "Numberofmandatorycourses"
+          },
           "additionalReqs": {
             "additionalProperties": {
               "$ref": "#/components/schemas/AdditionalReqCount"
@@ -506,7 +510,11 @@
           }
         },
         "type": "object",
-        "required": ["mandatoryCourses", "additionalReqs"],
+        "required": [
+          "mandatoryCourses",
+          "numberOfMandatoryCourses",
+          "additionalReqs"
+        ],
         "title": "DegreeMissingReqs"
       },
       "DegreeReqs": {

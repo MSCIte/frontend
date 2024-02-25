@@ -14,7 +14,7 @@ export const CourseInfoPane = ({ selectedCourse }: InfoPaneProps) => {
       {selectedCourse?.tags?.map((tag) => (
         <div
           className={twMerge(
-            "h-6 w-28 rounded-xl text-center text-white font-bold",
+            "h-6 w-28 rounded-xl text-center font-bold text-white",
             selectedCourse?.tags?.[0].color &&
               `bg-${selectedCourse?.tags?.[0].color}-400`,
           )}

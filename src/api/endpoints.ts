@@ -99,6 +99,7 @@ export type DegreeMissingReqsAdditionalReqs = {
 export interface DegreeMissingReqs {
   additionalReqs: DegreeMissingReqsAdditionalReqs;
   mandatoryCourses: string[];
+  numberOfMandatoryCourses: number;
 }
 
 export interface DegreeMissingIn {
@@ -1197,6 +1198,10 @@ export const getDegreeMissingReqsDegreeDegreeIdMissingReqsPostResponseMock = (
     { length: faker.number.int({ min: 1, max: 10 }) },
     (_, i) => i + 1,
   ).map(() => faker.word.sample()),
+  numberOfMandatoryCourses: faker.number.int({
+    min: undefined,
+    max: undefined,
+  }),
   ...overrideResponse,
 });
 
