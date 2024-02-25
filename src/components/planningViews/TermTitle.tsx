@@ -9,9 +9,21 @@ interface TermTitleProps {
 export const TermTitle = (props: TermTitleProps) => {
   const coursesInTerm = usePlanStore((state) => state.courses[props.termName]);
 
+  console.log("coursesInTerm", coursesInTerm);
+
   if (
-    !["1A", "1B", "2A", "2B"].includes(props.termName) && // first few terms have 6 courses by default
-    Object.keys(coursesInTerm).length > 5
+    Object.keys(coursesInTerm).length > 5 && // Greater than 5 courses
+    Object.values(coursesInTerm).some(
+      (
+        course, // those courses have at least 1 non-mandatory course
+      ) =>
+        course.tags?.some(
+          (tag) =>
+            !["1A", "1B", "2A", "2B", "3A", "3B", "4A", "4B"].includes(
+              tag.code,
+            ),
+        ),
+    ) // overloading
   ) {
     return (
       <h2 className="my-2 text-center text-xl font-semibold">
