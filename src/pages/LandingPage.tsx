@@ -1,10 +1,11 @@
 import { Navbar } from "~/components/navbar/NavBar";
+import AppScreenshot from "~/assets/appScreenshot.png";
 
 export const LandingPage = () => {
   return (
     <div>
       <Navbar />
-      <div className="flex mt-4 items-center justify-center space-x-4 p-12">
+      <div className="mt-4 flex items-center justify-center space-x-4 p-12">
         <div>
           <h1 className="text-3xl font-medium">Option planning made easy.</h1>
           <p className="mt-6 text-xl">
@@ -19,8 +20,8 @@ export const LandingPage = () => {
             </a>
           </div>
         </div>
-        <div className="m-auto -skew-x-3 skew-y-3 rounded-lg border drop-shadow-lg max-w-[50rem]">
-          <img src="public/media/appScreenshot.png" />
+        <div className="m-auto max-w-[50rem] -skew-x-3 skew-y-3 rounded-lg border drop-shadow-lg">
+          <img src={AppScreenshot} />
         </div>
       </div>
     </div>
