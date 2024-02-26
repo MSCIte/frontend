@@ -56,7 +56,7 @@ export interface ValidationError {
 
 export interface TagSchema {
   code: string;
-  color?: ColorsEnum;
+  color: ColorsEnum;
   longName: string;
   shortName: string;
 }
@@ -68,12 +68,25 @@ export interface RequirementsResults {
 
 export interface OptionRequirement {
   courses: string[];
+  name: string;
   numberOfCourses: number;
 }
 
 export interface OptionsSchema {
   optionName: string;
   requirements: OptionRequirement[];
+}
+
+export type MissingListCourses = { [key: string]: boolean };
+
+export interface MissingList {
+  courses: MissingListCourses;
+  listName: string;
+  totalCourseToComplete: number;
+}
+
+export interface MissingReqs {
+  lists: MissingList[];
 }
 
 export interface HTTPValidationError {
@@ -99,6 +112,7 @@ export type DegreeMissingReqsAdditionalReqs = {
 export interface DegreeMissingReqs {
   additionalReqs: DegreeMissingReqsAdditionalReqs;
   mandatoryCourses: string[];
+  numberOfMandatoryCourses: number;
 }
 
 export interface DegreeMissingIn {
@@ -134,7 +148,7 @@ export interface CourseWithTagsSchema {
 
 export type ColorsEnum = (typeof ColorsEnum)[keyof typeof ColorsEnum];
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
+ 
 export const ColorsEnum = {
   red: "red",
   green: "green",
@@ -391,7 +405,7 @@ export const optionsMissingReqsOptionOptIdMissingReqsPost = (
   optId: string,
   degreeMissingIn: DegreeMissingIn,
   options?: AxiosRequestConfig,
-): Promise<AxiosResponse<OptionRequirement[]>> => {
+): Promise<AxiosResponse<MissingReqs>> => {
   return axios.default.post(
     `/option/${optId}/missing_reqs`,
     degreeMissingIn,
@@ -1137,6 +1151,7 @@ export const getOptionsReqsOptionOptIdReqsGetResponseMock = (
       { length: faker.number.int({ min: 1, max: 10 }) },
       (_, i) => i + 1,
     ).map(() => faker.word.sample()),
+    name: faker.word.sample(),
     numberOfCourses: faker.number.int({ min: undefined, max: undefined }),
     ...overrideResponse,
   })),
@@ -1145,18 +1160,20 @@ export const getOptionsReqsOptionOptIdReqsGetResponseMock = (
 
 export const getOptionsMissingReqsOptionOptIdMissingReqsPostResponseMock = (
   overrideResponse: any = {},
-): OptionRequirement[] =>
-  Array.from(
+): MissingReqs => ({
+  lists: Array.from(
     { length: faker.number.int({ min: 1, max: 10 }) },
     (_, i) => i + 1,
   ).map(() => ({
-    courses: Array.from(
-      { length: faker.number.int({ min: 1, max: 10 }) },
-      (_, i) => i + 1,
-    ).map(() => faker.word.sample()),
-    numberOfCourses: faker.number.int({ min: undefined, max: undefined }),
+    courses: {
+      [faker.string.alphanumeric(5)]: faker.datatype.boolean(),
+    },
+    listName: faker.word.sample(),
+    totalCourseToComplete: faker.number.int({ min: undefined, max: undefined }),
     ...overrideResponse,
-  }));
+  })),
+  ...overrideResponse,
+});
 
 export const getDegreeReqsDegreeDegreeNameReqsGetResponseMock = (
   overrideResponse: any = {},
@@ -1197,6 +1214,10 @@ export const getDegreeMissingReqsDegreeDegreeIdMissingReqsPostResponseMock = (
     { length: faker.number.int({ min: 1, max: 10 }) },
     (_, i) => i + 1,
   ).map(() => faker.word.sample()),
+  numberOfMandatoryCourses: faker.number.int({
+    min: undefined,
+    max: undefined,
+  }),
   ...overrideResponse,
 });
 
@@ -1247,12 +1268,7 @@ export const getSearchCoursesCoursesSearchGetResponseMock = (
         (_, i) => i + 1,
       ).map(() => ({
         code: faker.word.sample(),
-        color: faker.helpers.arrayElement([
-          faker.helpers.arrayElement([
-            faker.helpers.arrayElement(Object.values(ColorsEnum)),
-          ]),
-          undefined,
-        ]),
+        color: faker.helpers.arrayElement(Object.values(ColorsEnum)),
         longName: faker.word.sample(),
         shortName: faker.word.sample(),
         ...overrideResponse,
@@ -1301,12 +1317,7 @@ export const getTagsCoursesTagsGetResponseMock = (
         (_, i) => i + 1,
       ).map(() => ({
         code: faker.word.sample(),
-        color: faker.helpers.arrayElement([
-          faker.helpers.arrayElement([
-            faker.helpers.arrayElement(Object.values(ColorsEnum)),
-          ]),
-          undefined,
-        ]),
+        color: faker.helpers.arrayElement(Object.values(ColorsEnum)),
         longName: faker.word.sample(),
         shortName: faker.word.sample(),
         ...overrideResponse,
@@ -1382,7 +1393,7 @@ export const getOptionsReqsOptionOptIdReqsGetMockHandler = (
 };
 
 export const getOptionsMissingReqsOptionOptIdMissingReqsPostMockHandler = (
-  overrideResponse?: OptionRequirement[],
+  overrideResponse?: MissingReqs,
 ) => {
   return http.post("*/option/:optId/missing_reqs", async () => {
     await delay(1000);

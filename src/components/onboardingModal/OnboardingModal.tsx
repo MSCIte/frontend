@@ -4,6 +4,7 @@ import { usePlanStore } from "~/stores";
 import { Pane } from "../pane/Pane";
 import { Fragment } from "react";
 import { Button } from "../Button";
+import { disciplineNameToFriendly } from "~/utils";
 
 interface OnboardingModalProps {
   isOpen: boolean;
@@ -95,7 +96,7 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
                         >
                           {degrees?.data?.map((degree) => (
                             <option key={degree} value={degree}>
-                              {degree}
+                              {disciplineNameToFriendly(degree)}
                             </option>
                           ))}
                         </select>

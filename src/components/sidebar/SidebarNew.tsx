@@ -1,14 +1,20 @@
 //@ts-nocheck
 
 import clsx from "clsx";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
 import {
   RequirementData,
   RequirementsPane,
 } from "../requirementsPane/RequirementsPane";
 import { usePlanStore } from "~/stores";
-import { useDegreeReqsDegreeDegreeNameReqsGet } from "~/api/endpoints";
+import {
+  useDegreeMissingReqsDegreeDegreeIdMissingReqsPost,
+  useDegreeReqsDegreeDegreeNameReqsGet,
+  useOptionsMissingReqsOptionOptIdMissingReqsPost,
+} from "~/api/endpoints";
+import { dataTagSymbol } from "@tanstack/react-query";
+import { MajorRequirementsPane } from "../requirementsPane/MajorRequirementsPane";
 
 // const sampleRequirementsData = [
 //   {
@@ -80,14 +86,96 @@ import { useDegreeReqsDegreeDegreeNameReqsGet } from "~/api/endpoints";
 export const Sidebar = () => {
   const [isExpanded, setIsExpanded] = useState(true);
 
-  const { major, completedCourseCodes } = usePlanStore();
+  const { major, courses, completedCourseCodes } = usePlanStore();
 
-  const { data: degreeReqs } = useDegreeReqsDegreeDegreeNameReqsGet(
-    major.name,
-    {
+  const { data: missingDegreeReqs, mutateAsync: getDegreeMissingReqs } =
+    useDegreeMissingReqsDegreeDegreeIdMissingReqsPost({
+      degreeId: major.name,
+      courseCodesTaken: completedCourseCodes(),
       year: major.year.toString(),
-    },
-  );
+    });
+
+  // console.log("missingDegreeReqs", missingDegreeReqs?.data);
+
+  const { data: missingOptionReqs, mutate: getOptionMissingReqs } =
+    useOptionsMissingReqsOptionOptIdMissingReqsPost();
+
+  // console.log("missingOptionReqs", missingOptionReqs?.data);
+
+  useEffect(() => {
+    getOptionMissingReqs({
+      optId: "management_sciences_option",
+      data: {
+        courseCodesTaken: completedCourseCodes(),
+        year: major.year.toString(),
+      },
+    });
+
+    getDegreeMissingReqs({
+      degreeId: major.name,
+      data: {
+        courseCodesTaken: completedCourseCodes(),
+        year: major.year.toString(),
+      },
+    });
+  }, [major, courses]);
+
+  const majorCompletionObj = useMemo<RequirementData[]>(() => {
+    if (!missingDegreeReqs?.data?.additionalReqs) {
+      return [];
+    }
+
+    const { data } = missingDegreeReqs;
+
+    const statusBarMajor: RequirementData[] = [
+      {
+        name: "mandatory",
+        requirementsCompleted:
+          data.numberOfMandatoryCourses - data.mandatoryCourses.length,
+        requirementsTotal: data.numberOfMandatoryCourses,
+        color: "blue",
+      },
+    ];
+
+    for (const [categoryCode, completionStatus] of Object.entries(
+      data.additionalReqs,
+    )) {
+      statusBarMajor.push({
+        name: categoryCode,
+        requirementsCompleted: completionStatus.completed,
+        requirementsTotal: completionStatus.total,
+        color: "blue",
+      });
+    }
+
+    // console.log("statusBarMajor", statusBarMajor);
+    return statusBarMajor;
+  }, [missingDegreeReqs?.data]);
+
+  const optionCompletionObj = useMemo<RequirementData[]>(() => {
+    if (!missingOptionReqs?.data) {
+      return [];
+    }
+
+    const { data } = missingOptionReqs;
+
+    console.log("missingOptionReqs", data);
+
+    const reqStatus = data.lists.map((req) => {
+      return {
+        name: req.listName,
+        requirementsCompleted: Object.values(req.courses).filter(
+          (course) => course,
+        ).length,
+        requirementsTotal: req.totalCourseToComplete,
+        color: "purple",
+      };
+    });
+
+    console.log("reqStatus", reqStatus);
+
+    return reqStatus;
+  }, [missingOptionReqs?.data]);
 
   // const { data: degreeMissingReqs } =
   //   useDegreeMissingReqsDegreeDegreeIdMissingReqsGet(major.name, {
@@ -128,9 +216,9 @@ export const Sidebar = () => {
   //   return reqData;
   // }, [degreeReqs, degreeMissingReqs?.data]);
 
-  // const toggleSidebar = useCallback(() => {
-  //   setIsExpanded(!isExpanded);
-  // }, [isExpanded]);
+  const toggleSidebar = useCallback(() => {
+    setIsExpanded(!isExpanded);
+  }, [isExpanded]);
 
   return (
     <div
@@ -144,9 +232,12 @@ export const Sidebar = () => {
           <h2 className={clsx("text-xl", !isExpanded && "hidden")}>
             Academic Summary
           </h2>
-          {/* <button onClick={toggleSidebar} className="m-auto mr-0 h-6 w-6">
+          <button
+            onClick={toggleSidebar}
+            className="m-auto mr-0 h-6 w-6 hover:scale-110"
+          >
             {isExpanded ? <ArrowLeftIcon /> : <ArrowRightIcon />}
-          </button> */}
+          </button>
         </div>
 
         {!isExpanded && (
@@ -162,10 +253,18 @@ export const Sidebar = () => {
           {/* Major requirement */}
           {/* <RequirementsPane
             title="Major Requirement"
-            data={majorCompletionStatus}
+            data={majorCompletionObj}
           /> */}
+          <MajorRequirementsPane
+            title="Major Requirement"
+            data={majorCompletionObj}
+          />
           {/* Option requirement */}
-          {/* <RequirementsPane key={`req-option`} {...requirement} /> */}
+          <RequirementsPane
+            key={`req-option`}
+            title="MSCI Option"
+            data={optionCompletionObj}
+          />
           {/* {sampleRequirementsData.map((requirement, ind) => (
             <RequirementsPane key={`${requirement}-${ind}`} {...requirement} />
           ))} */}

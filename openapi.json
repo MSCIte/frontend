@@ -89,11 +89,7 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": { "$ref": "#/components/schemas/OptionRequirement" },
-                  "title": "Response Options Missing Reqs Option  Opt Id  Missing Reqs Post"
-                }
+                "schema": { "$ref": "#/components/schemas/MissingReqs" }
               }
             }
           },
@@ -497,6 +493,10 @@
             "type": "array",
             "title": "Mandatorycourses"
           },
+          "numberOfMandatoryCourses": {
+            "type": "integer",
+            "title": "Numberofmandatorycourses"
+          },
           "additionalReqs": {
             "additionalProperties": {
               "$ref": "#/components/schemas/AdditionalReqCount"
@@ -506,7 +506,11 @@
           }
         },
         "type": "object",
-        "required": ["mandatoryCourses", "additionalReqs"],
+        "required": [
+          "mandatoryCourses",
+          "numberOfMandatoryCourses",
+          "additionalReqs"
+        ],
         "title": "DegreeMissingReqs"
       },
       "DegreeReqs": {
@@ -552,6 +556,35 @@
         "type": "object",
         "title": "HTTPValidationError"
       },
+      "MissingList": {
+        "properties": {
+          "listName": { "type": "string", "title": "Listname" },
+          "courses": {
+            "additionalProperties": { "type": "boolean" },
+            "type": "object",
+            "title": "Courses"
+          },
+          "totalCourseToComplete": {
+            "type": "integer",
+            "title": "Totalcoursetocomplete"
+          }
+        },
+        "type": "object",
+        "required": ["listName", "courses", "totalCourseToComplete"],
+        "title": "MissingList"
+      },
+      "MissingReqs": {
+        "properties": {
+          "lists": {
+            "items": { "$ref": "#/components/schemas/MissingList" },
+            "type": "array",
+            "title": "Lists"
+          }
+        },
+        "type": "object",
+        "required": ["lists"],
+        "title": "MissingReqs"
+      },
       "OptionRequirement": {
         "properties": {
           "courses": {
@@ -559,10 +592,11 @@
             "type": "array",
             "title": "Courses"
           },
-          "numberOfCourses": { "type": "integer", "title": "Numberofcourses" }
+          "numberOfCourses": { "type": "integer", "title": "Numberofcourses" },
+          "name": { "type": "string", "title": "Name" }
         },
         "type": "object",
-        "required": ["courses", "numberOfCourses"],
+        "required": ["courses", "numberOfCourses", "name"],
         "title": "OptionRequirement"
       },
       "OptionsSchema": {
@@ -590,15 +624,12 @@
       "TagSchema": {
         "properties": {
           "code": { "type": "string", "title": "Code" },
-          "color": {
-            "allOf": [{ "$ref": "#/components/schemas/ColorsEnum" }],
-            "default": "red"
-          },
+          "color": { "$ref": "#/components/schemas/ColorsEnum" },
           "shortName": { "type": "string", "title": "Shortname" },
           "longName": { "type": "string", "title": "Longname" }
         },
         "type": "object",
-        "required": ["code", "shortName", "longName"],
+        "required": ["code", "color", "shortName", "longName"],
         "title": "TagSchema"
       },
       "ValidationError": {
