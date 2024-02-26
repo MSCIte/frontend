@@ -5,7 +5,6 @@ import { RequirementsPane } from "~/components/requirementsPane/RequirementsPane
 import AllTermsView from "~/assets/allTermsView.svg?react";
 import YearView from "~/assets/yearView.svg?react";
 import TermView from "~/assets/termView.svg?react";
-import { Sidebar } from "~/components/sidebar/Sidebar";
 import { CourseSelectionPane } from "~/components/courseSelectionPane/CourseSelectionPane";
 import { CourseWithTagsSchema } from "~/api/endpoints";
 import { Navbar } from "~/components/navbar/NavBar";
@@ -84,7 +83,6 @@ export const DemoPage = () => {
       />
       <CourseSelectionPane isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
 
-      <Sidebar />
       <div style={{ width: "10rem" }}>
         <CourseSmall onDelete={() => {}} onReplace={() => {}} {...courseData} />
       </div>
