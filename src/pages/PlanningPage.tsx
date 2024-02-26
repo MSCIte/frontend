@@ -1,5 +1,5 @@
 import { ActionButton } from "~/components/actionButton/ActionButton";
-import { Sidebar } from "~/components/sidebar/Sidebar";
+import { Sidebar } from "~/components/sidebar/SidebarNew";
 import AllTermsView from "~/assets/allTermsView.svg?react";
 import YearView from "~/assets/yearView.svg?react";
 import TermView from "~/assets/termView.svg?react";
