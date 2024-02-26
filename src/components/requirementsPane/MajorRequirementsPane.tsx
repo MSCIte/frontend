@@ -30,7 +30,7 @@ export const MajorRequirementsPane = (props: MajorRequirementsPaneProps) => {
   const { major, setMajor } = usePlanStore((state) => ({
     major: state.major,
     setMajor: state.setMajor,
-    setIsOnboardingWindowOpen: state.setIsOnboardingModalOpen,
+    resetCourses: state.resetCourses,
   }));
 
   const { data: degrees } = useDegreesDegreeGet();
@@ -41,7 +41,9 @@ export const MajorRequirementsPane = (props: MajorRequirementsPaneProps) => {
         <select
           className="cursor-pointer rounded-sm border hover:bg-gray-100"
           value={major.name}
-          onChange={(e) => setMajor({ name: e.target.value, year: major.year })}
+          onChange={(e) => {
+            setMajor({ name: e.target.value, year: major.year });
+          }}
         >
           {degrees?.data?.map((degree) => (
             <option key={degree} value={degree}>

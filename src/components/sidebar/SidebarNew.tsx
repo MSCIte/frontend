@@ -1,19 +1,12 @@
-//@ts-nocheck
-
 import clsx from "clsx";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ArrowLeftIcon, ArrowRightIcon } from "@heroicons/react/24/solid";
-import {
-  RequirementData,
-  RequirementsPane,
-} from "../requirementsPane/RequirementsPane";
+import { RequirementData } from "../requirementsPane/RequirementsPane";
 import { usePlanStore } from "~/stores";
 import {
   useDegreeMissingReqsDegreeDegreeIdMissingReqsPost,
-  useDegreeReqsDegreeDegreeNameReqsGet,
   useOptionsMissingReqsOptionOptIdMissingReqsPost,
 } from "~/api/endpoints";
-import { dataTagSymbol } from "@tanstack/react-query";
 import { MajorRequirementsPane } from "../requirementsPane/MajorRequirementsPane";
 import { OptionsRequirementsPane } from "../requirementsPane/OptionRequirementsPane";
 
@@ -23,11 +16,7 @@ export const Sidebar = () => {
   const { major, option, courses, completedCourseCodes } = usePlanStore();
 
   const { data: missingDegreeReqs, mutateAsync: getDegreeMissingReqs } =
-    useDegreeMissingReqsDegreeDegreeIdMissingReqsPost({
-      degreeId: major.name,
-      courseCodesTaken: completedCourseCodes(),
-      year: major.year.toString(),
-    });
+    useDegreeMissingReqsDegreeDegreeIdMissingReqsPost();
 
   const { data: missingOptionReqs, mutate: getOptionMissingReqs } =
     useOptionsMissingReqsOptionOptIdMissingReqsPost();
@@ -40,7 +29,7 @@ export const Sidebar = () => {
         year: major.year.toString(),
       },
     });
-  }, [major, courses]);
+  }, [major, courses, completedCourseCodes, getDegreeMissingReqs]);
 
   useEffect(() => {
     getOptionMissingReqs({
@@ -50,7 +39,7 @@ export const Sidebar = () => {
         year: option.year.toString(),
       },
     });
-  }, [option, courses]);
+  }, [option, courses, completedCourseCodes, getOptionMissingReqs]);
 
   const majorCompletionObj = useMemo<RequirementData[]>(() => {
     if (!missingDegreeReqs?.data?.additionalReqs) {
@@ -74,15 +63,15 @@ export const Sidebar = () => {
     )) {
       statusBarMajor.push({
         name: categoryCode,
-        requirementsCompleted: completionStatus.completed,
-        requirementsTotal: completionStatus.total,
+        requirementsCompleted: parseInt(completionStatus.completed),
+        requirementsTotal: parseInt(completionStatus.total),
         color: "blue",
       });
     }
 
     // console.log("statusBarMajor", statusBarMajor);
     return statusBarMajor;
-  }, [missingDegreeReqs?.data]);
+  }, [missingDegreeReqs]);
 
   const optionCompletionObj = useMemo<RequirementData[]>(() => {
     if (!missingOptionReqs?.data) {
@@ -103,7 +92,7 @@ export const Sidebar = () => {
     });
 
     return reqStatus;
-  }, [missingOptionReqs?.data]);
+  }, [missingOptionReqs]);
 
   const toggleSidebar = useCallback(() => {
     setIsExpanded(!isExpanded);
