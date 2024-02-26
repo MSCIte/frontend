@@ -30,7 +30,7 @@ export const CourseSelectionPane = ({
   onCancel,
   mode,
 }: CourseSelectionPaneProps) => {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState<string | null>(null);
   const [selectedCourse, setSelectedCourse] = useState<
     CourseWithTagsSchema | undefined
   >(initialCourse);
@@ -47,7 +47,7 @@ export const CourseSelectionPane = ({
 
   useEffect(() => {
     setSelectedCourse(initialCourse);
-    if (initialCourse?.courseCode && !searchQuery) {
+    if (initialCourse?.courseCode && searchQuery == null) {
       setSearchQuery(initialCourse?.courseCode);
     }
   }, [initialCourse, searchQuery]);
@@ -84,7 +84,7 @@ export const CourseSelectionPane = ({
           id="courseSearch"
           className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-4 ps-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
           placeholder="Search for a course"
-          value={searchQuery}
+          value={searchQuery || ""}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
       </div>

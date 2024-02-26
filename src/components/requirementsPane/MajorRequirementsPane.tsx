@@ -37,23 +37,25 @@ export const MajorRequirementsPane = (props: MajorRequirementsPaneProps) => {
 
   return (
     <Pane className={props?.className}>
-      <h3 className={twMerge("cursor-pointer text-xl font-medium")}>
+      <h3 className={twMerge("cursor-pointer text-lg font-medium")}>
         <select
-          className="cursor-pointer rounded-sm border hover:bg-gray-100"
+          className="cursor-pointer rounded-sm border bg-gray-100 hover:bg-white"
           value={major.name}
           onChange={(e) => {
             setMajor({ name: e.target.value, year: major.year });
           }}
         >
-          {degrees?.data?.map((degree) => (
-            <option key={degree} value={degree}>
-              {disciplineNameToFriendly(degree)}
-            </option>
-          ))}
+          {degrees?.data
+            ?.filter((degree) => degree !== "management_engineering")
+            ?.map((degree) => (
+              <option key={degree} value={degree}>
+                {disciplineNameToFriendly(degree)}
+              </option>
+            ))}
         </select>
-        plan declared in{" "}
+        <span className="ml-1">Started in year of </span>
         <select
-          className="cursor-pointer rounded-sm border hover:bg-gray-100"
+          className="cursor-pointer rounded-sm border bg-gray-100 hover:bg-white"
           value={major.year}
           onChange={(e) =>
             setMajor({

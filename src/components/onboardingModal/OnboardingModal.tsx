@@ -94,11 +94,15 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
                           }
                           className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                         >
-                          {degrees?.data?.map((degree) => (
-                            <option key={degree} value={degree}>
-                              {disciplineNameToFriendly(degree)}
-                            </option>
-                          ))}
+                          {degrees?.data
+                            ?.filter(
+                              (degree) => degree !== "management_engineering",
+                            )
+                            ?.map((degree) => (
+                              <option key={degree} value={degree}>
+                                {disciplineNameToFriendly(degree)}
+                              </option>
+                            ))}
                         </select>
                       </div>
                       <div className="mt-4">

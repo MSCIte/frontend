@@ -1,7 +1,7 @@
 import { Pane } from "../pane/Pane";
 import { CoursePills } from "../courseSmallPill/CourseSmallPill";
 import { CourseWithTagsSchema } from "~/api/endpoints";
-import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
+import { TrashIcon } from "@heroicons/react/24/solid";
 interface CourseSmallSchema extends CourseWithTagsSchema {
   onDelete: () => void;
   onReplace: () => void;
@@ -11,7 +11,7 @@ interface CourseSmallSchema extends CourseWithTagsSchema {
 export const CourseSmall = (props: CourseSmallSchema) => {
   return (
     <Pane
-      className="group relative mb-4 h-28 w-28 cursor-pointer 2xl:h-36 2xl:w-36"
+      className="group relative mb-4 h-28 w-28 cursor-pointer transition duration-200 hover:scale-105 2xl:h-36 2xl:w-36"
       onClick={props.onClick}
     >
       <div className="flex flex-col justify-between">
@@ -37,15 +37,6 @@ export const CourseSmall = (props: CourseSmallSchema) => {
           }}
         >
           <TrashIcon className="h-4 w-4 2xl:h-6 2xl:w-6 " />
-        </button>
-        <button
-          className="transform text-gray-300 transition duration-200 hover:scale-105 hover:text-gray-400 "
-          onClick={(e) => {
-            e.stopPropagation();
-            props?.onClick?.();
-          }}
-        >
-          <PencilIcon className="h-4 w-4 2xl:h-6 2xl:w-6 " />
         </button>
       </div>
     </Pane>

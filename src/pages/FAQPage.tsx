@@ -90,7 +90,7 @@ export const FAQPage = () => {
     <div>
       <Navbar />
       <div className="m-auto my-8 max-w-screen-lg">
-        <h1 className="text-3xl font-medium">MSCI Option FAQ</h1>
+        <h1 className="text-3xl font-medium">MSCI Option Frequently Asked Questions</h1>
         <div className="mt-6 space-y-4">
           {OptionFAQData.map((faq, ind) => (
             <div key={`faq=${ind}`}>
