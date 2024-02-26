@@ -5,7 +5,6 @@ import { RequirementData } from "./RequirementsPane";
 import { usePlanStore } from "~/stores";
 import { disciplineNameToFriendly } from "~/utils";
 import { PencilIcon } from "@heroicons/react/24/solid";
-import { useDegreesDegreeGet } from "~/api/endpoints";
 
 interface MajorRequirementsPaneProps {
   title: string;
@@ -25,65 +24,6 @@ const colorVariants = {
   purple:
     "[&::-webkit-progress-value]:bg-purple-400 [&::-moz-progress-bar]:bg-purple-400",
   pink: "[&::-webkit-progress-value]:bg-pink-400 [&::-moz-progress-bar]:bg-pink-400",
-};
-
-const MajorSelection = () => {
-  const { major, setMajor } = usePlanStore((state) => ({
-    major: state.major,
-    setMajor: state.setMajor,
-  }));
-
-  const { data: degrees, isLoading } = useDegreesDegreeGet();
-
-  return (
-    <div>
-      <div>
-        <label
-          htmlFor="major"
-          className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-        >
-          Major:{" "}
-        </label>
-        <select
-          id="major"
-          value={major.name}
-          onChange={(e) => setMajor({ name: e.target.value, year: major.year })}
-          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-        >
-          {degrees?.data?.map((degree) => (
-            <option key={degree} value={degree}>
-              {disciplineNameToFriendly(degree)}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="mt-4">
-        <label
-          htmlFor="year"
-          className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-        >
-          Entrance Year:{" "}
-        </label>
-        <input
-          type="number"
-          id="year"
-          value={major.year}
-          min={2020}
-          max={2023}
-          onChange={(e) =>
-            setMajor({
-              name: major.name,
-              year: +e.target.value,
-            })
-          }
-          aria-describedby="helper-text-explanation"
-          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-          placeholder="90210"
-          required
-        />
-      </div>
-    </div>
-  );
 };
 
 export const MajorRequirementsPane = (props: MajorRequirementsPaneProps) => {

@@ -16,22 +16,6 @@ import {
 import { dataTagSymbol } from "@tanstack/react-query";
 import { MajorRequirementsPane } from "../requirementsPane/MajorRequirementsPane";
 
-const bruh = {
-  data: [
-    {
-      name: "te",
-      courses: {
-        // True if taken, false if not taken
-        MSCI100: true,
-        MSCI211: false,
-        MSCI311: false,
-      },
-      // Number of courses in the list that must be taken
-      totalCourseToComplete: 5,
-    },
-  ],
-};
-
 // const sampleRequirementsData = [
 //   {
 //     title: "Degree Requirements",
@@ -143,7 +127,7 @@ export const Sidebar = () => {
 
     const { data } = missingDegreeReqs;
 
-    let statusBarMajor: RequirementData[] = [
+    const statusBarMajor: RequirementData[] = [
       {
         name: "mandatory",
         requirementsCompleted:
