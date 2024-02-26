@@ -17,7 +17,7 @@ interface CourseProps {
 }
 
 export const CourseLarge = (props: CourseProps) => {
-  console.log(props.course.tags?.[0].color);
+  // console.log(props.course.tags?.[0].color);
   return (
     <Pane
       className={twMerge(
