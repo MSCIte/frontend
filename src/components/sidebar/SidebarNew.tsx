@@ -17,73 +17,6 @@ import { dataTagSymbol } from "@tanstack/react-query";
 import { MajorRequirementsPane } from "../requirementsPane/MajorRequirementsPane";
 import { OptionsRequirementsPane } from "../requirementsPane/OptionRequirementsPane";
 
-// const sampleRequirementsData = [
-//   {
-//     title: "Degree Requirements",
-//     data: [
-//       {
-//         name: "Mandatory Courses",
-//         requirementsCompleted: 15,
-//         requirementsTotal: 20,
-//         color: "red",
-//       },
-//       {
-//         name: "Technical Electives",
-//         requirementsCompleted: 0,
-//         requirementsTotal: 6,
-//         color: "blue",
-//       },
-//       {
-//         name: "Complementary Studies Electives",
-//         requirementsCompleted: 0,
-//         requirementsTotal: 2,
-//         color: "blue",
-//       },
-//       {
-//         name: "Free Electives",
-//         requirementsCompleted: 1,
-//         requirementsTotal: 2,
-//         color: "blue",
-//       },
-//       {
-//         name: "Degree Completion",
-//         requirementsCompleted: 36,
-//         requirementsTotal: 45,
-//         color: "green",
-//       },
-//     ],
-//   },
-//   {
-//     title: "MSCI Option Requirements",
-//     data: [
-//       {
-//         name: "Mandatory Courses",
-//         requirementsCompleted: 15,
-//         requirementsTotal: 20,
-//         color: "red",
-//       },
-//       {
-//         name: "Dept. of Management Sciences Courses",
-//         requirementsCompleted: 3,
-//         requirementsTotal: 6,
-//         color: "blue",
-//       },
-//       {
-//         name: "Additional Elective",
-//         requirementsCompleted: 0,
-//         requirementsTotal: 2,
-//         color: "blue",
-//       },
-//       {
-//         name: "Option Completion",
-//         requirementsCompleted: 36,
-//         requirementsTotal: 45,
-//         color: "green",
-//       },
-//     ],
-//   },
-// ];
-
 export const Sidebar = () => {
   const [isExpanded, setIsExpanded] = useState(true);
 
@@ -96,12 +29,8 @@ export const Sidebar = () => {
       year: major.year.toString(),
     });
 
-  // console.log("missingDegreeReqs", missingDegreeReqs?.data);
-
   const { data: missingOptionReqs, mutate: getOptionMissingReqs } =
     useOptionsMissingReqsOptionOptIdMissingReqsPost();
-
-  // console.log("missingOptionReqs", missingOptionReqs?.data);
 
   useEffect(() => {
     getDegreeMissingReqs({
@@ -162,8 +91,6 @@ export const Sidebar = () => {
 
     const { data } = missingOptionReqs;
 
-    console.log("missingOptionReqs", data);
-
     const reqStatus = data.lists.map((req) => {
       return {
         name: req.listName,
@@ -174,8 +101,6 @@ export const Sidebar = () => {
         color: "purple",
       };
     });
-
-    console.log("reqStatus", reqStatus);
 
     return reqStatus;
   }, [missingOptionReqs?.data]);

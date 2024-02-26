@@ -26,7 +26,7 @@ export const TermColumn = (props: TermColumnProps) => {
 
   const colWidth = useMemo(() => {
     if (props.courseWidth === "small") {
-      return "w-36";
+      return "w-28 2xl:w-36";
     } else if (props.courseWidth === "medium") {
       return "w-72";
     } else {

@@ -40,7 +40,7 @@ export const OptionsRequirementsPane = (props: MajorRequirementsPaneProps) => {
       >
         MSCI Option plan declared in{" "}
         <select
-          className="hover:bg-gray-100 cursor-pointer"
+          className="cursor-pointer rounded-sm border hover:bg-gray-100"
           value={option.year}
           onChange={(e) =>
             setOption({

@@ -44,7 +44,7 @@ export const MajorRequirementsPane = (props: MajorRequirementsPaneProps) => {
     <Pane className={props?.className}>
       <h3 className={twMerge("cursor-pointer text-xl font-medium")}>
         <select
-          className="cursor-pointer hover:bg-gray-100"
+          className="cursor-pointer rounded-sm border hover:bg-gray-100"
           value={major.name}
           onChange={(e) => setMajor({ name: e.target.value, year: major.year })}
         >
@@ -56,7 +56,7 @@ export const MajorRequirementsPane = (props: MajorRequirementsPaneProps) => {
         </select>
         plan declared in{" "}
         <select
-          className="cursor-pointer hover:bg-gray-100"
+          className="cursor-pointer rounded-sm border hover:bg-gray-100"
           value={major.year}
           onChange={(e) =>
             setMajor({
