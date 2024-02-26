@@ -592,10 +592,11 @@
             "type": "array",
             "title": "Courses"
           },
-          "numberOfCourses": { "type": "integer", "title": "Numberofcourses" }
+          "numberOfCourses": { "type": "integer", "title": "Numberofcourses" },
+          "name": { "type": "string", "title": "Name" }
         },
         "type": "object",
-        "required": ["courses", "numberOfCourses"],
+        "required": ["courses", "numberOfCourses", "name"],
         "title": "OptionRequirement"
       },
       "OptionsSchema": {
@@ -623,15 +624,12 @@
       "TagSchema": {
         "properties": {
           "code": { "type": "string", "title": "Code" },
-          "color": {
-            "allOf": [{ "$ref": "#/components/schemas/ColorsEnum" }],
-            "default": "red"
-          },
+          "color": { "$ref": "#/components/schemas/ColorsEnum" },
           "shortName": { "type": "string", "title": "Shortname" },
           "longName": { "type": "string", "title": "Longname" }
         },
         "type": "object",
-        "required": ["code", "shortName", "longName"],
+        "required": ["code", "color", "shortName", "longName"],
         "title": "TagSchema"
       },
       "ValidationError": {

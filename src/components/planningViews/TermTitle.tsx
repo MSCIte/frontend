@@ -9,8 +9,6 @@ interface TermTitleProps {
 export const TermTitle = (props: TermTitleProps) => {
   const coursesInTerm = usePlanStore((state) => state.courses[props.termName]);
 
-  console.log("coursesInTerm", coursesInTerm);
-
   if (
     Object.keys(coursesInTerm).length > 5 && // Greater than 5 courses
     Object.values(coursesInTerm).some(

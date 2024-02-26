@@ -56,7 +56,7 @@ export interface ValidationError {
 
 export interface TagSchema {
   code: string;
-  color?: ColorsEnum;
+  color: ColorsEnum;
   longName: string;
   shortName: string;
 }
@@ -68,6 +68,7 @@ export interface RequirementsResults {
 
 export interface OptionRequirement {
   courses: string[];
+  name: string;
   numberOfCourses: number;
 }
 
@@ -1150,6 +1151,7 @@ export const getOptionsReqsOptionOptIdReqsGetResponseMock = (
       { length: faker.number.int({ min: 1, max: 10 }) },
       (_, i) => i + 1,
     ).map(() => faker.word.sample()),
+    name: faker.word.sample(),
     numberOfCourses: faker.number.int({ min: undefined, max: undefined }),
     ...overrideResponse,
   })),
@@ -1266,12 +1268,7 @@ export const getSearchCoursesCoursesSearchGetResponseMock = (
         (_, i) => i + 1,
       ).map(() => ({
         code: faker.word.sample(),
-        color: faker.helpers.arrayElement([
-          faker.helpers.arrayElement([
-            faker.helpers.arrayElement(Object.values(ColorsEnum)),
-          ]),
-          undefined,
-        ]),
+        color: faker.helpers.arrayElement(Object.values(ColorsEnum)),
         longName: faker.word.sample(),
         shortName: faker.word.sample(),
         ...overrideResponse,
@@ -1320,12 +1317,7 @@ export const getTagsCoursesTagsGetResponseMock = (
         (_, i) => i + 1,
       ).map(() => ({
         code: faker.word.sample(),
-        color: faker.helpers.arrayElement([
-          faker.helpers.arrayElement([
-            faker.helpers.arrayElement(Object.values(ColorsEnum)),
-          ]),
-          undefined,
-        ]),
+        color: faker.helpers.arrayElement(Object.values(ColorsEnum)),
         longName: faker.word.sample(),
         shortName: faker.word.sample(),
         ...overrideResponse,

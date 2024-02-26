@@ -1,5 +1,6 @@
 import { TagSchema } from "~/api/endpoints";
-import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
+import { backgroundColors } from "~/utils";
 
 interface CoursePillsProps {
   courseCode: string;
@@ -10,10 +11,9 @@ export const CoursePills = ({ courseCode, tags }: CoursePillsProps) =>
   tags.map((tag) => (
     <div
       key={courseCode + tag.longName}
-      className={clsx(
+      className={twMerge(
         "mr-1 inline-block rounded-full px-2 py-1 text-xs text-white",
-        `bg-${tag.color}`,
+        backgroundColors[tag.color],
       )}
-      style={{ background: tag.color }}
     />
   ));

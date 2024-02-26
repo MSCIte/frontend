@@ -87,7 +87,7 @@ export const TermColumn = (props: TermColumnProps) => {
         {/* Only allow 8 courses in term max */}
         {coursesInTerm?.length <= 8 && (
           <button
-            className="mb-4 flex w-full items-center justify-center rounded-lg bg-white p-1"
+            className="mb-4 flex w-full items-center justify-center rounded-lg bg-white p-1 transition-transform hover:scale-105"
             onClick={() => props.openModal(props.term, { mode: "add" })}
           >
             <div className="bg-none text-4xl">+</div>
