@@ -15,78 +15,12 @@ import {
 } from "~/api/endpoints";
 import { dataTagSymbol } from "@tanstack/react-query";
 import { MajorRequirementsPane } from "../requirementsPane/MajorRequirementsPane";
-
-// const sampleRequirementsData = [
-//   {
-//     title: "Degree Requirements",
-//     data: [
-//       {
-//         name: "Mandatory Courses",
-//         requirementsCompleted: 15,
-//         requirementsTotal: 20,
-//         color: "red",
-//       },
-//       {
-//         name: "Technical Electives",
-//         requirementsCompleted: 0,
-//         requirementsTotal: 6,
-//         color: "blue",
-//       },
-//       {
-//         name: "Complementary Studies Electives",
-//         requirementsCompleted: 0,
-//         requirementsTotal: 2,
-//         color: "blue",
-//       },
-//       {
-//         name: "Free Electives",
-//         requirementsCompleted: 1,
-//         requirementsTotal: 2,
-//         color: "blue",
-//       },
-//       {
-//         name: "Degree Completion",
-//         requirementsCompleted: 36,
-//         requirementsTotal: 45,
-//         color: "green",
-//       },
-//     ],
-//   },
-//   {
-//     title: "MSCI Option Requirements",
-//     data: [
-//       {
-//         name: "Mandatory Courses",
-//         requirementsCompleted: 15,
-//         requirementsTotal: 20,
-//         color: "red",
-//       },
-//       {
-//         name: "Dept. of Management Sciences Courses",
-//         requirementsCompleted: 3,
-//         requirementsTotal: 6,
-//         color: "blue",
-//       },
-//       {
-//         name: "Additional Elective",
-//         requirementsCompleted: 0,
-//         requirementsTotal: 2,
-//         color: "blue",
-//       },
-//       {
-//         name: "Option Completion",
-//         requirementsCompleted: 36,
-//         requirementsTotal: 45,
-//         color: "green",
-//       },
-//     ],
-//   },
-// ];
+import { OptionsRequirementsPane } from "../requirementsPane/OptionRequirementsPane";
 
 export const Sidebar = () => {
   const [isExpanded, setIsExpanded] = useState(true);
 
-  const { major, courses, completedCourseCodes } = usePlanStore();
+  const { major, option, courses, completedCourseCodes } = usePlanStore();
 
   const { data: missingDegreeReqs, mutateAsync: getDegreeMissingReqs } =
     useDegreeMissingReqsDegreeDegreeIdMissingReqsPost({
@@ -95,22 +29,10 @@ export const Sidebar = () => {
       year: major.year.toString(),
     });
 
-  // console.log("missingDegreeReqs", missingDegreeReqs?.data);
-
   const { data: missingOptionReqs, mutate: getOptionMissingReqs } =
     useOptionsMissingReqsOptionOptIdMissingReqsPost();
 
-  // console.log("missingOptionReqs", missingOptionReqs?.data);
-
   useEffect(() => {
-    getOptionMissingReqs({
-      optId: "management_sciences_option",
-      data: {
-        courseCodesTaken: completedCourseCodes(),
-        year: major.year.toString(),
-      },
-    });
-
     getDegreeMissingReqs({
       degreeId: major.name,
       data: {
@@ -119,6 +41,16 @@ export const Sidebar = () => {
       },
     });
   }, [major, courses]);
+
+  useEffect(() => {
+    getOptionMissingReqs({
+      optId: "management_sciences_option",
+      data: {
+        courseCodesTaken: completedCourseCodes(),
+        year: option.year.toString(),
+      },
+    });
+  }, [option, courses]);
 
   const majorCompletionObj = useMemo<RequirementData[]>(() => {
     if (!missingDegreeReqs?.data?.additionalReqs) {
@@ -159,8 +91,6 @@ export const Sidebar = () => {
 
     const { data } = missingOptionReqs;
 
-    console.log("missingOptionReqs", data);
-
     const reqStatus = data.lists.map((req) => {
       return {
         name: req.listName,
@@ -172,49 +102,8 @@ export const Sidebar = () => {
       };
     });
 
-    console.log("reqStatus", reqStatus);
-
     return reqStatus;
   }, [missingOptionReqs?.data]);
-
-  // const { data: degreeMissingReqs } =
-  //   useDegreeMissingReqsDegreeDegreeIdMissingReqsGet(major.name, {
-  //     courseCodesTaken: completedCourseCodes(),
-  //     year: major.year.toString(),
-  //   });
-
-  // const degreeMissingReqs = {} as any;
-
-  // const majorCompletionStatus = useMemo<RequirementData[]>(() => {
-  //   if (!degreeReqs?.data || !degreeMissingReqs?.data) {
-  //     return [];
-  //   }
-
-  //   // additional reqs
-  //   // degreeReqs.data.additionalReqs
-  //   const reqData: RequirementData[] = [];
-
-  //   reqData.push({
-  //     name: "Mandatory Courses",
-  //     requirementsCompleted:
-  //       degreeReqs.data.mandatoryCourses.length -
-  //       degreeMissingReqs.data.mandatoryCourses.length,
-  //     requirementsTotal: degreeReqs.data.mandatoryCourses.length,
-  //     color: "red",
-  //   });
-
-  //   Object.entries(degreeMissingReqs.data.additionalReqs).forEach(
-  //     ([reqName, completionStatus]) => {
-  //       reqData.push({
-  //         name: reqName,
-  //         requirementsCompleted: Number.parseInt(completionStatus.completed),
-  //         requirementsTotal: Number.parseInt(completionStatus.total),
-  //         color: "blue",
-  //       });
-  //     },
-  //   );
-  //   return reqData;
-  // }, [degreeReqs, degreeMissingReqs?.data]);
 
   const toggleSidebar = useCallback(() => {
     setIsExpanded(!isExpanded);
@@ -260,8 +149,7 @@ export const Sidebar = () => {
             data={majorCompletionObj}
           />
           {/* Option requirement */}
-          <RequirementsPane
-            key={`req-option`}
+          <OptionsRequirementsPane
             title="MSCI Option"
             data={optionCompletionObj}
           />

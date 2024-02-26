@@ -3,9 +3,7 @@ import { Pane } from "../pane/Pane";
 import { twMerge } from "tailwind-merge";
 import { RequirementData } from "./RequirementsPane";
 import { usePlanStore } from "~/stores";
-import { disciplineNameToFriendly } from "~/utils";
 import { PencilIcon } from "@heroicons/react/24/solid";
-import { useDegreesDegreeGet } from "~/api/endpoints";
 
 interface MajorRequirementsPaneProps {
   title: string;
@@ -27,41 +25,27 @@ const colorVariants = {
   pink: "[&::-webkit-progress-value]:bg-pink-400 [&::-moz-progress-bar]:bg-pink-400",
 };
 
-export const MajorRequirementsPane = (props: MajorRequirementsPaneProps) => {
-  const { major, setMajor, setIsOnboardingWindowOpen } = usePlanStore(
-    (state) => ({
-      major: state.major,
-      setMajor: state.setMajor,
-      setIsOnboardingWindowOpen: state.setIsOnboardingModalOpen,
-    }),
-  );
-
-  //   const { major, setMajor, resetCourses } = usePlanStore();
-
-  const { data: degrees, isLoading } = useDegreesDegreeGet();
+export const OptionsRequirementsPane = (props: MajorRequirementsPaneProps) => {
+  const { option, setOption } = usePlanStore((state) => ({
+    option: state.option,
+    setOption: state.setOption,
+    setIsOnboardingWindowOpen: state.setIsOnboardingModalOpen,
+  }));
 
   return (
     <Pane className={props?.className}>
-      <h3 className={twMerge("cursor-pointer text-xl font-medium")}>
+      <h3
+        className={twMerge("text-xl font-medium  ")}
+        // onClick={() => setIsOnboardingWindowOpen(true)}
+      >
+        MSCI Option plan declared in{" "}
         <select
           className="cursor-pointer rounded-sm border hover:bg-gray-100"
-          value={major.name}
-          onChange={(e) => setMajor({ name: e.target.value, year: major.year })}
-        >
-          {degrees?.data?.map((degree) => (
-            <option key={degree} value={degree}>
-              {disciplineNameToFriendly(degree)}
-            </option>
-          ))}
-        </select>
-        plan declared in{" "}
-        <select
-          className="cursor-pointer rounded-sm border hover:bg-gray-100"
-          value={major.year}
+          value={option.year}
           onChange={(e) =>
-            setMajor({
-              name: major.name,
+            setOption({
               year: parseInt(e.target.value),
+              name: "management_sciences_option",
             })
           }
         >

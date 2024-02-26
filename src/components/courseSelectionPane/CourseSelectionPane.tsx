@@ -134,7 +134,7 @@ export const CourseSelectionPane = ({
           leaveTo="opacity-0 scale-95"
         >
           <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-            <Dialog.Panel className="h-[50rem] w-[80rem]">
+            <Dialog.Panel className="h-[90svh] w-[80svw] 2xl:h-[50rem] 2xl:w-[80rem]">
               <Pane className="h-[inherit]">
                 <div className="mx-4 grid h-full grid-cols-3 gap-4 overflow-y-hidden">
                   <div className="overflow-y-scroll">

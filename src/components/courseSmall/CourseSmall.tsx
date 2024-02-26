@@ -10,12 +10,12 @@ interface CourseSmallSchema extends CourseWithTagsSchema {
 
 export const CourseSmall = (props: CourseSmallSchema) => {
   return (
-    <Pane className="mb-4 h-36 w-36 cursor-pointer" onClick={props.onClick}>
+    <Pane className="mb-4 h-28 w-28 2xl:h-36 2xl:w-36 cursor-pointer" onClick={props.onClick}>
       <div className="group relative">
         <div className="flex h-full flex-col justify-between">
-          <div className="text-xl">{props.courseCode}</div>
+          <div className="text-lg 2xl:text-xl">{props.courseCode}</div>
           <div>
-            <div className="line-clamp-3 text-gray-400">{props.courseName}</div>
+            <div className="text-sm line-clamp-3 text-gray-400">{props.courseName}</div>
           </div>
           {props.tags && (
             <div className="mr-0 flex flex-row-reverse">
@@ -31,7 +31,7 @@ export const CourseSmall = (props: CourseSmallSchema) => {
             props.onDelete();
           }}
         >
-          <TrashIcon className="h-6 w-6 " />
+          <TrashIcon className="h-4 w-4 2xl:h-6 2xl:w-6 " />
         </button>
       </div>
     </Pane>
