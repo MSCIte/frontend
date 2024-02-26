@@ -34,12 +34,12 @@ export const OptionsRequirementsPane = (props: MajorRequirementsPaneProps) => {
   return (
     <Pane className={props?.className}>
       <h3
-        className={twMerge("text-xl font-medium  ")}
+        className={twMerge(" text-lg font-medium   ")}
         // onClick={() => setIsOnboardingWindowOpen(true)}
       >
-        MSCI Option plan declared in{" "}
+        MSCI Option declared in{" "}
         <select
-          className="cursor-pointer rounded-sm border hover:bg-gray-100"
+          className="cursor-pointer rounded-sm border bg-gray-100 hover:bg-white"
           value={option.year}
           onChange={(e) =>
             setOption({
