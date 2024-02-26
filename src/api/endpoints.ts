@@ -76,6 +76,18 @@ export interface OptionsSchema {
   requirements: OptionRequirement[];
 }
 
+export type MissingListCourses = { [key: string]: boolean };
+
+export interface MissingList {
+  courses: MissingListCourses;
+  listName: string;
+  totalCourseToComplete: number;
+}
+
+export interface MissingReqs {
+  lists: MissingList[];
+}
+
 export interface HTTPValidationError {
   detail?: ValidationError[];
 }
@@ -392,7 +404,7 @@ export const optionsMissingReqsOptionOptIdMissingReqsPost = (
   optId: string,
   degreeMissingIn: DegreeMissingIn,
   options?: AxiosRequestConfig,
-): Promise<AxiosResponse<OptionRequirement[]>> => {
+): Promise<AxiosResponse<MissingReqs>> => {
   return axios.default.post(
     `/option/${optId}/missing_reqs`,
     degreeMissingIn,
@@ -1146,18 +1158,20 @@ export const getOptionsReqsOptionOptIdReqsGetResponseMock = (
 
 export const getOptionsMissingReqsOptionOptIdMissingReqsPostResponseMock = (
   overrideResponse: any = {},
-): OptionRequirement[] =>
-  Array.from(
+): MissingReqs => ({
+  lists: Array.from(
     { length: faker.number.int({ min: 1, max: 10 }) },
     (_, i) => i + 1,
   ).map(() => ({
-    courses: Array.from(
-      { length: faker.number.int({ min: 1, max: 10 }) },
-      (_, i) => i + 1,
-    ).map(() => faker.word.sample()),
-    numberOfCourses: faker.number.int({ min: undefined, max: undefined }),
+    courses: {
+      [faker.string.alphanumeric(5)]: faker.datatype.boolean(),
+    },
+    listName: faker.word.sample(),
+    totalCourseToComplete: faker.number.int({ min: undefined, max: undefined }),
     ...overrideResponse,
-  }));
+  })),
+  ...overrideResponse,
+});
 
 export const getDegreeReqsDegreeDegreeNameReqsGetResponseMock = (
   overrideResponse: any = {},
@@ -1387,7 +1401,7 @@ export const getOptionsReqsOptionOptIdReqsGetMockHandler = (
 };
 
 export const getOptionsMissingReqsOptionOptIdMissingReqsPostMockHandler = (
-  overrideResponse?: OptionRequirement[],
+  overrideResponse?: MissingReqs,
 ) => {
   return http.post("*/option/:optId/missing_reqs", async () => {
     await delay(1000);

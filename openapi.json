@@ -89,11 +89,7 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": { "$ref": "#/components/schemas/OptionRequirement" },
-                  "title": "Response Options Missing Reqs Option  Opt Id  Missing Reqs Post"
-                }
+                "schema": { "$ref": "#/components/schemas/MissingReqs" }
               }
             }
           },
@@ -559,6 +555,35 @@
         },
         "type": "object",
         "title": "HTTPValidationError"
+      },
+      "MissingList": {
+        "properties": {
+          "listName": { "type": "string", "title": "Listname" },
+          "courses": {
+            "additionalProperties": { "type": "boolean" },
+            "type": "object",
+            "title": "Courses"
+          },
+          "totalCourseToComplete": {
+            "type": "integer",
+            "title": "Totalcoursetocomplete"
+          }
+        },
+        "type": "object",
+        "required": ["listName", "courses", "totalCourseToComplete"],
+        "title": "MissingList"
+      },
+      "MissingReqs": {
+        "properties": {
+          "lists": {
+            "items": { "$ref": "#/components/schemas/MissingList" },
+            "type": "array",
+            "title": "Lists"
+          }
+        },
+        "type": "object",
+        "required": ["lists"],
+        "title": "MissingReqs"
       },
       "OptionRequirement": {
         "properties": {
