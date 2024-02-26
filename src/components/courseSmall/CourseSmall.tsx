@@ -11,7 +11,7 @@ interface CourseSmallSchema extends CourseWithTagsSchema {
 export const CourseSmall = (props: CourseSmallSchema) => {
   return (
     <Pane
-      className="group relative mb-4 h-28 w-28 cursor-pointer transition duration-200 hover:scale-105 2xl:h-36 2xl:w-36"
+      className="group relative mb-4 h-32 w-32 cursor-pointer transition duration-200 hover:scale-105 2xl:h-36 2xl:w-36"
       onClick={props.onClick}
     >
       <div className="flex flex-col justify-between">
