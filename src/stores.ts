@@ -42,8 +42,14 @@ export const usePlanStore = create<PlanState>()(
           name: "management_sciences_option",
           year: 2023,
         },
-        setMajor: (major) => set({ major }),
-        setOption: (option) => set({ option }),
+        setMajor: (major) => {
+          set({ major });
+          get().resetCourses();
+        },
+        setOption: (option) => {
+          set({ option });
+          get().resetCourses();
+        },
         courses: {},
         setCourses: (courses) => {
           if (typeof courses === "function") {
