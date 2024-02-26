@@ -7,7 +7,6 @@ export const Navbar = () => {
   const isPlan = useRoute("/plan")[0];
   const isAbout = useRoute("/about")[0];
   const isFAQ = useRoute("/faq")[0];
-  const isDemo = useRoute("/demo")[0];
 
   const navigation = [
     { name: "Plan", href: "/plan", current: isPlan },
