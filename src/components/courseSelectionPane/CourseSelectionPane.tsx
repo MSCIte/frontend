@@ -30,7 +30,7 @@ export const CourseSelectionPane = ({
   onCancel,
   mode,
 }: CourseSelectionPaneProps) => {
-  const [searchQuery, setSearchQuery] = useState<string>(null);
+  const [searchQuery, setSearchQuery] = useState<string | null>(null);
   const [selectedCourse, setSelectedCourse] = useState<
     CourseWithTagsSchema | undefined
   >(initialCourse);

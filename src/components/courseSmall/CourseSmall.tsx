@@ -1,7 +1,7 @@
 import { Pane } from "../pane/Pane";
 import { CoursePills } from "../courseSmallPill/CourseSmallPill";
 import { CourseWithTagsSchema } from "~/api/endpoints";
-import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
+import { TrashIcon } from "@heroicons/react/24/solid";
 interface CourseSmallSchema extends CourseWithTagsSchema {
   onDelete: () => void;
   onReplace: () => void;
