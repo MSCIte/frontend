@@ -45,11 +45,13 @@ export const MajorRequirementsPane = (props: MajorRequirementsPaneProps) => {
             setMajor({ name: e.target.value, year: major.year });
           }}
         >
-          {degrees?.data?.map((degree) => (
-            <option key={degree} value={degree}>
-              {disciplineNameToFriendly(degree)}
-            </option>
-          ))}
+          {degrees?.data
+            ?.filter((degree) => degree !== "management_engineering")
+            ?.map((degree) => (
+              <option key={degree} value={degree}>
+                {disciplineNameToFriendly(degree)}
+              </option>
+            ))}
         </select>
         <span className="ml-1">Started in year of </span>
         <select
