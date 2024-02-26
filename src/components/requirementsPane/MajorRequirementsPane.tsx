@@ -4,7 +4,6 @@ import { twMerge } from "tailwind-merge";
 import { RequirementData } from "./RequirementsPane";
 import { usePlanStore } from "~/stores";
 import { disciplineNameToFriendly } from "~/utils";
-import { PencilIcon } from "@heroicons/react/24/solid";
 import { useDegreesDegreeGet } from "~/api/endpoints";
 
 interface MajorRequirementsPaneProps {
@@ -28,17 +27,13 @@ const colorVariants = {
 };
 
 export const MajorRequirementsPane = (props: MajorRequirementsPaneProps) => {
-  const { major, setMajor, setIsOnboardingWindowOpen } = usePlanStore(
-    (state) => ({
-      major: state.major,
-      setMajor: state.setMajor,
-      setIsOnboardingWindowOpen: state.setIsOnboardingModalOpen,
-    }),
-  );
+  const { major, setMajor } = usePlanStore((state) => ({
+    major: state.major,
+    setMajor: state.setMajor,
+    setIsOnboardingWindowOpen: state.setIsOnboardingModalOpen,
+  }));
 
-  //   const { major, setMajor, resetCourses } = usePlanStore();
-
-  const { data: degrees, isLoading } = useDegreesDegreeGet();
+  const { data: degrees } = useDegreesDegreeGet();
 
   return (
     <Pane className={props?.className}>

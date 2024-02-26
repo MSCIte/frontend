@@ -3,7 +3,6 @@ import { Pane } from "../pane/Pane";
 import { twMerge } from "tailwind-merge";
 import { RequirementData } from "./RequirementsPane";
 import { usePlanStore } from "~/stores";
-import { PencilIcon } from "@heroicons/react/24/solid";
 
 interface MajorRequirementsPaneProps {
   title: string;
