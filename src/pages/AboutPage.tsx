@@ -49,7 +49,7 @@ export const AboutPage = () => {
             blockquote: ({ node, ...props }) => (
               <blockquote
                 {...props}
-                className="border-l-4 border-blue-500 pl-2 my-4 italic ml-2"
+                className="my-4 ml-2 border-l-4 border-blue-500 pl-2 italic"
               />
             ),
           }}
