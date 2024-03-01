@@ -50,7 +50,7 @@ export const Sidebar = () => {
 
     const statusBarMajor: RequirementData[] = [
       {
-        name: "mandatory",
+        name: "Mandatory",
         requirementsCompleted:
           data.numberOfMandatoryCourses - data.mandatoryCourses.length,
         requirementsTotal: data.numberOfMandatoryCourses,
@@ -80,16 +80,18 @@ export const Sidebar = () => {
 
     const { data } = missingOptionReqs;
 
-    const reqStatus = data.lists.map((req) => {
-      return {
-        name: req.listName,
-        requirementsCompleted: Object.values(req.courses).filter(
-          (course) => course,
-        ).length,
-        requirementsTotal: req.totalCourseToComplete,
-        color: "purple",
-      };
-    });
+    const reqStatus = data.lists
+      .map((req) => {
+        return {
+          name: req.listName,
+          requirementsCompleted: Object.values(req.courses).filter(
+            (course) => course,
+          ).length,
+          requirementsTotal: req.totalCourseToComplete,
+          color: "purple",
+        };
+      })
+      .sort((a, b) => a.requirementsTotal - b.requirementsTotal);
 
     return reqStatus;
   }, [missingOptionReqs]);

@@ -26,6 +26,22 @@ const colorVariants = {
   pink: "[&::-webkit-progress-value]:bg-pink-400 [&::-moz-progress-bar]:bg-pink-400",
 };
 
+
+// const majorReqNameToTitle = (name: string) => {
+//   if (name === "organizational_studies") {
+//     return "Organizational Studies";
+//   } else if (name === "eng_econ") {
+//     return "Engineering Economics";
+//   } else if (name === "opti_1") {
+//     return "Introduction to Optimization";
+//   } else if (name === "elective") {
+//     return "Electives";
+//   } else {
+//     return name;
+//   }
+// };
+
+
 export const MajorRequirementsPane = (props: MajorRequirementsPaneProps) => {
   const { major, setMajor } = usePlanStore((state) => ({
     major: state.major,

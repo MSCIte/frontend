@@ -24,6 +24,20 @@ const colorVariants = {
   pink: "[&::-webkit-progress-value]:bg-pink-400 [&::-moz-progress-bar]:bg-pink-400",
 };
 
+const optionReqNameToTitle = (name: string) => {
+  if (name === "organizational_studies") {
+    return "Organizational Studies";
+  } else if (name === "eng_econ") {
+    return "Engineering Economics";
+  } else if (name === "opti_1") {
+    return "Introduction to Optimization";
+  } else if (name === "elective") {
+    return "Electives";
+  } else {
+    return name;
+  }
+};
+
 export const OptionsRequirementsPane = (props: MajorRequirementsPaneProps) => {
   const { option, setOption } = usePlanStore((state) => ({
     option: state.option,
@@ -59,7 +73,7 @@ export const OptionsRequirementsPane = (props: MajorRequirementsPaneProps) => {
         {props.data.map((requirement, ind) => (
           <div className="my-2" key={`req-${props.title}-${ind}`}>
             <div className="font-light">
-              <span>{requirement.name}</span>
+              <span>{optionReqNameToTitle(requirement.name)}</span>
               <span className="float-right  text-slate-500">
                 {requirement.requirementsCompleted}/
                 {requirement.requirementsTotal}
