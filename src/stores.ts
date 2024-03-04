@@ -2,7 +2,11 @@ import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
 import { CourseData } from "./sampleData";
-import { tagsCoursesTagsGet } from "./api/endpoints";
+import {
+  coursesCanTakeCoursesCanTakeCourseCodePost,
+  getCoursesCanTakeCoursesCanTakeCourseCodePostMockHandler,
+  tagsCoursesTagsGet,
+} from "./api/endpoints";
 import { sortByKeys } from "./utils";
 
 // MSCI 100, MSCI 211, etc.
@@ -28,6 +32,15 @@ interface PlanState {
   setIsOnboardingModalOpen: (isOpen: boolean) => void;
   resetCourses: () => Promise<void>;
   coursesToCSV: () => void;
+  validatePlan: () => void;
+  warnings: Array<{
+    affectedCourse: {
+      code: string;
+      term: string;
+    };
+    type: "prereq" | "antireq";
+    text: string;
+  }>;
 }
 
 export const usePlanStore = create<PlanState>()(
@@ -135,6 +148,44 @@ export const usePlanStore = create<PlanState>()(
           element.click();
           element.remove(); // cleanup
         },
+        validatePlan: () => {
+          const courses = get().courses;
+          const warnings = Object.entries(courses)
+            .flatMap(([term, termCourses], termInd) => {
+              const coursesCompleted = Object.entries(courses)
+                .filter((_, ind) => ind < termInd)
+                .flatMap(([, termCourses]) =>
+                  Object.keys(termCourses).map((courseCode) => courseCode),
+                );
+              return Object.entries(termCourses).map(([courseCode, course]) => {
+                return (() => {
+                  coursesCanTakeCoursesCanTakeCourseCodePost(courseCode, {
+                    courseCodesTaken: coursesCompleted,
+                  }).then((res) => {
+                    if (!res.data.result) {
+                      return {
+                        affectedCourse: {
+                          code: courseCode,
+                          term,
+                        },
+                        type: "prereq",
+                        text: `Prereq: ${res.data.message}`,
+                      };
+                    } else {
+                      return false;
+                    }
+                  });
+                })();
+              });
+            })
+            .filter(Boolean);
+          console.log("warnings", warnings);
+
+          // set({
+          //   warnings: warnings,
+          // });
+        },
+        warnings: [] as PlanState["warnings"],
       }),
       {
         name: "plan-storage",

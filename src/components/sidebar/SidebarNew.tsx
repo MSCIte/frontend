@@ -9,6 +9,9 @@ import {
 } from "~/api/endpoints";
 import { MajorRequirementsPane } from "../requirementsPane/MajorRequirementsPane";
 import { OptionsRequirementsPane } from "../requirementsPane/OptionRequirementsPane";
+import { Pane } from "../pane/Pane";
+import { ActionButton } from "../actionButton/ActionButton";
+import { TrashIcon } from "@heroicons/react/24/outline";
 
 export const Sidebar = () => {
   const [isExpanded, setIsExpanded] = useState(true);
@@ -144,6 +147,16 @@ export const Sidebar = () => {
             title="MSCI Option"
             data={optionCompletionObj}
           />
+
+          <Pane className="space-y-4">
+            <h2 className="text-2xl">Debug Menu</h2>
+            <ActionButton
+              text="Clear Localstorage"
+              icon={<TrashIcon className="h-6 w-6 text-gray-400" />}
+              onClick={() => localStorage.clear()}
+            />
+            
+          </Pane>
           {/* {sampleRequirementsData.map((requirement, ind) => (
             <RequirementsPane key={`${requirement}-${ind}`} {...requirement} />
           ))} */}
