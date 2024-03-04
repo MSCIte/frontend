@@ -78,6 +78,7 @@ export const TermColumn = (props: TermColumnProps) => {
                     console.log("clicked");
                     props.openModal(props.term, { course, mode: "replace" });
                   }}
+                  term={props.term}
                   {...course}
                 />
               );
