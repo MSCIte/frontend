@@ -12,6 +12,18 @@ export const sortByKeys = <T extends object>(obj: T): T =>
       return acc;
     }, {}) as T;
 
+export const groupBy = <T>(
+  array: T[],
+  predicate: (value: T, index: number, array: T[]) => string,
+): { [key: string]: T[] } =>
+  array.reduce(
+    (acc, value, index, array) => {
+      (acc[predicate(value, index, array)] ||= []).push(value);
+      return acc;
+    },
+    {} as { [key: string]: T[] },
+  );
+
 export const disciplineNameToFriendly = (discipline: string) => {
   switch (discipline) {
     case "architectual_engineering":

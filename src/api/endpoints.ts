@@ -24,6 +24,8 @@ export type SamplePathSamplePathGet200 = {};
 export type TagsCoursesTagsGetParams = {
   degree_name: string;
   degree_year: string;
+  option_name?: string;
+  option_year?: string;
 };
 
 export type SearchCoursesCoursesSearchGetParams = {
@@ -148,7 +150,7 @@ export interface CourseWithTagsSchema {
 
 export type ColorsEnum = (typeof ColorsEnum)[keyof typeof ColorsEnum];
 
- 
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ColorsEnum = {
   red: "red",
   green: "green",

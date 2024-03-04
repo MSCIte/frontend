@@ -15,9 +15,13 @@ import { usePlanStore } from "~/stores";
 import { useTagsCoursesTagsGet } from "~/api/endpoints";
 
 import { ArrowPathIcon } from "@heroicons/react/24/solid";
-import { DocumentChartBarIcon, TrashIcon } from "@heroicons/react/24/outline";
+import {
+  CheckBadgeIcon,
+  DocumentChartBarIcon,
+} from "@heroicons/react/24/outline";
 import { sortByKeys } from "~/utils";
 import { twMerge } from "tailwind-merge";
+import { Tooltip } from "react-tooltip";
 
 export interface CourseViewProps {
   courseData: CourseData;
@@ -47,6 +51,7 @@ export const PlanningPage = () => {
     setCourses,
     major,
     coursesToCSV,
+    validatePlan,
   } = usePlanStore();
 
   useEffect(() => {
@@ -186,10 +191,10 @@ export const PlanningPage = () => {
           onClick={() => resetCourses()}
         />
         <ActionButton
-          text="Clear Localstorage"
-          icon={<TrashIcon className="h-6 w-6 text-gray-400" />}
-          onClick={() => localStorage.clear()}
-        />
+          text="Validate Plan"
+          icon={<CheckBadgeIcon className="h-6 w-6 text-gray-400" />}
+          onClick={() => validatePlan()}
+        />{" "}
         <ActionButton
           text="Export"
           icon={<DocumentChartBarIcon className="h-6 w-6 text-gray-400" />}
@@ -198,6 +203,8 @@ export const PlanningPage = () => {
       </div>
     </div>
   );
+
+  const warnings = usePlanStore((state) => state.warnings);
 
   return (
     <div className=" h-screen overflow-hidden ">
@@ -242,6 +249,9 @@ export const PlanningPage = () => {
           )}
         </div>
       </div>
+
+      {/* Place warnings in a root spot to make it display over all other elements */}
+      <div>{warnings?.map((warning) => <Tooltip id={warning.id} />)}</div>
     </div>
   );
 };

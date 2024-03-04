@@ -52,6 +52,12 @@ export const CourseSelectionPane = ({
     }
   }, [initialCourse, searchQuery]);
 
+  useEffect(() => {
+    if (!isOpen) {
+      setSearchQuery("");
+    }
+  }, [isOpen]);
+
   const SearchElement = (
     <div className="sticky top-0 bg-gray-100">
       <label

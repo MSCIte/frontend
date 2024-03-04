@@ -2,13 +2,16 @@ import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
 import { CourseData } from "./sampleData";
-import { tagsCoursesTagsGet } from "./api/endpoints";
+import {
+  coursesCanTakeCoursesCanTakeCourseCodePost,
+  tagsCoursesTagsGet,
+} from "./api/endpoints";
 import { sortByKeys } from "./utils";
 
 // MSCI 100, MSCI 211, etc.
 type CourseCode = string;
 
-interface PlanState {
+export interface PlanState {
   major: {
     year: number;
     name: string;
@@ -28,6 +31,16 @@ interface PlanState {
   setIsOnboardingModalOpen: (isOpen: boolean) => void;
   resetCourses: () => Promise<void>;
   coursesToCSV: () => void;
+  validatePlan: () => Promise<void>;
+  warnings: Array<{
+    id: string;
+    affectedCourse: {
+      code: string;
+      term: string;
+    };
+    type: "prereq" | "antireq" | "overloading";
+    text: string;
+  }>;
 }
 
 export const usePlanStore = create<PlanState>()(
@@ -135,6 +148,134 @@ export const usePlanStore = create<PlanState>()(
           element.click();
           element.remove(); // cleanup
         },
+        validatePlan: async () => {
+          const courses = get().courses;
+          const coursesWarnings = await Promise.all(
+            Object.entries(courses).flatMap(
+              async ([term, termCourses], termInd) => {
+                // Prereq warnings
+                const coursesCompleted = Object.entries(courses)
+                  .filter((_, ind) => ind < termInd)
+                  .flatMap(([, termCourses]) =>
+                    Object.keys(termCourses).map((courseCode) => courseCode),
+                  );
+
+                const prereqPromises = Object.keys(termCourses).map(
+                  async (courseCode) => {
+                    const canTakeCourse =
+                      await coursesCanTakeCoursesCanTakeCourseCodePost(
+                        courseCode,
+                        {
+                          courseCodesTaken: coursesCompleted,
+                        },
+                      );
+
+                    if (!canTakeCourse.data.result) {
+                      return {
+                        affectedCourse: {
+                          code: courseCode,
+                          term,
+                        },
+                        type: "prereq",
+                        text: canTakeCourse.data.message,
+                      };
+                    } else {
+                      return false;
+                    }
+                  },
+                );
+
+                // Anti-req warnings
+                const coursesCompletedAndTaking = Object.entries(courses)
+                  .filter((_, ind) => ind <= termInd)
+                  .flatMap(([, termCourses]) =>
+                    Object.keys(termCourses).map((courseCode) => courseCode),
+                  );
+
+                const anitReqPromises = Object.keys(termCourses).map(
+                  async (courseCode) => {
+                    const canTakeCourse =
+                      await coursesCanTakeCoursesCanTakeCourseCodePost(
+                        courseCode,
+                        {
+                          // Use the ones that are being taken as well, to prevent taking antireqs
+                          courseCodesTaken: coursesCompletedAndTaking,
+                        },
+                      );
+
+                    if (!canTakeCourse.data.result) {
+                      return {
+                        affectedCourse: {
+                          code: courseCode,
+                          term,
+                        },
+                        type: "antireq",
+                        text: canTakeCourse.data.message,
+                      };
+                    } else {
+                      return false;
+                    }
+                  },
+                );
+
+                return await Promise.all([
+                  ...prereqPromises,
+                  ...anitReqPromises,
+                ]);
+              },
+            ),
+          );
+
+          const overloadingWarnings = Object.entries(courses).map(
+            ([term, termCourses]) => {
+              // // Overloading warnings
+              const isOverloading =
+                Object.keys(termCourses).length > 5 &&
+                Object.values(termCourses).some((course) =>
+                  course.tags?.some(
+                    (tag) =>
+                      ![
+                        "1A",
+                        "1B",
+                        "2A",
+                        "2B",
+                        "3A",
+                        "3B",
+                        "4A",
+                        "4B",
+                      ].includes(tag.code),
+                  ),
+                );
+              if (isOverloading) {
+                return {
+                  affectedCourse: {
+                    code: "",
+                    term,
+                  },
+                  type: "overloading",
+                  text: "Overloading. Previous term average must be >= 75%.",
+                };
+              }
+            },
+          );
+
+          const filteredWarnings = [...coursesWarnings, overloadingWarnings]
+            .flat()
+            .filter(Boolean)
+            .map((x, ind) => {
+              return {
+                ...x,
+                id: `warning-${ind}`,
+              };
+            }) as PlanState["warnings"];
+
+          console.log("filteredWarnings", filteredWarnings);
+
+          set({
+            warnings: filteredWarnings,
+          });
+        },
+        warnings: [] as PlanState["warnings"],
       }),
       {
         name: "plan-storage",
@@ -142,3 +283,23 @@ export const usePlanStore = create<PlanState>()(
     ),
   ),
 );
+
+interface useWarningsProps {
+  code?: string;
+  term: string;
+}
+export const useWarnings = (props: useWarningsProps) => {
+  const warnings = usePlanStore((state) => state.warnings);
+
+  if (props.code) {
+    return warnings.filter(
+      (warning) =>
+        warning.affectedCourse.code === props.code &&
+        warning.affectedCourse.term === props.term,
+    );
+  } else {
+    return warnings.filter(
+      (warning) => warning.affectedCourse.term === props.term,
+    );
+  }
+};
