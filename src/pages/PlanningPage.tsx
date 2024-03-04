@@ -18,10 +18,10 @@ import { ArrowPathIcon } from "@heroicons/react/24/solid";
 import {
   CheckBadgeIcon,
   DocumentChartBarIcon,
-  TrashIcon,
 } from "@heroicons/react/24/outline";
 import { sortByKeys } from "~/utils";
 import { twMerge } from "tailwind-merge";
+import { Tooltip } from "react-tooltip";
 
 export interface CourseViewProps {
   courseData: CourseData;
@@ -51,7 +51,7 @@ export const PlanningPage = () => {
     setCourses,
     major,
     coursesToCSV,
-    validatePlan
+    validatePlan,
   } = usePlanStore();
 
   useEffect(() => {
@@ -204,6 +204,8 @@ export const PlanningPage = () => {
     </div>
   );
 
+  const warnings = usePlanStore((state) => state.warnings);
+
   return (
     <div className=" h-screen overflow-hidden ">
       <Navbar />
@@ -247,6 +249,9 @@ export const PlanningPage = () => {
           )}
         </div>
       </div>
+
+      {/* Place warnings in a root spot to make it display over all other elements */}
+      <div>{warnings?.map((warning) => <Tooltip id={warning.id} />)}</div>
     </div>
   );
 };

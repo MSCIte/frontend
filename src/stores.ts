@@ -4,7 +4,6 @@ import { devtools, persist } from "zustand/middleware";
 import { CourseData } from "./sampleData";
 import {
   coursesCanTakeCoursesCanTakeCourseCodePost,
-  getCoursesCanTakeCoursesCanTakeCourseCodePostMockHandler,
   tagsCoursesTagsGet,
 } from "./api/endpoints";
 import { sortByKeys } from "./utils";

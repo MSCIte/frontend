@@ -1,6 +1,5 @@
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 import { useWarnings } from "~/stores";
-import { Tooltip } from "react-tooltip";
 
 interface TermTitleProps {
   termName: string;
@@ -22,7 +21,6 @@ export const TermTitle = (props: TermTitleProps) => {
           data-tooltip-content={warnings[0].text}
           data-tooltip-variant="warning"
         />
-        <Tooltip id={warnings[0].id} content={warnings[0].text} />
       </h2>
     );
   }

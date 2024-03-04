@@ -1,5 +1,4 @@
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
-import { Tooltip } from "react-tooltip";
 import { twMerge } from "tailwind-merge";
 import { PlanState } from "~/stores";
 
@@ -26,7 +25,7 @@ export const CourseWarnings = ({ warnings, size }: CourseWarningsProps) => {
                   data-tooltip-content={warning.text}
                   data-tooltip-variant="warning"
                 />
-                <Tooltip id={warning.id} className="z-50" />
+                {/* <Tooltip id={warning.id} className="z-50" /> */}
               </>
             );
           })}
