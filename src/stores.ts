@@ -12,7 +12,7 @@ import { sortByKeys } from "./utils";
 // MSCI 100, MSCI 211, etc.
 type CourseCode = string;
 
-interface PlanState {
+export interface PlanState {
   major: {
     year: number;
     name: string;
@@ -32,13 +32,14 @@ interface PlanState {
   setIsOnboardingModalOpen: (isOpen: boolean) => void;
   resetCourses: () => Promise<void>;
   coursesToCSV: () => void;
-  validatePlan: () => void;
+  validatePlan: () => Promise<void>;
   warnings: Array<{
+    id: string;
     affectedCourse: {
       code: string;
       term: string;
     };
-    type: "prereq" | "antireq";
+    type: "prereq" | "antireq" | "overloading";
     text: string;
   }>;
 }
@@ -148,42 +149,132 @@ export const usePlanStore = create<PlanState>()(
           element.click();
           element.remove(); // cleanup
         },
-        validatePlan: () => {
+        validatePlan: async () => {
           const courses = get().courses;
-          const warnings = Object.entries(courses)
-            .flatMap(([term, termCourses], termInd) => {
-              const coursesCompleted = Object.entries(courses)
-                .filter((_, ind) => ind < termInd)
-                .flatMap(([, termCourses]) =>
-                  Object.keys(termCourses).map((courseCode) => courseCode),
-                );
-              return Object.entries(termCourses).map(([courseCode, course]) => {
-                return (() => {
-                  coursesCanTakeCoursesCanTakeCourseCodePost(courseCode, {
-                    courseCodesTaken: coursesCompleted,
-                  }).then((res) => {
-                    if (!res.data.result) {
+          const coursesWarnings = await Promise.all(
+            Object.entries(courses).flatMap(
+              async ([term, termCourses], termInd) => {
+                // Prereq warnings
+                const coursesCompleted = Object.entries(courses)
+                  .filter((_, ind) => ind < termInd)
+                  .flatMap(([, termCourses]) =>
+                    Object.keys(termCourses).map((courseCode) => courseCode),
+                  );
+
+                const prereqPromises = Object.keys(termCourses).map(
+                  async (courseCode) => {
+                    const canTakeCourse =
+                      await coursesCanTakeCoursesCanTakeCourseCodePost(
+                        courseCode,
+                        {
+                          courseCodesTaken: coursesCompleted,
+                        },
+                      );
+
+                    if (!canTakeCourse.data.result) {
                       return {
                         affectedCourse: {
                           code: courseCode,
                           term,
                         },
                         type: "prereq",
-                        text: `Prereq: ${res.data.message}`,
+                        text: canTakeCourse.data.message,
                       };
                     } else {
                       return false;
                     }
-                  });
-                })();
-              });
-            })
-            .filter(Boolean);
-          console.log("warnings", warnings);
+                  },
+                );
 
-          // set({
-          //   warnings: warnings,
-          // });
+                // Anti-req warnings
+                const coursesCompletedAndTaking = Object.entries(courses)
+                  .filter((_, ind) => ind <= termInd)
+                  .flatMap(([, termCourses]) =>
+                    Object.keys(termCourses).map((courseCode) => courseCode),
+                  );
+
+                const anitReqPromises = Object.keys(termCourses).map(
+                  async (courseCode) => {
+                    const canTakeCourse =
+                      await coursesCanTakeCoursesCanTakeCourseCodePost(
+                        courseCode,
+                        {
+                          // Use the ones that are being taken as well, to prevent taking antireqs
+                          courseCodesTaken: coursesCompletedAndTaking,
+                        },
+                      );
+
+                    if (!canTakeCourse.data.result) {
+                      return {
+                        affectedCourse: {
+                          code: courseCode,
+                          term,
+                        },
+                        type: "antireq",
+                        text: canTakeCourse.data.message,
+                      };
+                    } else {
+                      return false;
+                    }
+                  },
+                );
+
+                return await Promise.all([
+                  ...prereqPromises,
+                  ...anitReqPromises,
+                ]);
+              },
+            ),
+          );
+
+          const overloadingWarnings = Object.entries(courses).map(
+            ([term, termCourses]) => {
+              // // Overloading warnings
+              const isOverloading =
+                Object.keys(termCourses).length > 5 &&
+                Object.values(termCourses).some((course) =>
+                  course.tags?.some(
+                    (tag) =>
+                      ![
+                        "1A",
+                        "1B",
+                        "2A",
+                        "2B",
+                        "3A",
+                        "3B",
+                        "4A",
+                        "4B",
+                      ].includes(tag.code),
+                  ),
+                );
+              if (isOverloading) {
+                return {
+                  affectedCourse: {
+                    code: "",
+                    term,
+                  },
+                  type: "overloading",
+                  text: "Overloading. Previous term average must be >= 75%.",
+                };
+              }
+            },
+          );
+
+          const filteredWarnings = [...coursesWarnings, overloadingWarnings]
+            .flat()
+            .filter(Boolean)
+            .map((x, ind) => {
+              return {
+                ...x,
+                id: `warning-${ind}`,
+              };
+            }) as PlanState["warnings"];
+
+          console.log("filteredWarnings", filteredWarnings);
+
+          set({
+            warnings: filteredWarnings,
+          });
         },
         warnings: [] as PlanState["warnings"],
       }),
@@ -193,3 +284,23 @@ export const usePlanStore = create<PlanState>()(
     ),
   ),
 );
+
+interface useWarningsProps {
+  code?: string;
+  term: string;
+}
+export const useWarnings = (props: useWarningsProps) => {
+  const warnings = usePlanStore((state) => state.warnings);
+
+  if (props.code) {
+    return warnings.filter(
+      (warning) =>
+        warning.affectedCourse.code === props.code &&
+        warning.affectedCourse.term === props.term,
+    );
+  } else {
+    return warnings.filter(
+      (warning) => warning.affectedCourse.term === props.term,
+    );
+  }
+};
