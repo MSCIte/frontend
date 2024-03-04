@@ -2,9 +2,9 @@ import { Dialog, Transition } from "@headlessui/react";
 import { useDegreesDegreeGet } from "~/api/endpoints";
 import { usePlanStore } from "~/stores";
 import { Pane } from "../pane/Pane";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Button } from "../Button";
-import { disciplineNameToFriendly } from "~/utils";
+import { blacklistedDegrees, disciplineNameToFriendly } from "~/utils";
 
 interface OnboardingModalProps {
   isOpen: boolean;
@@ -12,9 +12,39 @@ interface OnboardingModalProps {
 }
 
 export const OnboardingModal = (props: OnboardingModalProps) => {
-  const { major, setMajor, resetCourses } = usePlanStore();
+  const { major, setMajor, setOption, resetCourses } = usePlanStore();
 
   const { data: degrees, isLoading } = useDegreesDegreeGet();
+
+  const [majorYearWarning, setMajorYearWarning] = useState(false);
+  const [modalMajorYear, setModalMajorYear] = useState(2020);
+
+  const [optionYearWarning, setOptionYearWarning] = useState(false);
+  const [modalOptionYear, setModalOptionYear] = useState(2020);
+
+  useEffect(() => {
+    if (2020 <= modalMajorYear && modalMajorYear <= 2023) {
+      setMajor({
+        name: major.name,
+        year: modalMajorYear,
+      });
+      setMajorYearWarning(false);
+    } else {
+      setMajorYearWarning(true);
+    }
+  }, [modalMajorYear, setMajor]);
+
+  useEffect(() => {
+    if (2020 <= modalOptionYear && modalOptionYear <= 2023) {
+      setOption({
+        name: "management_sciences_option",
+        year: modalOptionYear,
+      });
+      setOptionYearWarning(false);
+    } else {
+      setOptionYearWarning(true);
+    }
+  }, [modalOptionYear, setMajor]);
 
   return (
     <Transition
@@ -56,7 +86,7 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
           leaveTo="opacity-0 scale-95"
         >
           <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-            <Dialog.Panel className="h-128 w-128">
+            <Dialog.Panel className="h-[36rem] w-128">
               <Pane className="h-[inherit] p-4">
                 <div className="space-y-4">
                   <h1 className="text-3xl font-medium">
@@ -96,7 +126,7 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
                         >
                           {degrees?.data
                             ?.filter(
-                              (degree) => degree !== "management_engineering",
+                              (degree) => !blacklistedDegrees.includes(degree),
                             )
                             ?.map((degree) => (
                               <option key={degree} value={degree}>
@@ -112,21 +142,53 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
                         >
                           Entrance Year:{" "}
                         </label>
+                        {majorYearWarning && (
+                          <span className="text-sm text-red-400">
+                            Please enter a year between 2020 and 2023
+                            (inclusive).
+                          </span>
+                        )}
                         <input
                           type="number"
                           id="year"
-                          value={major.year}
+                          value={modalMajorYear}
                           min={2020}
                           max={2023}
-                          onChange={(e) =>
-                            setMajor({
-                              name: major.name,
-                              year: +e.target.value,
-                            })
-                          }
+                          onChange={(e) => {
+                            setModalMajorYear(parseInt(e.target.value));
+                          }}
                           aria-describedby="helper-text-explanation"
                           className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                          placeholder="90210"
+                          placeholder="2020"
+                          required
+                        />
+                      </div>
+
+                      <div className="mt-4">
+                        <label
+                          htmlFor="year"
+                          className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                        >
+                          Year MSCI Option Declared:{" "}
+                        </label>
+                        {optionYearWarning && (
+                          <span className="text-sm text-red-400">
+                            Please enter a year between 2020 and 2023
+                            (inclusive).
+                          </span>
+                        )}
+                        <input
+                          type="number"
+                          id="year"
+                          value={modalOptionYear}
+                          min={2020}
+                          max={2023}
+                          onChange={(e) => {
+                            setModalOptionYear(parseInt(e.target.value));
+                          }}
+                          aria-describedby="helper-text-explanation"
+                          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                          placeholder="2020"
                           required
                         />
                       </div>

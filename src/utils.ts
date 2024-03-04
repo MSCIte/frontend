@@ -72,3 +72,9 @@ export const backgroundColors = {
   indigo: "bg-indigo-400",
   gray: "bg-gray-400",
 };
+
+// Majors we don't need to show in the dropdowns
+export const blacklistedDegrees = [
+  "management_engineering",
+  "systems_design_engineering",
+];
