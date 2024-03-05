@@ -112,7 +112,7 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
                       <div>
                         <label
                           htmlFor="major"
-                          className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                          className="mb-2 block text-sm font-medium text-gray-900"
                         >
                           Major:{" "}
                         </label>
@@ -138,7 +138,7 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
                       <div className="mt-4">
                         <label
                           htmlFor="year"
-                          className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                          className="mb-2 block text-sm font-medium text-gray-900"
                         >
                           Entrance Year:{" "}
                         </label>
@@ -167,7 +167,7 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
                       <div className="mt-4">
                         <label
                           htmlFor="year"
-                          className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                          className="mb-2 block text-sm font-medium text-gray-900 "
                         >
                           Year MSCI Option Declared:{" "}
                         </label>
