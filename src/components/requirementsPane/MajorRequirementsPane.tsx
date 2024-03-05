@@ -3,7 +3,7 @@ import { Pane } from "../pane/Pane";
 import { twMerge } from "tailwind-merge";
 import { RequirementData } from "./RequirementsPane";
 import { usePlanStore } from "~/stores";
-import { disciplineNameToFriendly } from "~/utils";
+import { blacklistedDegrees, disciplineNameToFriendly } from "~/utils";
 import { useDegreesDegreeGet } from "~/api/endpoints";
 
 interface MajorRequirementsPaneProps {
@@ -60,7 +60,7 @@ export const MajorRequirementsPane = (props: MajorRequirementsPaneProps) => {
           }}
         >
           {degrees?.data
-            ?.filter((degree) => degree !== "management_engineering")
+            ?.filter((degree) => !blacklistedDegrees.includes(degree))
             ?.map((degree) => (
               <option key={degree} value={degree}>
                 {disciplineNameToFriendly(degree)}

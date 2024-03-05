@@ -118,13 +118,13 @@ export const Sidebar = () => {
       )}
     >
       <div className="h-full">
-        <div className="flex justify-around p-4">
+        <div className="flex items-center justify-around p-4">
           <h2 className={clsx("text-xl", !isExpanded && "hidden")}>
             Academic Summary
           </h2>
           <button
             onClick={toggleSidebar}
-            className="m-auto mr-0 h-6 w-6 hover:scale-110"
+            className="m-auto mr-0 h-8 w-8 rounded-full border border-gray-300 p-1 hover:scale-110"
           >
             {isExpanded ? <ArrowLeftIcon /> : <ArrowRightIcon />}
           </button>
@@ -136,7 +136,7 @@ export const Sidebar = () => {
 
         <div
           className={clsx(
-            "h-[calc(100%-4rem)] space-y-4 overflow-y-auto p-4",
+            "h-[calc(100%-4rem)] space-y-4 overflow-y-auto p-4 pt-0",
             !isExpanded && "hidden",
           )}
         >
@@ -154,7 +154,7 @@ export const Sidebar = () => {
             <h2 className="text-lg font-medium">
               Warnings{" "}
               {warnings?.length > 0 && (
-                <ExclamationTriangleIcon className="h-6 w-6 text-yellow-400 inline-block" />
+                <ExclamationTriangleIcon className="inline-block h-6 w-6 text-yellow-400" />
               )}{" "}
             </h2>
             {warnings?.length > 0 ? (
