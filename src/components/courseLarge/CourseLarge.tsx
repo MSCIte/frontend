@@ -29,11 +29,37 @@ export const CourseLarge = (props: CourseProps) => {
       )}
       onClick={props.onClick}
     >
-      <div className="relative">
-        <div className={styles.header}>{props.course.courseCode}</div>
+      <div className="flex flex-col justify-between h-full">
         <div>
-          <div className={styles.description}>{props.course.courseName}</div>
+          <div  className="flex justify-between" >
+
+            <div className={twMerge(styles.header, "")}>{props.course.courseCode}</div>
+            <div className="" >
+              <button
+                className="transform text-gray-300 transition duration-200 hover:scale-105 hover:text-gray-400 "
+                onClick={(e) => {
+                  e.stopPropagation();
+                  props.onReplace?.();
+                }}
+              >
+                <PencilSquareIcon className="h-6 w-6 " />
+              </button>
+              <button
+                className="transform text-gray-300 transition duration-200 hover:scale-105 hover:text-gray-400 "
+                onClick={(e) => {
+                  e.stopPropagation();
+                  props.onDelete();
+                }}
+              >
+                <TrashIcon className="h-6 w-6 " />
+              </button>
+            </div>
+          </div>
+          <div>
+            <div className={styles.description}>{props.course.courseName}</div>
+          </div>
         </div>
+
         <div className={styles.pillWrapper}>
           {props.course?.tags?.map((tag) => (
             <div
@@ -45,26 +71,7 @@ export const CourseLarge = (props: CourseProps) => {
             </div>
           ))}
         </div>
-        <div className="absolute right-0 top-0 ">
-          <button
-            className="transform text-gray-300 transition duration-200 hover:scale-105 hover:text-gray-400 "
-            onClick={(e) => {
-              e.stopPropagation();
-              props.onReplace?.();
-            }}
-          >
-            <PencilSquareIcon className="h-6 w-6 " />
-          </button>
-          <button
-            className="transform text-gray-300 transition duration-200 hover:scale-105 hover:text-gray-400 "
-            onClick={(e) => {
-              e.stopPropagation();
-              props.onDelete();
-            }}
-          >
-            <TrashIcon className="h-6 w-6 " />
-          </button>
-        </div>
+
       </div>
       {/* </div> */}
     </Pane>

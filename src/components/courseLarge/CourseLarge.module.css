@@ -17,8 +17,9 @@
 
 .pillWrapper {
   display: flex;
-  margin-right: 0;
-  flex-direction: row-reverse;
+  margin-left: 0;
+  
+  /* flex-direction: row-reverse; */
 }
 
 .colorPill {
