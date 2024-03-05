@@ -1,6 +1,6 @@
 import { Navbar } from "~/components/navbar/NavBar";
 
-export const HelpPage = () => {
+export const UserGuidePage = () => {
   return (
     <>
       <Navbar />
