@@ -9,7 +9,7 @@ import { AboutPage } from "./pages/AboutPage";
 import { queryClient } from "./queryClient"; // Import the queryClient variable
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { HelpPage } from "./pages/HelpPage";
+import { UserGuidePage } from "./pages/UserGuidePage";
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
         <Route path="/about" component={AboutPage} />
         <Route path="/faq" component={FAQPage} />
         <Route path="/plan" component={PlanningPage} />
-        <Route path="/help" component={HelpPage} />
+        <Route path="/user-guide" component={UserGuidePage} />
         <Route path="/demo" component={DemoPage} />
         <Route path="/" component={LandingPage} />
       </Switch>
