@@ -20,7 +20,6 @@ interface CourseSelectionPaneProps {
   mode?: ModalMode;
 }
 
-
 export const colorVariants = {
   red: "bg-red-400",
   yellow: "bg-yellow-400",

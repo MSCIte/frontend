@@ -68,7 +68,6 @@ export const PlanningPage = () => {
     option_name: option.name,
     option_year: option.year.toString(),
   });
-  console.log(coursesWithTags)
 
   const resetCourses = () => {
     if (coursesWithTags?.data) {
