@@ -182,7 +182,7 @@ export const Sidebar = () => {
                 })}
               </div>
             ) : (
-              <p>Congratuations, no warnings!</p>
+              <p>Congrats, no warnings!</p>
             )}
           </Pane>
 
