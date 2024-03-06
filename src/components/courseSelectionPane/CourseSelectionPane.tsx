@@ -20,6 +20,21 @@ interface CourseSelectionPaneProps {
   mode?: ModalMode;
 }
 
+
+export const colorVariants = {
+  red: "bg-red-400",
+  yellow: "bg-yellow-400",
+  green: "bg-green-400",
+  blue: "bg-blue-400",
+  indigo: "bg-indigo-600",
+  purple: "bg-purple-400",
+  pink: "bg-pink-400",
+  slate: "bg-slate-400",
+  orange: "bg-orange-400",
+  sky: "bg-sky-200",
+  rose: "bg-rose-200",
+};
+
 // This will be inside another pane (rounded courners padding etc.)
 // could be a modal (when you add a course), or maybe replaces the right sidebar in year/term view
 export const CourseSelectionPane = ({
@@ -37,12 +52,14 @@ export const CourseSelectionPane = ({
 
   const searchButtonRef = useRef<HTMLInputElement>(null);
 
-  const { major } = usePlanStore();
+  const { major, option } = usePlanStore();
 
   const { data } = useSearchCoursesCoursesSearchGet({
     q: searchQuery,
     degree_name: major.name,
     degree_year: major.year,
+    option_name: option.name,
+    option_year: option.year.toString(),
   });
 
   useEffect(() => {
@@ -171,7 +188,9 @@ export const CourseSelectionPane = ({
                               key={tag.code}
                               className={clsx(
                                 "inline-block rounded-full px-2 py-1 text-white",
-                                `bg-${tag.color}-400`,
+                                colorVariants?.[
+                                  tag.color as keyof typeof colorVariants
+                                ],
                               )}
                             >
                               {tag.longName}

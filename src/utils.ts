@@ -69,8 +69,11 @@ export const backgroundColors = {
   blue: "bg-blue-400",
   purple: "bg-purple-400",
   pink: "bg-pink-400",
-  indigo: "bg-indigo-400",
+  indigo: "bg-indigo-600",
   gray: "bg-gray-400",
+  slate: "bg-gray-400",
+  rose: "bg-rose-200",
+  sky: "bg-sky-200"
 };
 
 // Majors we don't need to show in the dropdowns

@@ -23,7 +23,7 @@ export const colorVariants = {
     "[&::-webkit-progress-value]:bg-green-400 [&::-moz-progress-bar]:bg-green-400",
   blue: "[&::-webkit-progress-value]:bg-blue-400 [&::-moz-progress-bar]:bg-blue-400",
   indigo:
-    "[&::-webkit-progress-value]:bg-indigo-400 [&::-moz-progress-bar]:bg-indigo-400",
+    "[&::-webkit-progress-value]:bg-indigo-600 [&::-moz-progress-bar]:bg-indigo-600",
   purple:
     "[&::-webkit-progress-value]:bg-purple-400 [&::-moz-progress-bar]:bg-purple-400",
   pink: "[&::-webkit-progress-value]:bg-pink-400 [&::-moz-progress-bar]:bg-pink-400",

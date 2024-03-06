@@ -4,44 +4,59 @@
  * FastAPI
  * OpenAPI spec version: 0.1.0
  */
-import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery
+} from '@tanstack/react-query'
 import type {
   MutationFunction,
   QueryFunction,
   QueryKey,
   UseMutationOptions,
   UseQueryOptions,
-  UseQueryResult,
-} from "@tanstack/react-query";
-import * as axios from "axios";
-import type { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { faker } from "@faker-js/faker";
-import { HttpResponse, delay, http } from "msw";
+  UseQueryResult
+} from '@tanstack/react-query'
+import * as axios from 'axios';
+import type {
+  AxiosError,
+  AxiosRequestConfig,
+  AxiosResponse
+} from 'axios'
+import {
+  faker
+} from '@faker-js/faker'
+import {
+  HttpResponse,
+  delay,
+  http
+} from 'msw'
 export type ReadRootHealthcheckGet200 = {};
 
 export type SamplePathSamplePathGet200 = {};
 
 export type TagsCoursesTagsGetParams = {
-  degree_name: string;
-  degree_year: string;
-  option_name?: string;
-  option_year?: string;
+degree_name: string;
+degree_year: string;
+option_name?: string;
+option_year?: string;
 };
 
 export type SearchCoursesCoursesSearchGetParams = {
-  degree_name: string;
-  degree_year: number;
-  q?: string | null;
-  offset?: number | null;
-  page_size?: number | null;
+degree_name: string;
+degree_year: number;
+option_name?: string;
+option_year?: string;
+q?: string | null;
+offset?: number | null;
+page_size?: number | null;
 };
 
 export type DegreeReqsDegreeDegreeNameReqsGetParams = {
-  year: string;
+year: string;
 };
 
 export type OptionsReqsOptionOptIdReqsGetParams = {
-  year: string;
+year: string;
 };
 
 export type ReadItemQueryGet200 = {};
@@ -83,7 +98,7 @@ export interface OptionsSchema {
   requirements: OptionRequirement[];
 }
 
-export type MissingListCourses = { [key: string]: boolean };
+export type MissingListCourses = {[key: string]: boolean};
 
 export interface MissingList {
   courses: MissingListCourses;
@@ -105,16 +120,14 @@ export interface DegreeRequirement {
   numberOfCourses: number;
 }
 
-export type DegreeReqsAdditionalReqs = { [key: string]: DegreeRequirement };
+export type DegreeReqsAdditionalReqs = {[key: string]: DegreeRequirement};
 
 export interface DegreeReqs {
   additionalReqs: DegreeReqsAdditionalReqs;
   mandatoryCourses: string[];
 }
 
-export type DegreeMissingReqsAdditionalReqs = {
-  [key: string]: AdditionalReqCount;
-};
+export type DegreeMissingReqsAdditionalReqs = {[key: string]: AdditionalReqCount};
 
 export interface DegreeMissingReqs {
   additionalReqs: DegreeMissingReqsAdditionalReqs;
@@ -154,21 +167,22 @@ export interface CourseWithTagsSchema {
   tags?: TagSchema[];
 }
 
-export type ColorsEnum = (typeof ColorsEnum)[keyof typeof ColorsEnum];
+export type ColorsEnum = typeof ColorsEnum[keyof typeof ColorsEnum];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ColorsEnum = {
-  red: "red",
-  green: "green",
-  orange: "orange",
-  yellow: "yellow",
-  blue: "blue",
-  purple: "purple",
-  pink: "pink",
-  indigo: "indigo",
-  gray: "gray",
-  slate: "slate",
-  rose: "rose",
+  red: 'red',
+  green: 'green',
+  orange: 'orange',
+  yellow: 'yellow',
+  blue: 'blue',
+  purple: 'purple',
+  pink: 'pink',
+  indigo: 'indigo',
+  gray: 'gray',
+  slate: 'slate',
+  rose: 'rose',
 } as const;
 
 export interface CanTakeCourseQuery {
@@ -186,1547 +200,976 @@ export interface AdditionalReqCount {
   total: string;
 }
 
+
+
+
+
 /**
  * @summary Read Root
  */
 export const readRootGet = (
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<ReadRootGet200>> => {
-  return axios.default.get(`/`, options);
-};
+     options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<ReadRootGet200>> => {
+    
+    return axios.default.get(
+      `/`,options
+    );
+  }
+
 
 export const getReadRootGetQueryKey = () => {
-  return [`/`] as const;
-};
+    return [`/`] as const;
+    }
 
-export const getReadRootGetQueryOptions = <
-  TData = Awaited<ReturnType<typeof readRootGet>>,
-  TError = AxiosError<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof readRootGet>>, TError, TData>
-  >;
-  axios?: AxiosRequestConfig;
-}) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+    
+export const getReadRootGetQueryOptions = <TData = Awaited<ReturnType<typeof readRootGet>>, TError = AxiosError<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof readRootGet>>, TError, TData>>, axios?: AxiosRequestConfig}
+) => {
 
-  const queryKey = queryOptions?.queryKey ?? getReadRootGetQueryKey();
+const {query: queryOptions, axios: axiosOptions} = options ?? {};
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof readRootGet>>> = ({
-    signal,
-  }) => readRootGet({ signal, ...axiosOptions });
+  const queryKey =  queryOptions?.queryKey ?? getReadRootGetQueryKey();
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof readRootGet>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
+  
 
-export type ReadRootGetQueryResult = NonNullable<
-  Awaited<ReturnType<typeof readRootGet>>
->;
-export type ReadRootGetQueryError = AxiosError<unknown>;
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof readRootGet>>> = ({ signal }) => readRootGet({ signal, ...axiosOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof readRootGet>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ReadRootGetQueryResult = NonNullable<Awaited<ReturnType<typeof readRootGet>>>
+export type ReadRootGetQueryError = AxiosError<unknown>
 
 /**
  * @summary Read Root
  */
-export const useReadRootGet = <
-  TData = Awaited<ReturnType<typeof readRootGet>>,
-  TError = AxiosError<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof readRootGet>>, TError, TData>
-  >;
-  axios?: AxiosRequestConfig;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getReadRootGetQueryOptions(options);
+export const useReadRootGet = <TData = Awaited<ReturnType<typeof readRootGet>>, TError = AxiosError<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof readRootGet>>, TError, TData>>, axios?: AxiosRequestConfig}
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
-  query.queryKey = queryOptions.queryKey;
+  const queryOptions = getReadRootGetQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
 
   return query;
-};
+}
+
+
+
 
 /**
  * @summary Read Item
  */
 export const readItemQueryGet = (
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<ReadItemQueryGet200>> => {
-  return axios.default.get(`/query`, options);
-};
+     options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<ReadItemQueryGet200>> => {
+    
+    return axios.default.get(
+      `/query`,options
+    );
+  }
+
 
 export const getReadItemQueryGetQueryKey = () => {
-  return [`/query`] as const;
-};
+    return [`/query`] as const;
+    }
 
-export const getReadItemQueryGetQueryOptions = <
-  TData = Awaited<ReturnType<typeof readItemQueryGet>>,
-  TError = AxiosError<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof readItemQueryGet>>, TError, TData>
-  >;
-  axios?: AxiosRequestConfig;
-}) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+    
+export const getReadItemQueryGetQueryOptions = <TData = Awaited<ReturnType<typeof readItemQueryGet>>, TError = AxiosError<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof readItemQueryGet>>, TError, TData>>, axios?: AxiosRequestConfig}
+) => {
 
-  const queryKey = queryOptions?.queryKey ?? getReadItemQueryGetQueryKey();
+const {query: queryOptions, axios: axiosOptions} = options ?? {};
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof readItemQueryGet>>
-  > = ({ signal }) => readItemQueryGet({ signal, ...axiosOptions });
+  const queryKey =  queryOptions?.queryKey ?? getReadItemQueryGetQueryKey();
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof readItemQueryGet>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
+  
 
-export type ReadItemQueryGetQueryResult = NonNullable<
-  Awaited<ReturnType<typeof readItemQueryGet>>
->;
-export type ReadItemQueryGetQueryError = AxiosError<unknown>;
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof readItemQueryGet>>> = ({ signal }) => readItemQueryGet({ signal, ...axiosOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof readItemQueryGet>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ReadItemQueryGetQueryResult = NonNullable<Awaited<ReturnType<typeof readItemQueryGet>>>
+export type ReadItemQueryGetQueryError = AxiosError<unknown>
 
 /**
  * @summary Read Item
  */
-export const useReadItemQueryGet = <
-  TData = Awaited<ReturnType<typeof readItemQueryGet>>,
-  TError = AxiosError<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof readItemQueryGet>>, TError, TData>
-  >;
-  axios?: AxiosRequestConfig;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getReadItemQueryGetQueryOptions(options);
+export const useReadItemQueryGet = <TData = Awaited<ReturnType<typeof readItemQueryGet>>, TError = AxiosError<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof readItemQueryGet>>, TError, TData>>, axios?: AxiosRequestConfig}
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
-  query.queryKey = queryOptions.queryKey;
+  const queryOptions = getReadItemQueryGetQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
 
   return query;
-};
+}
+
+
+
 
 /**
  * @summary Options Reqs
  */
 export const optionsReqsOptionOptIdReqsGet = (
-  optId: string,
-  params: OptionsReqsOptionOptIdReqsGetParams,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<OptionsSchema>> => {
-  return axios.default.get(`/option/${optId}/reqs`, {
+    optId: string,
+    params: OptionsReqsOptionOptIdReqsGetParams, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<OptionsSchema>> => {
+    
+    return axios.default.get(
+      `/option/${optId}/reqs`,{
     ...options,
-    params: { ...params, ...options?.params },
-  });
-};
+        params: {...params, ...options?.params},}
+    );
+  }
 
-export const getOptionsReqsOptionOptIdReqsGetQueryKey = (
-  optId: string,
-  params: OptionsReqsOptionOptIdReqsGetParams,
+
+export const getOptionsReqsOptionOptIdReqsGetQueryKey = (optId: string,
+    params: OptionsReqsOptionOptIdReqsGetParams,) => {
+    return [`/option/${optId}/reqs`, ...(params ? [params]: [])] as const;
+    }
+
+    
+export const getOptionsReqsOptionOptIdReqsGetQueryOptions = <TData = Awaited<ReturnType<typeof optionsReqsOptionOptIdReqsGet>>, TError = AxiosError<HTTPValidationError>>(optId: string,
+    params: OptionsReqsOptionOptIdReqsGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof optionsReqsOptionOptIdReqsGet>>, TError, TData>>, axios?: AxiosRequestConfig}
 ) => {
-  return [`/option/${optId}/reqs`, ...(params ? [params] : [])] as const;
-};
 
-export const getOptionsReqsOptionOptIdReqsGetQueryOptions = <
-  TData = Awaited<ReturnType<typeof optionsReqsOptionOptIdReqsGet>>,
-  TError = AxiosError<HTTPValidationError>,
->(
-  optId: string,
-  params: OptionsReqsOptionOptIdReqsGetParams,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof optionsReqsOptionOptIdReqsGet>>,
-        TError,
-        TData
-      >
-    >;
-    axios?: AxiosRequestConfig;
-  },
-) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+const {query: queryOptions, axios: axiosOptions} = options ?? {};
 
-  const queryKey =
-    queryOptions?.queryKey ??
-    getOptionsReqsOptionOptIdReqsGetQueryKey(optId, params);
+  const queryKey =  queryOptions?.queryKey ?? getOptionsReqsOptionOptIdReqsGetQueryKey(optId,params);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof optionsReqsOptionOptIdReqsGet>>
-  > = ({ signal }) =>
-    optionsReqsOptionOptIdReqsGet(optId, params, { signal, ...axiosOptions });
+  
 
-  return {
-    queryKey,
-    queryFn,
-    enabled: !!optId,
-    ...queryOptions,
-  } as UseQueryOptions<
-    Awaited<ReturnType<typeof optionsReqsOptionOptIdReqsGet>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof optionsReqsOptionOptIdReqsGet>>> = ({ signal }) => optionsReqsOptionOptIdReqsGet(optId,params, { signal, ...axiosOptions });
 
-export type OptionsReqsOptionOptIdReqsGetQueryResult = NonNullable<
-  Awaited<ReturnType<typeof optionsReqsOptionOptIdReqsGet>>
->;
-export type OptionsReqsOptionOptIdReqsGetQueryError =
-  AxiosError<HTTPValidationError>;
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(optId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof optionsReqsOptionOptIdReqsGet>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type OptionsReqsOptionOptIdReqsGetQueryResult = NonNullable<Awaited<ReturnType<typeof optionsReqsOptionOptIdReqsGet>>>
+export type OptionsReqsOptionOptIdReqsGetQueryError = AxiosError<HTTPValidationError>
 
 /**
  * @summary Options Reqs
  */
-export const useOptionsReqsOptionOptIdReqsGet = <
-  TData = Awaited<ReturnType<typeof optionsReqsOptionOptIdReqsGet>>,
-  TError = AxiosError<HTTPValidationError>,
->(
-  optId: string,
-  params: OptionsReqsOptionOptIdReqsGetParams,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof optionsReqsOptionOptIdReqsGet>>,
-        TError,
-        TData
-      >
-    >;
-    axios?: AxiosRequestConfig;
-  },
-): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getOptionsReqsOptionOptIdReqsGetQueryOptions(
-    optId,
-    params,
-    options,
-  );
+export const useOptionsReqsOptionOptIdReqsGet = <TData = Awaited<ReturnType<typeof optionsReqsOptionOptIdReqsGet>>, TError = AxiosError<HTTPValidationError>>(
+ optId: string,
+    params: OptionsReqsOptionOptIdReqsGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof optionsReqsOptionOptIdReqsGet>>, TError, TData>>, axios?: AxiosRequestConfig}
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
-  query.queryKey = queryOptions.queryKey;
+  const queryOptions = getOptionsReqsOptionOptIdReqsGetQueryOptions(optId,params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
 
   return query;
-};
+}
+
+
+
 
 /**
  * @summary Options Missing Reqs
  */
 export const optionsMissingReqsOptionOptIdMissingReqsPost = (
-  optId: string,
-  degreeMissingIn: DegreeMissingIn,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<MissingReqs>> => {
-  return axios.default.post(
-    `/option/${optId}/missing_reqs`,
-    degreeMissingIn,
-    options,
-  );
-};
-
-export const getOptionsMissingReqsOptionOptIdMissingReqsPostMutationOptions = <
-  TError = AxiosError<HTTPValidationError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof optionsMissingReqsOptionOptIdMissingReqsPost>>,
-    TError,
-    { optId: string; data: DegreeMissingIn },
-    TContext
-  >;
-  axios?: AxiosRequestConfig;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof optionsMissingReqsOptionOptIdMissingReqsPost>>,
-  TError,
-  { optId: string; data: DegreeMissingIn },
-  TContext
-> => {
-  const { mutation: mutationOptions, axios: axiosOptions } = options ?? {};
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof optionsMissingReqsOptionOptIdMissingReqsPost>>,
-    { optId: string; data: DegreeMissingIn }
-  > = (props) => {
-    const { optId, data } = props ?? {};
-
-    return optionsMissingReqsOptionOptIdMissingReqsPost(
-      optId,
-      data,
-      axiosOptions,
+    optId: string,
+    degreeMissingIn: DegreeMissingIn, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<MissingReqs>> => {
+    
+    return axios.default.post(
+      `/option/${optId}/missing_reqs`,
+      degreeMissingIn,options
     );
-  };
+  }
 
-  return { mutationFn, ...mutationOptions };
-};
 
-export type OptionsMissingReqsOptionOptIdMissingReqsPostMutationResult =
-  NonNullable<
-    Awaited<ReturnType<typeof optionsMissingReqsOptionOptIdMissingReqsPost>>
-  >;
-export type OptionsMissingReqsOptionOptIdMissingReqsPostMutationBody =
-  DegreeMissingIn;
-export type OptionsMissingReqsOptionOptIdMissingReqsPostMutationError =
-  AxiosError<HTTPValidationError>;
 
-/**
+export const getOptionsMissingReqsOptionOptIdMissingReqsPostMutationOptions = <TError = AxiosError<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof optionsMissingReqsOptionOptIdMissingReqsPost>>, TError,{optId: string;data: DegreeMissingIn}, TContext>, axios?: AxiosRequestConfig}
+): UseMutationOptions<Awaited<ReturnType<typeof optionsMissingReqsOptionOptIdMissingReqsPost>>, TError,{optId: string;data: DegreeMissingIn}, TContext> => {
+ const {mutation: mutationOptions, axios: axiosOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof optionsMissingReqsOptionOptIdMissingReqsPost>>, {optId: string;data: DegreeMissingIn}> = (props) => {
+          const {optId,data} = props ?? {};
+
+          return  optionsMissingReqsOptionOptIdMissingReqsPost(optId,data,axiosOptions)
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type OptionsMissingReqsOptionOptIdMissingReqsPostMutationResult = NonNullable<Awaited<ReturnType<typeof optionsMissingReqsOptionOptIdMissingReqsPost>>>
+    export type OptionsMissingReqsOptionOptIdMissingReqsPostMutationBody = DegreeMissingIn
+    export type OptionsMissingReqsOptionOptIdMissingReqsPostMutationError = AxiosError<HTTPValidationError>
+
+    /**
  * @summary Options Missing Reqs
  */
-export const useOptionsMissingReqsOptionOptIdMissingReqsPost = <
-  TError = AxiosError<HTTPValidationError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof optionsMissingReqsOptionOptIdMissingReqsPost>>,
-    TError,
-    { optId: string; data: DegreeMissingIn },
-    TContext
-  >;
-  axios?: AxiosRequestConfig;
-}) => {
-  const mutationOptions =
-    getOptionsMissingReqsOptionOptIdMissingReqsPostMutationOptions(options);
+export const useOptionsMissingReqsOptionOptIdMissingReqsPost = <TError = AxiosError<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof optionsMissingReqsOptionOptIdMissingReqsPost>>, TError,{optId: string;data: DegreeMissingIn}, TContext>, axios?: AxiosRequestConfig}
+) => {
 
-  return useMutation(mutationOptions);
-};
+      const mutationOptions = getOptionsMissingReqsOptionOptIdMissingReqsPostMutationOptions(options);
 
+      return useMutation(mutationOptions);
+    }
+    
 /**
  * @summary Degree Reqs
  */
 export const degreeReqsDegreeDegreeNameReqsGet = (
-  degreeName: string,
-  params: DegreeReqsDegreeDegreeNameReqsGetParams,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<DegreeReqs>> => {
-  return axios.default.get(`/degree/${degreeName}/reqs`, {
+    degreeName: string,
+    params: DegreeReqsDegreeDegreeNameReqsGetParams, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<DegreeReqs>> => {
+    
+    return axios.default.get(
+      `/degree/${degreeName}/reqs`,{
     ...options,
-    params: { ...params, ...options?.params },
-  });
-};
+        params: {...params, ...options?.params},}
+    );
+  }
 
-export const getDegreeReqsDegreeDegreeNameReqsGetQueryKey = (
-  degreeName: string,
-  params: DegreeReqsDegreeDegreeNameReqsGetParams,
+
+export const getDegreeReqsDegreeDegreeNameReqsGetQueryKey = (degreeName: string,
+    params: DegreeReqsDegreeDegreeNameReqsGetParams,) => {
+    return [`/degree/${degreeName}/reqs`, ...(params ? [params]: [])] as const;
+    }
+
+    
+export const getDegreeReqsDegreeDegreeNameReqsGetQueryOptions = <TData = Awaited<ReturnType<typeof degreeReqsDegreeDegreeNameReqsGet>>, TError = AxiosError<HTTPValidationError>>(degreeName: string,
+    params: DegreeReqsDegreeDegreeNameReqsGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof degreeReqsDegreeDegreeNameReqsGet>>, TError, TData>>, axios?: AxiosRequestConfig}
 ) => {
-  return [`/degree/${degreeName}/reqs`, ...(params ? [params] : [])] as const;
-};
 
-export const getDegreeReqsDegreeDegreeNameReqsGetQueryOptions = <
-  TData = Awaited<ReturnType<typeof degreeReqsDegreeDegreeNameReqsGet>>,
-  TError = AxiosError<HTTPValidationError>,
->(
-  degreeName: string,
-  params: DegreeReqsDegreeDegreeNameReqsGetParams,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof degreeReqsDegreeDegreeNameReqsGet>>,
-        TError,
-        TData
-      >
-    >;
-    axios?: AxiosRequestConfig;
-  },
-) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+const {query: queryOptions, axios: axiosOptions} = options ?? {};
 
-  const queryKey =
-    queryOptions?.queryKey ??
-    getDegreeReqsDegreeDegreeNameReqsGetQueryKey(degreeName, params);
+  const queryKey =  queryOptions?.queryKey ?? getDegreeReqsDegreeDegreeNameReqsGetQueryKey(degreeName,params);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof degreeReqsDegreeDegreeNameReqsGet>>
-  > = ({ signal }) =>
-    degreeReqsDegreeDegreeNameReqsGet(degreeName, params, {
-      signal,
-      ...axiosOptions,
-    });
+  
 
-  return {
-    queryKey,
-    queryFn,
-    enabled: !!degreeName,
-    ...queryOptions,
-  } as UseQueryOptions<
-    Awaited<ReturnType<typeof degreeReqsDegreeDegreeNameReqsGet>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof degreeReqsDegreeDegreeNameReqsGet>>> = ({ signal }) => degreeReqsDegreeDegreeNameReqsGet(degreeName,params, { signal, ...axiosOptions });
 
-export type DegreeReqsDegreeDegreeNameReqsGetQueryResult = NonNullable<
-  Awaited<ReturnType<typeof degreeReqsDegreeDegreeNameReqsGet>>
->;
-export type DegreeReqsDegreeDegreeNameReqsGetQueryError =
-  AxiosError<HTTPValidationError>;
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(degreeName), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof degreeReqsDegreeDegreeNameReqsGet>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type DegreeReqsDegreeDegreeNameReqsGetQueryResult = NonNullable<Awaited<ReturnType<typeof degreeReqsDegreeDegreeNameReqsGet>>>
+export type DegreeReqsDegreeDegreeNameReqsGetQueryError = AxiosError<HTTPValidationError>
 
 /**
  * @summary Degree Reqs
  */
-export const useDegreeReqsDegreeDegreeNameReqsGet = <
-  TData = Awaited<ReturnType<typeof degreeReqsDegreeDegreeNameReqsGet>>,
-  TError = AxiosError<HTTPValidationError>,
->(
-  degreeName: string,
-  params: DegreeReqsDegreeDegreeNameReqsGetParams,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof degreeReqsDegreeDegreeNameReqsGet>>,
-        TError,
-        TData
-      >
-    >;
-    axios?: AxiosRequestConfig;
-  },
-): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getDegreeReqsDegreeDegreeNameReqsGetQueryOptions(
-    degreeName,
-    params,
-    options,
-  );
+export const useDegreeReqsDegreeDegreeNameReqsGet = <TData = Awaited<ReturnType<typeof degreeReqsDegreeDegreeNameReqsGet>>, TError = AxiosError<HTTPValidationError>>(
+ degreeName: string,
+    params: DegreeReqsDegreeDegreeNameReqsGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof degreeReqsDegreeDegreeNameReqsGet>>, TError, TData>>, axios?: AxiosRequestConfig}
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
-  query.queryKey = queryOptions.queryKey;
+  const queryOptions = getDegreeReqsDegreeDegreeNameReqsGetQueryOptions(degreeName,params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
 
   return query;
-};
+}
+
+
+
 
 /**
  * @summary Degrees
  */
 export const degreesDegreeGet = (
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<string[]>> => {
-  return axios.default.get(`/degree`, options);
-};
+     options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<string[]>> => {
+    
+    return axios.default.get(
+      `/degree`,options
+    );
+  }
+
 
 export const getDegreesDegreeGetQueryKey = () => {
-  return [`/degree`] as const;
-};
+    return [`/degree`] as const;
+    }
 
-export const getDegreesDegreeGetQueryOptions = <
-  TData = Awaited<ReturnType<typeof degreesDegreeGet>>,
-  TError = AxiosError<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof degreesDegreeGet>>, TError, TData>
-  >;
-  axios?: AxiosRequestConfig;
-}) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+    
+export const getDegreesDegreeGetQueryOptions = <TData = Awaited<ReturnType<typeof degreesDegreeGet>>, TError = AxiosError<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof degreesDegreeGet>>, TError, TData>>, axios?: AxiosRequestConfig}
+) => {
 
-  const queryKey = queryOptions?.queryKey ?? getDegreesDegreeGetQueryKey();
+const {query: queryOptions, axios: axiosOptions} = options ?? {};
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof degreesDegreeGet>>
-  > = ({ signal }) => degreesDegreeGet({ signal, ...axiosOptions });
+  const queryKey =  queryOptions?.queryKey ?? getDegreesDegreeGetQueryKey();
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof degreesDegreeGet>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
+  
 
-export type DegreesDegreeGetQueryResult = NonNullable<
-  Awaited<ReturnType<typeof degreesDegreeGet>>
->;
-export type DegreesDegreeGetQueryError = AxiosError<unknown>;
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof degreesDegreeGet>>> = ({ signal }) => degreesDegreeGet({ signal, ...axiosOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof degreesDegreeGet>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type DegreesDegreeGetQueryResult = NonNullable<Awaited<ReturnType<typeof degreesDegreeGet>>>
+export type DegreesDegreeGetQueryError = AxiosError<unknown>
 
 /**
  * @summary Degrees
  */
-export const useDegreesDegreeGet = <
-  TData = Awaited<ReturnType<typeof degreesDegreeGet>>,
-  TError = AxiosError<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<Awaited<ReturnType<typeof degreesDegreeGet>>, TError, TData>
-  >;
-  axios?: AxiosRequestConfig;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getDegreesDegreeGetQueryOptions(options);
+export const useDegreesDegreeGet = <TData = Awaited<ReturnType<typeof degreesDegreeGet>>, TError = AxiosError<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof degreesDegreeGet>>, TError, TData>>, axios?: AxiosRequestConfig}
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
-  query.queryKey = queryOptions.queryKey;
+  const queryOptions = getDegreesDegreeGetQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
 
   return query;
-};
+}
+
+
+
 
 /**
  * @summary Degree Missing Reqs
  */
 export const degreeMissingReqsDegreeDegreeIdMissingReqsPost = (
-  degreeId: string,
-  degreeMissingIn: DegreeMissingIn,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<DegreeMissingReqs>> => {
-  return axios.default.post(
-    `/degree/${degreeId}/missing_reqs`,
-    degreeMissingIn,
-    options,
-  );
-};
+    degreeId: string,
+    degreeMissingIn: DegreeMissingIn, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<DegreeMissingReqs>> => {
+    
+    return axios.default.post(
+      `/degree/${degreeId}/missing_reqs`,
+      degreeMissingIn,options
+    );
+  }
 
-export const getDegreeMissingReqsDegreeDegreeIdMissingReqsPostMutationOptions =
-  <TError = AxiosError<HTTPValidationError>, TContext = unknown>(options?: {
-    mutation?: UseMutationOptions<
-      Awaited<
-        ReturnType<typeof degreeMissingReqsDegreeDegreeIdMissingReqsPost>
-      >,
-      TError,
-      { degreeId: string; data: DegreeMissingIn },
-      TContext
-    >;
-    axios?: AxiosRequestConfig;
-  }): UseMutationOptions<
-    Awaited<ReturnType<typeof degreeMissingReqsDegreeDegreeIdMissingReqsPost>>,
-    TError,
-    { degreeId: string; data: DegreeMissingIn },
-    TContext
-  > => {
-    const { mutation: mutationOptions, axios: axiosOptions } = options ?? {};
 
-    const mutationFn: MutationFunction<
-      Awaited<
-        ReturnType<typeof degreeMissingReqsDegreeDegreeIdMissingReqsPost>
-      >,
-      { degreeId: string; data: DegreeMissingIn }
-    > = (props) => {
-      const { degreeId, data } = props ?? {};
 
-      return degreeMissingReqsDegreeDegreeIdMissingReqsPost(
-        degreeId,
-        data,
-        axiosOptions,
-      );
-    };
+export const getDegreeMissingReqsDegreeDegreeIdMissingReqsPostMutationOptions = <TError = AxiosError<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof degreeMissingReqsDegreeDegreeIdMissingReqsPost>>, TError,{degreeId: string;data: DegreeMissingIn}, TContext>, axios?: AxiosRequestConfig}
+): UseMutationOptions<Awaited<ReturnType<typeof degreeMissingReqsDegreeDegreeIdMissingReqsPost>>, TError,{degreeId: string;data: DegreeMissingIn}, TContext> => {
+ const {mutation: mutationOptions, axios: axiosOptions} = options ?? {};
 
-    return { mutationFn, ...mutationOptions };
-  };
+      
 
-export type DegreeMissingReqsDegreeDegreeIdMissingReqsPostMutationResult =
-  NonNullable<
-    Awaited<ReturnType<typeof degreeMissingReqsDegreeDegreeIdMissingReqsPost>>
-  >;
-export type DegreeMissingReqsDegreeDegreeIdMissingReqsPostMutationBody =
-  DegreeMissingIn;
-export type DegreeMissingReqsDegreeDegreeIdMissingReqsPostMutationError =
-  AxiosError<HTTPValidationError>;
 
-/**
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof degreeMissingReqsDegreeDegreeIdMissingReqsPost>>, {degreeId: string;data: DegreeMissingIn}> = (props) => {
+          const {degreeId,data} = props ?? {};
+
+          return  degreeMissingReqsDegreeDegreeIdMissingReqsPost(degreeId,data,axiosOptions)
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type DegreeMissingReqsDegreeDegreeIdMissingReqsPostMutationResult = NonNullable<Awaited<ReturnType<typeof degreeMissingReqsDegreeDegreeIdMissingReqsPost>>>
+    export type DegreeMissingReqsDegreeDegreeIdMissingReqsPostMutationBody = DegreeMissingIn
+    export type DegreeMissingReqsDegreeDegreeIdMissingReqsPostMutationError = AxiosError<HTTPValidationError>
+
+    /**
  * @summary Degree Missing Reqs
  */
-export const useDegreeMissingReqsDegreeDegreeIdMissingReqsPost = <
-  TError = AxiosError<HTTPValidationError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof degreeMissingReqsDegreeDegreeIdMissingReqsPost>>,
-    TError,
-    { degreeId: string; data: DegreeMissingIn },
-    TContext
-  >;
-  axios?: AxiosRequestConfig;
-}) => {
-  const mutationOptions =
-    getDegreeMissingReqsDegreeDegreeIdMissingReqsPostMutationOptions(options);
+export const useDegreeMissingReqsDegreeDegreeIdMissingReqsPost = <TError = AxiosError<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof degreeMissingReqsDegreeDegreeIdMissingReqsPost>>, TError,{degreeId: string;data: DegreeMissingIn}, TContext>, axios?: AxiosRequestConfig}
+) => {
 
-  return useMutation(mutationOptions);
-};
+      const mutationOptions = getDegreeMissingReqsDegreeDegreeIdMissingReqsPostMutationOptions(options);
 
+      return useMutation(mutationOptions);
+    }
+    
 /**
  * @summary Courses Can Take Batch
  */
 export const coursesCanTakeBatchCoursesCanTakeBatchPost = (
-  canTakeCourseBatch: CanTakeCourseBatch,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<RequirementsResults>> => {
-  return axios.default.post(
-    `/courses/can-take/batch`,
-    canTakeCourseBatch,
-    options,
-  );
-};
+    canTakeCourseBatch: CanTakeCourseBatch, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<RequirementsResults>> => {
+    
+    return axios.default.post(
+      `/courses/can-take/batch`,
+      canTakeCourseBatch,options
+    );
+  }
 
-export const getCoursesCanTakeBatchCoursesCanTakeBatchPostMutationOptions = <
-  TError = AxiosError<HTTPValidationError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof coursesCanTakeBatchCoursesCanTakeBatchPost>>,
-    TError,
-    { data: CanTakeCourseBatch },
-    TContext
-  >;
-  axios?: AxiosRequestConfig;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof coursesCanTakeBatchCoursesCanTakeBatchPost>>,
-  TError,
-  { data: CanTakeCourseBatch },
-  TContext
-> => {
-  const { mutation: mutationOptions, axios: axiosOptions } = options ?? {};
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof coursesCanTakeBatchCoursesCanTakeBatchPost>>,
-    { data: CanTakeCourseBatch }
-  > = (props) => {
-    const { data } = props ?? {};
 
-    return coursesCanTakeBatchCoursesCanTakeBatchPost(data, axiosOptions);
-  };
+export const getCoursesCanTakeBatchCoursesCanTakeBatchPostMutationOptions = <TError = AxiosError<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof coursesCanTakeBatchCoursesCanTakeBatchPost>>, TError,{data: CanTakeCourseBatch}, TContext>, axios?: AxiosRequestConfig}
+): UseMutationOptions<Awaited<ReturnType<typeof coursesCanTakeBatchCoursesCanTakeBatchPost>>, TError,{data: CanTakeCourseBatch}, TContext> => {
+ const {mutation: mutationOptions, axios: axiosOptions} = options ?? {};
 
-  return { mutationFn, ...mutationOptions };
-};
+      
 
-export type CoursesCanTakeBatchCoursesCanTakeBatchPostMutationResult =
-  NonNullable<
-    Awaited<ReturnType<typeof coursesCanTakeBatchCoursesCanTakeBatchPost>>
-  >;
-export type CoursesCanTakeBatchCoursesCanTakeBatchPostMutationBody =
-  CanTakeCourseBatch;
-export type CoursesCanTakeBatchCoursesCanTakeBatchPostMutationError =
-  AxiosError<HTTPValidationError>;
 
-/**
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof coursesCanTakeBatchCoursesCanTakeBatchPost>>, {data: CanTakeCourseBatch}> = (props) => {
+          const {data} = props ?? {};
+
+          return  coursesCanTakeBatchCoursesCanTakeBatchPost(data,axiosOptions)
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type CoursesCanTakeBatchCoursesCanTakeBatchPostMutationResult = NonNullable<Awaited<ReturnType<typeof coursesCanTakeBatchCoursesCanTakeBatchPost>>>
+    export type CoursesCanTakeBatchCoursesCanTakeBatchPostMutationBody = CanTakeCourseBatch
+    export type CoursesCanTakeBatchCoursesCanTakeBatchPostMutationError = AxiosError<HTTPValidationError>
+
+    /**
  * @summary Courses Can Take Batch
  */
-export const useCoursesCanTakeBatchCoursesCanTakeBatchPost = <
-  TError = AxiosError<HTTPValidationError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof coursesCanTakeBatchCoursesCanTakeBatchPost>>,
-    TError,
-    { data: CanTakeCourseBatch },
-    TContext
-  >;
-  axios?: AxiosRequestConfig;
-}) => {
-  const mutationOptions =
-    getCoursesCanTakeBatchCoursesCanTakeBatchPostMutationOptions(options);
+export const useCoursesCanTakeBatchCoursesCanTakeBatchPost = <TError = AxiosError<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof coursesCanTakeBatchCoursesCanTakeBatchPost>>, TError,{data: CanTakeCourseBatch}, TContext>, axios?: AxiosRequestConfig}
+) => {
 
-  return useMutation(mutationOptions);
-};
+      const mutationOptions = getCoursesCanTakeBatchCoursesCanTakeBatchPostMutationOptions(options);
 
+      return useMutation(mutationOptions);
+    }
+    
 /**
  * @summary Courses Can Take
  */
 export const coursesCanTakeCoursesCanTakeCourseCodePost = (
-  courseCode: string,
-  coursesTakenIn: CoursesTakenIn,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<RequirementsResult>> => {
-  return axios.default.post(
-    `/courses/can-take/${courseCode}`,
-    coursesTakenIn,
-    options,
-  );
-};
-
-export const getCoursesCanTakeCoursesCanTakeCourseCodePostMutationOptions = <
-  TError = AxiosError<HTTPValidationError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof coursesCanTakeCoursesCanTakeCourseCodePost>>,
-    TError,
-    { courseCode: string; data: CoursesTakenIn },
-    TContext
-  >;
-  axios?: AxiosRequestConfig;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof coursesCanTakeCoursesCanTakeCourseCodePost>>,
-  TError,
-  { courseCode: string; data: CoursesTakenIn },
-  TContext
-> => {
-  const { mutation: mutationOptions, axios: axiosOptions } = options ?? {};
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof coursesCanTakeCoursesCanTakeCourseCodePost>>,
-    { courseCode: string; data: CoursesTakenIn }
-  > = (props) => {
-    const { courseCode, data } = props ?? {};
-
-    return coursesCanTakeCoursesCanTakeCourseCodePost(
-      courseCode,
-      data,
-      axiosOptions,
+    courseCode: string,
+    coursesTakenIn: CoursesTakenIn, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<RequirementsResult>> => {
+    
+    return axios.default.post(
+      `/courses/can-take/${courseCode}`,
+      coursesTakenIn,options
     );
-  };
+  }
 
-  return { mutationFn, ...mutationOptions };
-};
 
-export type CoursesCanTakeCoursesCanTakeCourseCodePostMutationResult =
-  NonNullable<
-    Awaited<ReturnType<typeof coursesCanTakeCoursesCanTakeCourseCodePost>>
-  >;
-export type CoursesCanTakeCoursesCanTakeCourseCodePostMutationBody =
-  CoursesTakenIn;
-export type CoursesCanTakeCoursesCanTakeCourseCodePostMutationError =
-  AxiosError<HTTPValidationError>;
 
-/**
+export const getCoursesCanTakeCoursesCanTakeCourseCodePostMutationOptions = <TError = AxiosError<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof coursesCanTakeCoursesCanTakeCourseCodePost>>, TError,{courseCode: string;data: CoursesTakenIn}, TContext>, axios?: AxiosRequestConfig}
+): UseMutationOptions<Awaited<ReturnType<typeof coursesCanTakeCoursesCanTakeCourseCodePost>>, TError,{courseCode: string;data: CoursesTakenIn}, TContext> => {
+ const {mutation: mutationOptions, axios: axiosOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof coursesCanTakeCoursesCanTakeCourseCodePost>>, {courseCode: string;data: CoursesTakenIn}> = (props) => {
+          const {courseCode,data} = props ?? {};
+
+          return  coursesCanTakeCoursesCanTakeCourseCodePost(courseCode,data,axiosOptions)
+        }
+
+        
+
+
+   return  { mutationFn, ...mutationOptions }}
+
+    export type CoursesCanTakeCoursesCanTakeCourseCodePostMutationResult = NonNullable<Awaited<ReturnType<typeof coursesCanTakeCoursesCanTakeCourseCodePost>>>
+    export type CoursesCanTakeCoursesCanTakeCourseCodePostMutationBody = CoursesTakenIn
+    export type CoursesCanTakeCoursesCanTakeCourseCodePostMutationError = AxiosError<HTTPValidationError>
+
+    /**
  * @summary Courses Can Take
  */
-export const useCoursesCanTakeCoursesCanTakeCourseCodePost = <
-  TError = AxiosError<HTTPValidationError>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof coursesCanTakeCoursesCanTakeCourseCodePost>>,
-    TError,
-    { courseCode: string; data: CoursesTakenIn },
-    TContext
-  >;
-  axios?: AxiosRequestConfig;
-}) => {
-  const mutationOptions =
-    getCoursesCanTakeCoursesCanTakeCourseCodePostMutationOptions(options);
+export const useCoursesCanTakeCoursesCanTakeCourseCodePost = <TError = AxiosError<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof coursesCanTakeCoursesCanTakeCourseCodePost>>, TError,{courseCode: string;data: CoursesTakenIn}, TContext>, axios?: AxiosRequestConfig}
+) => {
 
-  return useMutation(mutationOptions);
-};
+      const mutationOptions = getCoursesCanTakeCoursesCanTakeCourseCodePostMutationOptions(options);
 
+      return useMutation(mutationOptions);
+    }
+    
 /**
  * @summary Search Courses
  */
 export const searchCoursesCoursesSearchGet = (
-  params: SearchCoursesCoursesSearchGetParams,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<CourseWithTagsSchema[]>> => {
-  return axios.default.get(`/courses/search`, {
+    params: SearchCoursesCoursesSearchGetParams, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<CourseWithTagsSchema[]>> => {
+    
+    return axios.default.get(
+      `/courses/search`,{
     ...options,
-    params: { ...params, ...options?.params },
-  });
-};
+        params: {...params, ...options?.params},}
+    );
+  }
 
-export const getSearchCoursesCoursesSearchGetQueryKey = (
-  params: SearchCoursesCoursesSearchGetParams,
+
+export const getSearchCoursesCoursesSearchGetQueryKey = (params: SearchCoursesCoursesSearchGetParams,) => {
+    return [`/courses/search`, ...(params ? [params]: [])] as const;
+    }
+
+    
+export const getSearchCoursesCoursesSearchGetQueryOptions = <TData = Awaited<ReturnType<typeof searchCoursesCoursesSearchGet>>, TError = AxiosError<HTTPValidationError>>(params: SearchCoursesCoursesSearchGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof searchCoursesCoursesSearchGet>>, TError, TData>>, axios?: AxiosRequestConfig}
 ) => {
-  return [`/courses/search`, ...(params ? [params] : [])] as const;
-};
 
-export const getSearchCoursesCoursesSearchGetQueryOptions = <
-  TData = Awaited<ReturnType<typeof searchCoursesCoursesSearchGet>>,
-  TError = AxiosError<HTTPValidationError>,
->(
-  params: SearchCoursesCoursesSearchGetParams,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof searchCoursesCoursesSearchGet>>,
-        TError,
-        TData
-      >
-    >;
-    axios?: AxiosRequestConfig;
-  },
-) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+const {query: queryOptions, axios: axiosOptions} = options ?? {};
 
-  const queryKey =
-    queryOptions?.queryKey ?? getSearchCoursesCoursesSearchGetQueryKey(params);
+  const queryKey =  queryOptions?.queryKey ?? getSearchCoursesCoursesSearchGetQueryKey(params);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof searchCoursesCoursesSearchGet>>
-  > = ({ signal }) =>
-    searchCoursesCoursesSearchGet(params, { signal, ...axiosOptions });
+  
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof searchCoursesCoursesSearchGet>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof searchCoursesCoursesSearchGet>>> = ({ signal }) => searchCoursesCoursesSearchGet(params, { signal, ...axiosOptions });
 
-export type SearchCoursesCoursesSearchGetQueryResult = NonNullable<
-  Awaited<ReturnType<typeof searchCoursesCoursesSearchGet>>
->;
-export type SearchCoursesCoursesSearchGetQueryError =
-  AxiosError<HTTPValidationError>;
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof searchCoursesCoursesSearchGet>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type SearchCoursesCoursesSearchGetQueryResult = NonNullable<Awaited<ReturnType<typeof searchCoursesCoursesSearchGet>>>
+export type SearchCoursesCoursesSearchGetQueryError = AxiosError<HTTPValidationError>
 
 /**
  * @summary Search Courses
  */
-export const useSearchCoursesCoursesSearchGet = <
-  TData = Awaited<ReturnType<typeof searchCoursesCoursesSearchGet>>,
-  TError = AxiosError<HTTPValidationError>,
->(
-  params: SearchCoursesCoursesSearchGetParams,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof searchCoursesCoursesSearchGet>>,
-        TError,
-        TData
-      >
-    >;
-    axios?: AxiosRequestConfig;
-  },
-): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getSearchCoursesCoursesSearchGetQueryOptions(
-    params,
-    options,
-  );
+export const useSearchCoursesCoursesSearchGet = <TData = Awaited<ReturnType<typeof searchCoursesCoursesSearchGet>>, TError = AxiosError<HTTPValidationError>>(
+ params: SearchCoursesCoursesSearchGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof searchCoursesCoursesSearchGet>>, TError, TData>>, axios?: AxiosRequestConfig}
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
-  query.queryKey = queryOptions.queryKey;
+  const queryOptions = getSearchCoursesCoursesSearchGetQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
 
   return query;
-};
+}
+
+
+
 
 /**
  * @summary Tags
  */
 export const tagsCoursesTagsGet = (
-  params: TagsCoursesTagsGetParams,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<CourseWithTagsSchema[]>> => {
-  return axios.default.get(`/courses/tags`, {
+    params: TagsCoursesTagsGetParams, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<CourseWithTagsSchema[]>> => {
+    
+    return axios.default.get(
+      `/courses/tags`,{
     ...options,
-    params: { ...params, ...options?.params },
-  });
-};
+        params: {...params, ...options?.params},}
+    );
+  }
 
-export const getTagsCoursesTagsGetQueryKey = (
-  params: TagsCoursesTagsGetParams,
+
+export const getTagsCoursesTagsGetQueryKey = (params: TagsCoursesTagsGetParams,) => {
+    return [`/courses/tags`, ...(params ? [params]: [])] as const;
+    }
+
+    
+export const getTagsCoursesTagsGetQueryOptions = <TData = Awaited<ReturnType<typeof tagsCoursesTagsGet>>, TError = AxiosError<HTTPValidationError>>(params: TagsCoursesTagsGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof tagsCoursesTagsGet>>, TError, TData>>, axios?: AxiosRequestConfig}
 ) => {
-  return [`/courses/tags`, ...(params ? [params] : [])] as const;
-};
 
-export const getTagsCoursesTagsGetQueryOptions = <
-  TData = Awaited<ReturnType<typeof tagsCoursesTagsGet>>,
-  TError = AxiosError<HTTPValidationError>,
->(
-  params: TagsCoursesTagsGetParams,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof tagsCoursesTagsGet>>,
-        TError,
-        TData
-      >
-    >;
-    axios?: AxiosRequestConfig;
-  },
-) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+const {query: queryOptions, axios: axiosOptions} = options ?? {};
 
-  const queryKey =
-    queryOptions?.queryKey ?? getTagsCoursesTagsGetQueryKey(params);
+  const queryKey =  queryOptions?.queryKey ?? getTagsCoursesTagsGetQueryKey(params);
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof tagsCoursesTagsGet>>
-  > = ({ signal }) => tagsCoursesTagsGet(params, { signal, ...axiosOptions });
+  
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof tagsCoursesTagsGet>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof tagsCoursesTagsGet>>> = ({ signal }) => tagsCoursesTagsGet(params, { signal, ...axiosOptions });
 
-export type TagsCoursesTagsGetQueryResult = NonNullable<
-  Awaited<ReturnType<typeof tagsCoursesTagsGet>>
->;
-export type TagsCoursesTagsGetQueryError = AxiosError<HTTPValidationError>;
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof tagsCoursesTagsGet>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type TagsCoursesTagsGetQueryResult = NonNullable<Awaited<ReturnType<typeof tagsCoursesTagsGet>>>
+export type TagsCoursesTagsGetQueryError = AxiosError<HTTPValidationError>
 
 /**
  * @summary Tags
  */
-export const useTagsCoursesTagsGet = <
-  TData = Awaited<ReturnType<typeof tagsCoursesTagsGet>>,
-  TError = AxiosError<HTTPValidationError>,
->(
-  params: TagsCoursesTagsGetParams,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<
-        Awaited<ReturnType<typeof tagsCoursesTagsGet>>,
-        TError,
-        TData
-      >
-    >;
-    axios?: AxiosRequestConfig;
-  },
-): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getTagsCoursesTagsGetQueryOptions(params, options);
+export const useTagsCoursesTagsGet = <TData = Awaited<ReturnType<typeof tagsCoursesTagsGet>>, TError = AxiosError<HTTPValidationError>>(
+ params: TagsCoursesTagsGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof tagsCoursesTagsGet>>, TError, TData>>, axios?: AxiosRequestConfig}
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
-  query.queryKey = queryOptions.queryKey;
+  const queryOptions = getTagsCoursesTagsGetQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
 
   return query;
-};
+}
+
+
+
 
 /**
  * @summary Sample Path
  */
 export const samplePathSamplePathGet = (
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<SamplePathSamplePathGet200>> => {
-  return axios.default.get(`/sample-path`, options);
-};
+     options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<SamplePathSamplePathGet200>> => {
+    
+    return axios.default.get(
+      `/sample-path`,options
+    );
+  }
+
 
 export const getSamplePathSamplePathGetQueryKey = () => {
-  return [`/sample-path`] as const;
-};
+    return [`/sample-path`] as const;
+    }
 
-export const getSamplePathSamplePathGetQueryOptions = <
-  TData = Awaited<ReturnType<typeof samplePathSamplePathGet>>,
-  TError = AxiosError<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof samplePathSamplePathGet>>,
-      TError,
-      TData
-    >
-  >;
-  axios?: AxiosRequestConfig;
-}) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+    
+export const getSamplePathSamplePathGetQueryOptions = <TData = Awaited<ReturnType<typeof samplePathSamplePathGet>>, TError = AxiosError<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof samplePathSamplePathGet>>, TError, TData>>, axios?: AxiosRequestConfig}
+) => {
 
-  const queryKey =
-    queryOptions?.queryKey ?? getSamplePathSamplePathGetQueryKey();
+const {query: queryOptions, axios: axiosOptions} = options ?? {};
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof samplePathSamplePathGet>>
-  > = ({ signal }) => samplePathSamplePathGet({ signal, ...axiosOptions });
+  const queryKey =  queryOptions?.queryKey ?? getSamplePathSamplePathGetQueryKey();
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof samplePathSamplePathGet>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
+  
 
-export type SamplePathSamplePathGetQueryResult = NonNullable<
-  Awaited<ReturnType<typeof samplePathSamplePathGet>>
->;
-export type SamplePathSamplePathGetQueryError = AxiosError<unknown>;
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof samplePathSamplePathGet>>> = ({ signal }) => samplePathSamplePathGet({ signal, ...axiosOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof samplePathSamplePathGet>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type SamplePathSamplePathGetQueryResult = NonNullable<Awaited<ReturnType<typeof samplePathSamplePathGet>>>
+export type SamplePathSamplePathGetQueryError = AxiosError<unknown>
 
 /**
  * @summary Sample Path
  */
-export const useSamplePathSamplePathGet = <
-  TData = Awaited<ReturnType<typeof samplePathSamplePathGet>>,
-  TError = AxiosError<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof samplePathSamplePathGet>>,
-      TError,
-      TData
-    >
-  >;
-  axios?: AxiosRequestConfig;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getSamplePathSamplePathGetQueryOptions(options);
+export const useSamplePathSamplePathGet = <TData = Awaited<ReturnType<typeof samplePathSamplePathGet>>, TError = AxiosError<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof samplePathSamplePathGet>>, TError, TData>>, axios?: AxiosRequestConfig}
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
-  query.queryKey = queryOptions.queryKey;
+  const queryOptions = getSamplePathSamplePathGetQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
 
   return query;
-};
+}
+
+
+
 
 /**
  * @summary Read Root
  */
 export const readRootHealthcheckGet = (
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<ReadRootHealthcheckGet200>> => {
-  return axios.default.get(`/healthcheck`, options);
-};
+     options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<ReadRootHealthcheckGet200>> => {
+    
+    return axios.default.get(
+      `/healthcheck`,options
+    );
+  }
+
 
 export const getReadRootHealthcheckGetQueryKey = () => {
-  return [`/healthcheck`] as const;
-};
+    return [`/healthcheck`] as const;
+    }
 
-export const getReadRootHealthcheckGetQueryOptions = <
-  TData = Awaited<ReturnType<typeof readRootHealthcheckGet>>,
-  TError = AxiosError<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof readRootHealthcheckGet>>,
-      TError,
-      TData
-    >
-  >;
-  axios?: AxiosRequestConfig;
-}) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+    
+export const getReadRootHealthcheckGetQueryOptions = <TData = Awaited<ReturnType<typeof readRootHealthcheckGet>>, TError = AxiosError<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof readRootHealthcheckGet>>, TError, TData>>, axios?: AxiosRequestConfig}
+) => {
 
-  const queryKey =
-    queryOptions?.queryKey ?? getReadRootHealthcheckGetQueryKey();
+const {query: queryOptions, axios: axiosOptions} = options ?? {};
 
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof readRootHealthcheckGet>>
-  > = ({ signal }) => readRootHealthcheckGet({ signal, ...axiosOptions });
+  const queryKey =  queryOptions?.queryKey ?? getReadRootHealthcheckGetQueryKey();
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof readRootHealthcheckGet>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
+  
 
-export type ReadRootHealthcheckGetQueryResult = NonNullable<
-  Awaited<ReturnType<typeof readRootHealthcheckGet>>
->;
-export type ReadRootHealthcheckGetQueryError = AxiosError<unknown>;
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof readRootHealthcheckGet>>> = ({ signal }) => readRootHealthcheckGet({ signal, ...axiosOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof readRootHealthcheckGet>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ReadRootHealthcheckGetQueryResult = NonNullable<Awaited<ReturnType<typeof readRootHealthcheckGet>>>
+export type ReadRootHealthcheckGetQueryError = AxiosError<unknown>
 
 /**
  * @summary Read Root
  */
-export const useReadRootHealthcheckGet = <
-  TData = Awaited<ReturnType<typeof readRootHealthcheckGet>>,
-  TError = AxiosError<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof readRootHealthcheckGet>>,
-      TError,
-      TData
-    >
-  >;
-  axios?: AxiosRequestConfig;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getReadRootHealthcheckGetQueryOptions(options);
+export const useReadRootHealthcheckGet = <TData = Awaited<ReturnType<typeof readRootHealthcheckGet>>, TError = AxiosError<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof readRootHealthcheckGet>>, TError, TData>>, axios?: AxiosRequestConfig}
 
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
-  query.queryKey = queryOptions.queryKey;
+  const queryOptions = getReadRootHealthcheckGetQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
 
   return query;
-};
+}
 
-export const getReadRootGetResponseMock = (): ReadRootGet200 => ({});
 
-export const getReadItemQueryGetResponseMock = (): ReadItemQueryGet200 => ({});
 
-export const getOptionsReqsOptionOptIdReqsGetResponseMock = (
-  overrideResponse: any = {},
-): OptionsSchema => ({
-  optionName: faker.word.sample(),
-  requirements: Array.from(
-    { length: faker.number.int({ min: 1, max: 10 }) },
-    (_, i) => i + 1,
-  ).map(() => ({
-    courses: Array.from(
-      { length: faker.number.int({ min: 1, max: 10 }) },
-      (_, i) => i + 1,
-    ).map(() => faker.word.sample()),
-    name: faker.word.sample(),
-    numberOfCourses: faker.number.int({ min: undefined, max: undefined }),
-    ...overrideResponse,
-  })),
-  ...overrideResponse,
-});
 
-export const getOptionsMissingReqsOptionOptIdMissingReqsPostResponseMock = (
-  overrideResponse: any = {},
-): MissingReqs => ({
-  lists: Array.from(
-    { length: faker.number.int({ min: 1, max: 10 }) },
-    (_, i) => i + 1,
-  ).map(() => ({
-    courses: {
-      [faker.string.alphanumeric(5)]: faker.datatype.boolean(),
-    },
-    listName: faker.word.sample(),
-    tag: {
-      code: faker.word.sample(),
-      color: faker.helpers.arrayElement(Object.values(ColorsEnum)),
-      longName: faker.word.sample(),
-      shortName: faker.word.sample(),
-      ...overrideResponse,
-    },
-    totalCourseToComplete: faker.number.int({ min: undefined, max: undefined }),
-    ...overrideResponse,
-  })),
-  ...overrideResponse,
-});
 
-export const getDegreeReqsDegreeDegreeNameReqsGetResponseMock = (
-  overrideResponse: any = {},
-): DegreeReqs => ({
-  additionalReqs: {
-    [faker.string.alphanumeric(5)]: {
-      courses: Array.from(
-        { length: faker.number.int({ min: 1, max: 10 }) },
-        (_, i) => i + 1,
-      ).map(() => faker.word.sample()),
-      numberOfCourses: faker.number.int({ min: undefined, max: undefined }),
-      ...overrideResponse,
-    },
-  },
-  mandatoryCourses: Array.from(
-    { length: faker.number.int({ min: 1, max: 10 }) },
-    (_, i) => i + 1,
-  ).map(() => faker.word.sample()),
-  ...overrideResponse,
-});
 
-export const getDegreesDegreeGetResponseMock = (): string[] =>
-  Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, () =>
-    faker.word.sample(),
-  );
+export const getReadRootGetResponseMock = (): ReadRootGet200 => ({})
 
-export const getDegreeMissingReqsDegreeDegreeIdMissingReqsPostResponseMock = (
-  overrideResponse: any = {},
-): DegreeMissingReqs => ({
-  additionalReqs: {
-    [faker.string.alphanumeric(5)]: {
-      completed: faker.word.sample(),
-      tag: {
-        code: faker.word.sample(),
-        color: faker.helpers.arrayElement(Object.values(ColorsEnum)),
-        longName: faker.word.sample(),
-        shortName: faker.word.sample(),
-        ...overrideResponse,
-      },
-      total: faker.word.sample(),
-      ...overrideResponse,
-    },
-  },
-  mandatoryCourses: Array.from(
-    { length: faker.number.int({ min: 1, max: 10 }) },
-    (_, i) => i + 1,
-  ).map(() => faker.word.sample()),
-  numberOfMandatoryCourses: faker.number.int({
-    min: undefined,
-    max: undefined,
-  }),
-  tag: {
-    code: faker.word.sample(),
-    color: faker.helpers.arrayElement(Object.values(ColorsEnum)),
-    longName: faker.word.sample(),
-    shortName: faker.word.sample(),
-    ...overrideResponse,
-  },
-  ...overrideResponse,
-});
+export const getReadItemQueryGetResponseMock = (): ReadItemQueryGet200 => ({})
 
-export const getCoursesCanTakeBatchCoursesCanTakeBatchPostResponseMock = (
-  overrideResponse: any = {},
-): RequirementsResults => ({
-  results: Array.from(
-    { length: faker.number.int({ min: 1, max: 10 }) },
-    (_, i) => i + 1,
-  ).map(() => ({
-    message: faker.word.sample(),
-    result: faker.datatype.boolean(),
-    ...overrideResponse,
-  })),
-  ...overrideResponse,
-});
+export const getOptionsReqsOptionOptIdReqsGetResponseMock = (overrideResponse: any = {}): OptionsSchema => ({optionName: faker.word.sample(), requirements: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({courses: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.word.sample())), name: faker.word.sample(), numberOfCourses: faker.number.int({min: undefined, max: undefined}), ...overrideResponse})), ...overrideResponse})
 
-export const getCoursesCanTakeCoursesCanTakeCourseCodePostResponseMock = (
-  overrideResponse: any = {},
-): RequirementsResult => ({
-  message: faker.word.sample(),
-  result: faker.datatype.boolean(),
-  ...overrideResponse,
-});
+export const getOptionsMissingReqsOptionOptIdMissingReqsPostResponseMock = (overrideResponse: any = {}): MissingReqs => ({lists: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({courses: {
+        [faker.string.alphanumeric(5)]: faker.datatype.boolean()
+      }, listName: faker.word.sample(), tag: {code: faker.word.sample(), color: faker.helpers.arrayElement(Object.values(ColorsEnum)), longName: faker.word.sample(), shortName: faker.word.sample(), ...overrideResponse}, totalCourseToComplete: faker.number.int({min: undefined, max: undefined}), ...overrideResponse})), ...overrideResponse})
 
-export const getSearchCoursesCoursesSearchGetResponseMock = (
-  overrideResponse: any = {},
-): CourseWithTagsSchema[] =>
-  Array.from(
-    { length: faker.number.int({ min: 1, max: 10 }) },
-    (_, i) => i + 1,
-  ).map(() => ({
-    antirequisites: faker.helpers.arrayElement([
-      faker.helpers.arrayElement([faker.word.sample(), {}]),
-      undefined,
-    ]),
-    corequisites: faker.helpers.arrayElement([
-      faker.helpers.arrayElement([faker.word.sample(), {}]),
-      undefined,
-    ]),
-    courseCode: faker.word.sample(),
-    courseName: faker.word.sample(),
-    credit: faker.helpers.arrayElement([
-      faker.helpers.arrayElement([
-        faker.number.int({ min: undefined, max: undefined }),
-        {},
-      ]),
-      undefined,
-    ]),
-    description: faker.helpers.arrayElement([faker.word.sample(), undefined]),
-    location: faker.helpers.arrayElement([
-      faker.helpers.arrayElement([faker.word.sample(), {}]),
-      undefined,
-    ]),
-    prerequisites: faker.helpers.arrayElement([
-      faker.helpers.arrayElement([faker.word.sample(), {}]),
-      undefined,
-    ]),
-    tags: faker.helpers.arrayElement([
-      Array.from(
-        { length: faker.number.int({ min: 1, max: 10 }) },
-        (_, i) => i + 1,
-      ).map(() => ({
-        code: faker.word.sample(),
-        color: faker.helpers.arrayElement(Object.values(ColorsEnum)),
-        longName: faker.word.sample(),
-        shortName: faker.word.sample(),
-        ...overrideResponse,
-      })),
-      undefined,
-    ]),
-    ...overrideResponse,
-  }));
+export const getDegreeReqsDegreeDegreeNameReqsGetResponseMock = (overrideResponse: any = {}): DegreeReqs => ({additionalReqs: {
+        [faker.string.alphanumeric(5)]: {courses: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.word.sample())), numberOfCourses: faker.number.int({min: undefined, max: undefined}), ...overrideResponse}
+      }, mandatoryCourses: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.word.sample())), ...overrideResponse})
 
-export const getTagsCoursesTagsGetResponseMock = (
-  overrideResponse: any = {},
-): CourseWithTagsSchema[] =>
-  Array.from(
-    { length: faker.number.int({ min: 1, max: 10 }) },
-    (_, i) => i + 1,
-  ).map(() => ({
-    antirequisites: faker.helpers.arrayElement([
-      faker.helpers.arrayElement([faker.word.sample(), {}]),
-      undefined,
-    ]),
-    corequisites: faker.helpers.arrayElement([
-      faker.helpers.arrayElement([faker.word.sample(), {}]),
-      undefined,
-    ]),
-    courseCode: faker.word.sample(),
-    courseName: faker.word.sample(),
-    credit: faker.helpers.arrayElement([
-      faker.helpers.arrayElement([
-        faker.number.int({ min: undefined, max: undefined }),
-        {},
-      ]),
-      undefined,
-    ]),
-    description: faker.helpers.arrayElement([faker.word.sample(), undefined]),
-    location: faker.helpers.arrayElement([
-      faker.helpers.arrayElement([faker.word.sample(), {}]),
-      undefined,
-    ]),
-    prerequisites: faker.helpers.arrayElement([
-      faker.helpers.arrayElement([faker.word.sample(), {}]),
-      undefined,
-    ]),
-    tags: faker.helpers.arrayElement([
-      Array.from(
-        { length: faker.number.int({ min: 1, max: 10 }) },
-        (_, i) => i + 1,
-      ).map(() => ({
-        code: faker.word.sample(),
-        color: faker.helpers.arrayElement(Object.values(ColorsEnum)),
-        longName: faker.word.sample(),
-        shortName: faker.word.sample(),
-        ...overrideResponse,
-      })),
-      undefined,
-    ]),
-    ...overrideResponse,
-  }));
+export const getDegreesDegreeGetResponseMock = (): string[] => (Array.from({length: faker.number.int({min: 1,max: 10})}, () => faker.word.sample()))
 
-export const getSamplePathSamplePathGetResponseMock =
-  (): SamplePathSamplePathGet200 => ({});
+export const getDegreeMissingReqsDegreeDegreeIdMissingReqsPostResponseMock = (overrideResponse: any = {}): DegreeMissingReqs => ({additionalReqs: {
+        [faker.string.alphanumeric(5)]: {completed: faker.word.sample(), tag: {code: faker.word.sample(), color: faker.helpers.arrayElement(Object.values(ColorsEnum)), longName: faker.word.sample(), shortName: faker.word.sample(), ...overrideResponse}, total: faker.word.sample(), ...overrideResponse}
+      }, mandatoryCourses: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => (faker.word.sample())), numberOfMandatoryCourses: faker.number.int({min: undefined, max: undefined}), tag: {code: faker.word.sample(), color: faker.helpers.arrayElement(Object.values(ColorsEnum)), longName: faker.word.sample(), shortName: faker.word.sample(), ...overrideResponse}, ...overrideResponse})
 
-export const getReadRootHealthcheckGetResponseMock =
-  (): ReadRootHealthcheckGet200 => ({});
+export const getCoursesCanTakeBatchCoursesCanTakeBatchPostResponseMock = (overrideResponse: any = {}): RequirementsResults => ({results: Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({message: faker.word.sample(), result: faker.datatype.boolean(), ...overrideResponse})), ...overrideResponse})
 
-export const getReadRootGetMockHandler = (
-  overrideResponse?: ReadRootGet200,
-) => {
-  return http.get("*/", async () => {
+export const getCoursesCanTakeCoursesCanTakeCourseCodePostResponseMock = (overrideResponse: any = {}): RequirementsResult => ({message: faker.word.sample(), result: faker.datatype.boolean(), ...overrideResponse})
+
+export const getSearchCoursesCoursesSearchGetResponseMock = (overrideResponse: any = {}): CourseWithTagsSchema[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({antirequisites: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.word.sample(),{}]), undefined]), corequisites: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.word.sample(),{}]), undefined]), courseCode: faker.word.sample(), courseName: faker.word.sample(), credit: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}),{}]), undefined]), description: faker.helpers.arrayElement([faker.word.sample(), undefined]), location: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.word.sample(),{}]), undefined]), prerequisites: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.word.sample(),{}]), undefined]), tags: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({code: faker.word.sample(), color: faker.helpers.arrayElement(Object.values(ColorsEnum)), longName: faker.word.sample(), shortName: faker.word.sample(), ...overrideResponse})), undefined]), ...overrideResponse})))
+
+export const getTagsCoursesTagsGetResponseMock = (overrideResponse: any = {}): CourseWithTagsSchema[] => (Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({antirequisites: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.word.sample(),{}]), undefined]), corequisites: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.word.sample(),{}]), undefined]), courseCode: faker.word.sample(), courseName: faker.word.sample(), credit: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.number.int({min: undefined, max: undefined}),{}]), undefined]), description: faker.helpers.arrayElement([faker.word.sample(), undefined]), location: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.word.sample(),{}]), undefined]), prerequisites: faker.helpers.arrayElement([faker.helpers.arrayElement([faker.word.sample(),{}]), undefined]), tags: faker.helpers.arrayElement([Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, (_, i) => i + 1).map(() => ({code: faker.word.sample(), color: faker.helpers.arrayElement(Object.values(ColorsEnum)), longName: faker.word.sample(), shortName: faker.word.sample(), ...overrideResponse})), undefined]), ...overrideResponse})))
+
+export const getSamplePathSamplePathGetResponseMock = (): SamplePathSamplePathGet200 => ({})
+
+export const getReadRootHealthcheckGetResponseMock = (): ReadRootHealthcheckGet200 => ({})
+
+
+export const getReadRootGetMockHandler = (overrideResponse?: ReadRootGet200) => {
+  return http.get('*/', async () => {
     await delay(1000);
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse ? overrideResponse : getReadRootGetResponseMock(),
-      ),
+    return new HttpResponse(JSON.stringify(overrideResponse ? overrideResponse : getReadRootGetResponseMock()),
       {
         status: 200,
         headers: {
-          "Content-Type": "application/json",
-        },
-      },
-    );
-  });
-};
+          'Content-Type': 'application/json',
+        }
+      }
+    )
+  })
+}
 
-export const getReadItemQueryGetMockHandler = (
-  overrideResponse?: ReadItemQueryGet200,
-) => {
-  return http.get("*/query", async () => {
+export const getReadItemQueryGetMockHandler = (overrideResponse?: ReadItemQueryGet200) => {
+  return http.get('*/query', async () => {
     await delay(1000);
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse ? overrideResponse : getReadItemQueryGetResponseMock(),
-      ),
+    return new HttpResponse(JSON.stringify(overrideResponse ? overrideResponse : getReadItemQueryGetResponseMock()),
       {
         status: 200,
         headers: {
-          "Content-Type": "application/json",
-        },
-      },
-    );
-  });
-};
+          'Content-Type': 'application/json',
+        }
+      }
+    )
+  })
+}
 
-export const getOptionsReqsOptionOptIdReqsGetMockHandler = (
-  overrideResponse?: OptionsSchema,
-) => {
-  return http.get("*/option/:optId/reqs", async () => {
+export const getOptionsReqsOptionOptIdReqsGetMockHandler = (overrideResponse?: OptionsSchema) => {
+  return http.get('*/option/:optId/reqs', async () => {
     await delay(1000);
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse
-          ? overrideResponse
-          : getOptionsReqsOptionOptIdReqsGetResponseMock(),
-      ),
+    return new HttpResponse(JSON.stringify(overrideResponse ? overrideResponse : getOptionsReqsOptionOptIdReqsGetResponseMock()),
       {
         status: 200,
         headers: {
-          "Content-Type": "application/json",
-        },
-      },
-    );
-  });
-};
+          'Content-Type': 'application/json',
+        }
+      }
+    )
+  })
+}
 
-export const getOptionsMissingReqsOptionOptIdMissingReqsPostMockHandler = (
-  overrideResponse?: MissingReqs,
-) => {
-  return http.post("*/option/:optId/missing_reqs", async () => {
+export const getOptionsMissingReqsOptionOptIdMissingReqsPostMockHandler = (overrideResponse?: MissingReqs) => {
+  return http.post('*/option/:optId/missing_reqs', async () => {
     await delay(1000);
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse
-          ? overrideResponse
-          : getOptionsMissingReqsOptionOptIdMissingReqsPostResponseMock(),
-      ),
+    return new HttpResponse(JSON.stringify(overrideResponse ? overrideResponse : getOptionsMissingReqsOptionOptIdMissingReqsPostResponseMock()),
       {
         status: 200,
         headers: {
-          "Content-Type": "application/json",
-        },
-      },
-    );
-  });
-};
+          'Content-Type': 'application/json',
+        }
+      }
+    )
+  })
+}
 
-export const getDegreeReqsDegreeDegreeNameReqsGetMockHandler = (
-  overrideResponse?: DegreeReqs,
-) => {
-  return http.get("*/degree/:degreeName/reqs", async () => {
+export const getDegreeReqsDegreeDegreeNameReqsGetMockHandler = (overrideResponse?: DegreeReqs) => {
+  return http.get('*/degree/:degreeName/reqs', async () => {
     await delay(1000);
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse
-          ? overrideResponse
-          : getDegreeReqsDegreeDegreeNameReqsGetResponseMock(),
-      ),
+    return new HttpResponse(JSON.stringify(overrideResponse ? overrideResponse : getDegreeReqsDegreeDegreeNameReqsGetResponseMock()),
       {
         status: 200,
         headers: {
-          "Content-Type": "application/json",
-        },
-      },
-    );
-  });
-};
+          'Content-Type': 'application/json',
+        }
+      }
+    )
+  })
+}
 
 export const getDegreesDegreeGetMockHandler = (overrideResponse?: string[]) => {
-  return http.get("*/degree", async () => {
+  return http.get('*/degree', async () => {
     await delay(1000);
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse ? overrideResponse : getDegreesDegreeGetResponseMock(),
-      ),
+    return new HttpResponse(JSON.stringify(overrideResponse ? overrideResponse : getDegreesDegreeGetResponseMock()),
       {
         status: 200,
         headers: {
-          "Content-Type": "application/json",
-        },
-      },
-    );
-  });
-};
+          'Content-Type': 'application/json',
+        }
+      }
+    )
+  })
+}
 
-export const getDegreeMissingReqsDegreeDegreeIdMissingReqsPostMockHandler = (
-  overrideResponse?: DegreeMissingReqs,
-) => {
-  return http.post("*/degree/:degreeId/missing_reqs", async () => {
+export const getDegreeMissingReqsDegreeDegreeIdMissingReqsPostMockHandler = (overrideResponse?: DegreeMissingReqs) => {
+  return http.post('*/degree/:degreeId/missing_reqs', async () => {
     await delay(1000);
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse
-          ? overrideResponse
-          : getDegreeMissingReqsDegreeDegreeIdMissingReqsPostResponseMock(),
-      ),
+    return new HttpResponse(JSON.stringify(overrideResponse ? overrideResponse : getDegreeMissingReqsDegreeDegreeIdMissingReqsPostResponseMock()),
       {
         status: 200,
         headers: {
-          "Content-Type": "application/json",
-        },
-      },
-    );
-  });
-};
+          'Content-Type': 'application/json',
+        }
+      }
+    )
+  })
+}
 
-export const getCoursesCanTakeBatchCoursesCanTakeBatchPostMockHandler = (
-  overrideResponse?: RequirementsResults,
-) => {
-  return http.post("*/courses/can-take/batch", async () => {
+export const getCoursesCanTakeBatchCoursesCanTakeBatchPostMockHandler = (overrideResponse?: RequirementsResults) => {
+  return http.post('*/courses/can-take/batch', async () => {
     await delay(1000);
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse
-          ? overrideResponse
-          : getCoursesCanTakeBatchCoursesCanTakeBatchPostResponseMock(),
-      ),
+    return new HttpResponse(JSON.stringify(overrideResponse ? overrideResponse : getCoursesCanTakeBatchCoursesCanTakeBatchPostResponseMock()),
       {
         status: 200,
         headers: {
-          "Content-Type": "application/json",
-        },
-      },
-    );
-  });
-};
+          'Content-Type': 'application/json',
+        }
+      }
+    )
+  })
+}
 
-export const getCoursesCanTakeCoursesCanTakeCourseCodePostMockHandler = (
-  overrideResponse?: RequirementsResult,
-) => {
-  return http.post("*/courses/can-take/:courseCode", async () => {
+export const getCoursesCanTakeCoursesCanTakeCourseCodePostMockHandler = (overrideResponse?: RequirementsResult) => {
+  return http.post('*/courses/can-take/:courseCode', async () => {
     await delay(1000);
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse
-          ? overrideResponse
-          : getCoursesCanTakeCoursesCanTakeCourseCodePostResponseMock(),
-      ),
+    return new HttpResponse(JSON.stringify(overrideResponse ? overrideResponse : getCoursesCanTakeCoursesCanTakeCourseCodePostResponseMock()),
       {
         status: 200,
         headers: {
-          "Content-Type": "application/json",
-        },
-      },
-    );
-  });
-};
+          'Content-Type': 'application/json',
+        }
+      }
+    )
+  })
+}
 
-export const getSearchCoursesCoursesSearchGetMockHandler = (
-  overrideResponse?: CourseWithTagsSchema[],
-) => {
-  return http.get("*/courses/search", async () => {
+export const getSearchCoursesCoursesSearchGetMockHandler = (overrideResponse?: CourseWithTagsSchema[]) => {
+  return http.get('*/courses/search', async () => {
     await delay(1000);
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse
-          ? overrideResponse
-          : getSearchCoursesCoursesSearchGetResponseMock(),
-      ),
+    return new HttpResponse(JSON.stringify(overrideResponse ? overrideResponse : getSearchCoursesCoursesSearchGetResponseMock()),
       {
         status: 200,
         headers: {
-          "Content-Type": "application/json",
-        },
-      },
-    );
-  });
-};
+          'Content-Type': 'application/json',
+        }
+      }
+    )
+  })
+}
 
-export const getTagsCoursesTagsGetMockHandler = (
-  overrideResponse?: CourseWithTagsSchema[],
-) => {
-  return http.get("*/courses/tags", async () => {
+export const getTagsCoursesTagsGetMockHandler = (overrideResponse?: CourseWithTagsSchema[]) => {
+  return http.get('*/courses/tags', async () => {
     await delay(1000);
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse
-          ? overrideResponse
-          : getTagsCoursesTagsGetResponseMock(),
-      ),
+    return new HttpResponse(JSON.stringify(overrideResponse ? overrideResponse : getTagsCoursesTagsGetResponseMock()),
       {
         status: 200,
         headers: {
-          "Content-Type": "application/json",
-        },
-      },
-    );
-  });
-};
+          'Content-Type': 'application/json',
+        }
+      }
+    )
+  })
+}
 
-export const getSamplePathSamplePathGetMockHandler = (
-  overrideResponse?: SamplePathSamplePathGet200,
-) => {
-  return http.get("*/sample-path", async () => {
+export const getSamplePathSamplePathGetMockHandler = (overrideResponse?: SamplePathSamplePathGet200) => {
+  return http.get('*/sample-path', async () => {
     await delay(1000);
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse
-          ? overrideResponse
-          : getSamplePathSamplePathGetResponseMock(),
-      ),
+    return new HttpResponse(JSON.stringify(overrideResponse ? overrideResponse : getSamplePathSamplePathGetResponseMock()),
       {
         status: 200,
         headers: {
-          "Content-Type": "application/json",
-        },
-      },
-    );
-  });
-};
+          'Content-Type': 'application/json',
+        }
+      }
+    )
+  })
+}
 
-export const getReadRootHealthcheckGetMockHandler = (
-  overrideResponse?: ReadRootHealthcheckGet200,
-) => {
-  return http.get("*/healthcheck", async () => {
+export const getReadRootHealthcheckGetMockHandler = (overrideResponse?: ReadRootHealthcheckGet200) => {
+  return http.get('*/healthcheck', async () => {
     await delay(1000);
-    return new HttpResponse(
-      JSON.stringify(
-        overrideResponse
-          ? overrideResponse
-          : getReadRootHealthcheckGetResponseMock(),
-      ),
+    return new HttpResponse(JSON.stringify(overrideResponse ? overrideResponse : getReadRootHealthcheckGetResponseMock()),
       {
         status: 200,
         headers: {
-          "Content-Type": "application/json",
-        },
-      },
-    );
-  });
-};
+          'Content-Type': 'application/json',
+        }
+      }
+    )
+  })
+}
 export const getFastAPIMock = () => [
   getReadRootGetMockHandler(),
   getReadItemQueryGetMockHandler(),
@@ -1740,5 +1183,5 @@ export const getFastAPIMock = () => [
   getSearchCoursesCoursesSearchGetMockHandler(),
   getTagsCoursesTagsGetMockHandler(),
   getSamplePathSamplePathGetMockHandler(),
-  getReadRootHealthcheckGetMockHandler(),
-];
+  getReadRootHealthcheckGetMockHandler()
+]

@@ -52,6 +52,7 @@ export const PlanningPage = () => {
     major,
     coursesToCSV,
     validatePlan,
+    option,
   } = usePlanStore();
 
   useEffect(() => {
@@ -64,7 +65,10 @@ export const PlanningPage = () => {
   const { data: coursesWithTags } = useTagsCoursesTagsGet({
     degree_name: major.name,
     degree_year: major.year.toString(),
+    option_name: option.name,
+    option_year: option.year.toString(),
   });
+  console.log(coursesWithTags)
 
   const resetCourses = () => {
     if (coursesWithTags?.data) {
