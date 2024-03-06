@@ -66,8 +66,10 @@ export interface TagSchema {
 }
 
 export interface RequirementsResult {
+  courseCode: string;
   message: string;
   result: boolean;
+  term: string;
 }
 
 export interface RequirementsResults {
@@ -132,6 +134,7 @@ export interface DegreeMissingIn {
 
 export interface CoursesTakenIn {
   courseCodesTaken: string[];
+  term: string;
 }
 
 export type CourseWithTagsSchemaPrerequisites = string | null;
@@ -176,6 +179,7 @@ export const ColorsEnum = {
 export interface CanTakeCourseQuery {
   courseCode: string;
   courseCodesTaken: string[];
+  term: string;
 }
 
 export interface CanTakeCourseBatch {
@@ -1346,8 +1350,10 @@ export const getCoursesCanTakeBatchCoursesCanTakeBatchPostResponseMock = (
     { length: faker.number.int({ min: 1, max: 10 }) },
     (_, i) => i + 1,
   ).map(() => ({
+    courseCode: faker.word.sample(),
     message: faker.word.sample(),
     result: faker.datatype.boolean(),
+    term: faker.word.sample(),
     ...overrideResponse,
   })),
   ...overrideResponse,
@@ -1356,8 +1362,10 @@ export const getCoursesCanTakeBatchCoursesCanTakeBatchPostResponseMock = (
 export const getCoursesCanTakeCoursesCanTakeCourseCodePostResponseMock = (
   overrideResponse: any = {},
 ): RequirementsResult => ({
+  courseCode: faker.word.sample(),
   message: faker.word.sample(),
   result: faker.datatype.boolean(),
+  term: faker.word.sample(),
   ...overrideResponse,
 });
 

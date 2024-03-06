@@ -3,7 +3,8 @@ import { devtools, persist } from "zustand/middleware";
 
 import { CourseData } from "./sampleData";
 import {
-  coursesCanTakeCoursesCanTakeCourseCodePost,
+  CanTakeCourseQuery,
+  coursesCanTakeBatchCoursesCanTakeBatchPost,
   tagsCoursesTagsGet,
 } from "./api/endpoints";
 import { sortByKeys } from "./utils";
@@ -39,7 +40,7 @@ export interface PlanState {
       code: string;
       term: string;
     };
-    type: "prereq" | "antireq" | "overloading";
+    type: "prereq" | "overloading";
     text: string;
   }>;
 }
@@ -154,81 +155,132 @@ export const usePlanStore = create<PlanState>()(
             autoClose: false,
           });
           const courses = get().courses;
-          const coursesWarnings = await Promise.all(
-            Object.entries(courses).flatMap(
-              async ([term, termCourses], termInd) => {
-                // Prereq warnings
-                const coursesCompleted = Object.entries(courses)
-                  .filter((_, ind) => ind < termInd)
-                  .flatMap(([, termCourses]) =>
-                    Object.keys(termCourses).map((courseCode) => courseCode),
-                  );
 
-                const prereqPromises = Object.keys(termCourses).map(
-                  async (courseCode) => {
-                    const canTakeCourse =
-                      await coursesCanTakeCoursesCanTakeCourseCodePost(
-                        courseCode,
-                        {
-                          courseCodesTaken: coursesCompleted,
-                        },
-                      );
+          const canTakeQueryBodies: CanTakeCourseQuery[] = Object.entries(
+            courses,
+          ).flatMap(([term, termCourses], termInd) => {
+            const coursesCompleted = Object.entries(courses)
+              .filter((_, ind) => ind < termInd)
+              .flatMap(([, termCourses]) =>
+                Object.keys(termCourses).map((courseCode) => courseCode),
+              );
 
-                    if (!canTakeCourse.data.result) {
-                      return {
-                        affectedCourse: {
-                          code: courseCode,
-                          term,
-                        },
-                        type: "prereq",
-                        text: canTakeCourse.data.message,
-                      };
-                    } else {
-                      return false;
-                    }
-                  },
-                );
+            const coursesCompletedAndTaking = Object.entries(courses)
+              .filter((_, ind) => ind <= termInd)
+              .flatMap(([, termCourses]) =>
+                Object.keys(termCourses).map((courseCode) => courseCode),
+              );
 
-                // Anti-req warnings
-                const coursesCompletedAndTaking = Object.entries(courses)
-                  .filter((_, ind) => ind <= termInd)
-                  .flatMap(([, termCourses]) =>
-                    Object.keys(termCourses).map((courseCode) => courseCode),
-                  );
+            return [
+              ...Object.keys(termCourses).map((courseCode) => ({
+                courseCode,
+                courseCodesTaken: coursesCompleted,
+                term,
+              })),
+              ...Object.keys(termCourses).map((courseCode) => ({
+                courseCode,
+                courseCodesTaken: coursesCompletedAndTaking,
+                term,
+              })),
+            ];
+          });
 
-                const anitReqPromises = Object.keys(termCourses).map(
-                  async (courseCode) => {
-                    const canTakeCourse =
-                      await coursesCanTakeCoursesCanTakeCourseCodePost(
-                        courseCode,
-                        {
-                          // Use the ones that are being taken as well, to prevent taking antireqs
-                          courseCodesTaken: coursesCompletedAndTaking,
-                        },
-                      );
+          const res = await coursesCanTakeBatchCoursesCanTakeBatchPost({
+            canTakeCourseCodes: canTakeQueryBodies,
+          });
 
-                    if (!canTakeCourse.data.result) {
-                      return {
-                        affectedCourse: {
-                          code: courseCode,
-                          term,
-                        },
-                        type: "antireq",
-                        text: canTakeCourse.data.message,
-                      };
-                    } else {
-                      return false;
-                    }
-                  },
-                );
+          const coursesWarnings = res.data.results.map((canTakeCourse) => {
+            if (!canTakeCourse.result) {
+              return {
+                affectedCourse: {
+                  code: canTakeCourse.courseCode,
+                  term: canTakeCourse.term,
+                },
+                type: "prereq",
+                text: canTakeCourse.message,
+              };
+            } else {
+              return false;
+            }
+          });
 
-                return await Promise.all([
-                  ...prereqPromises,
-                  ...anitReqPromises,
-                ]);
-              },
-            ),
-          );
+          console.log("canTakeQueryBodies", canTakeQueryBodies);
+
+          // const coursesWarnings = await Promise.all(
+          //   Object.entries(courses).flatMap(
+          //     async ([term, termCourses], termInd) => {
+          //       // Prereq warnings
+          //       const coursesCompleted = Object.entries(courses)
+          //         .filter((_, ind) => ind < termInd)
+          //         .flatMap(([, termCourses]) =>
+          //           Object.keys(termCourses).map((courseCode) => courseCode),
+          //         );
+
+          //       const prereqPromises = Object.keys(termCourses).map(
+          //         async (courseCode) => {
+          //           const canTakeCourse =
+          //             await coursesCanTakeCoursesCanTakeCourseCodePost(
+          //               courseCode,
+          //               {
+          //                 courseCodesTaken: coursesCompleted,
+          //               },
+          //             );
+
+          //           if (!canTakeCourse.data.result) {
+          //             return {
+          //               affectedCourse: {
+          //                 code: courseCode,
+          //                 term,
+          //               },
+          //               type: "prereq",
+          //               text: canTakeCourse.data.message,
+          //             };
+          //           } else {
+          //             return false;
+          //           }
+          //         },
+          //       );
+
+          //       // Anti-req warnings
+          //       const coursesCompletedAndTaking = Object.entries(courses)
+          //         .filter((_, ind) => ind <= termInd)
+          //         .flatMap(([, termCourses]) =>
+          //           Object.keys(termCourses).map((courseCode) => courseCode),
+          //         );
+
+          //       const anitReqPromises = Object.keys(termCourses).map(
+          //         async (courseCode) => {
+          //           const canTakeCourse =
+          //             await coursesCanTakeCoursesCanTakeCourseCodePost(
+          //               courseCode,
+          //               {
+          //                 // Use the ones that are being taken as well, to prevent taking antireqs
+          //                 courseCodesTaken: coursesCompletedAndTaking,
+          //               },
+          //             );
+
+          //           if (!canTakeCourse.data.result) {
+          //             return {
+          //               affectedCourse: {
+          //                 code: courseCode,
+          //                 term,
+          //               },
+          //               type: "antireq",
+          //               text: canTakeCourse.data.message,
+          //             };
+          //           } else {
+          //             return false;
+          //           }
+          //         },
+          //       );
+
+          //       return await Promise.all([
+          //         ...prereqPromises,
+          //         ...anitReqPromises,
+          //       ]);
+          //     },
+          //   ),
+          // );
 
           const overloadingWarnings = Object.entries(courses).map(
             ([term, termCourses]) => {

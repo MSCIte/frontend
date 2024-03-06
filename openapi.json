@@ -493,10 +493,11 @@
             "items": { "type": "string" },
             "type": "array",
             "title": "Coursecodestaken"
-          }
+          },
+          "term": { "type": "string", "title": "Term" }
         },
         "type": "object",
-        "required": ["courseCode", "courseCodesTaken"],
+        "required": ["courseCode", "courseCodesTaken", "term"],
         "title": "CanTakeCourseQuery"
       },
       "ColorsEnum": {
@@ -567,10 +568,11 @@
             "items": { "type": "string" },
             "type": "array",
             "title": "Coursecodestaken"
-          }
+          },
+          "term": { "type": "string", "title": "Term" }
         },
         "type": "object",
-        "required": ["courseCodesTaken"],
+        "required": ["courseCodesTaken", "term"],
         "title": "CoursesTakenIn"
       },
       "DegreeMissingIn": {
@@ -718,10 +720,12 @@
       "RequirementsResult": {
         "properties": {
           "result": { "type": "boolean", "title": "Result" },
-          "message": { "type": "string", "title": "Message" }
+          "message": { "type": "string", "title": "Message" },
+          "courseCode": { "type": "string", "title": "Coursecode" },
+          "term": { "type": "string", "title": "Term" }
         },
         "type": "object",
-        "required": ["result", "message"],
+        "required": ["result", "message", "courseCode", "term"],
         "title": "RequirementsResult"
       },
       "RequirementsResults": {
