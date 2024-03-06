@@ -29,12 +29,13 @@ export const CourseLarge = (props: CourseProps) => {
       )}
       onClick={props.onClick}
     >
-      <div className="flex flex-col justify-between h-full">
+      <div className="flex h-full flex-col justify-between">
         <div>
-          <div  className="flex justify-between" >
-
-            <div className={twMerge(styles.header, "")}>{props.course.courseCode}</div>
-            <div className="" >
+          <div className="flex justify-between">
+            <div className={twMerge(styles.header, "")}>
+              {props.course.courseCode}
+            </div>
+            <div className="">
               <button
                 className="transform text-gray-300 transition duration-200 hover:scale-105 hover:text-gray-400 "
                 onClick={(e) => {
@@ -71,7 +72,6 @@ export const CourseLarge = (props: CourseProps) => {
             </div>
           ))}
         </div>
-
       </div>
       {/* </div> */}
     </Pane>

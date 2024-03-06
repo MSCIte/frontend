@@ -12,8 +12,6 @@ interface MajorRequirementsPaneProps {
   className?: string;
 }
 
-
-
 // const majorReqNameToTitle = (name: string) => {
 //   if (name === "organizational_studies") {
 //     return "Organizational Studies";

@@ -62,7 +62,7 @@ export const Sidebar = () => {
         requirementsCompleted:
           data.numberOfMandatoryCourses - data.mandatoryCourses.length,
         requirementsTotal: data.numberOfMandatoryCourses,
-        color:data.tag.color,
+        color: data.tag.color,
       },
     ];
 

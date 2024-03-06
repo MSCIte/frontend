@@ -10,7 +10,6 @@ interface MajorRequirementsPaneProps {
   className?: string;
 }
 
-
 const optionReqNameToTitle = (name: string) => {
   if (name === "organizational_studies") {
     return "Organizational Studies";
@@ -36,7 +35,7 @@ export const OptionsRequirementsPane = (props: MajorRequirementsPaneProps) => {
     <Pane className={props?.className}>
       <h3
         className={twMerge(" text-lg font-medium   ")}
-      // onClick={() => setIsOnboardingWindowOpen(true)}
+        // onClick={() => setIsOnboardingWindowOpen(true)}
       >
         MSCI Option declared in{" "}
         <select
@@ -82,7 +81,7 @@ export const OptionsRequirementsPane = (props: MajorRequirementsPaneProps) => {
                   "h-2 w-full rounded bg-slate-200 [&::-webkit-progress-bar]:rounded [&::-webkit-progress-value]:rounded ",
                   `[&::-webkit-progress-bar]:bg-slate-300`,
                   colorVariants?.[
-                  requirement.color as keyof typeof colorVariants
+                    requirement.color as keyof typeof colorVariants
                   ],
                 )}
               />

@@ -19,7 +19,6 @@ export const CourseWarnings = ({ warnings, size }: CourseWarningsProps) => {
                   className={twMerge(
                     "inline text-yellow-400",
                     size === "small" ? "h-5 w-5" : "h-6 w-6",
-
                   )}
                   data-tooltip-id={warning.id}
                   data-tooltip-content={warning.text}

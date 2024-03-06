@@ -84,7 +84,12 @@ export const DemoPage = () => {
       <CourseSelectionPane isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
 
       <div style={{ width: "10rem" }}>
-        <CourseSmall term="1A" onDelete={() => {}} onReplace={() => {}} {...courseData} />
+        <CourseSmall
+          term="1A"
+          onDelete={() => {}}
+          onReplace={() => {}}
+          {...courseData}
+        />
       </div>
       <div style={{ width: "20rem" }}>
         <CourseLarge
