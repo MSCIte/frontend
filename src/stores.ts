@@ -7,6 +7,7 @@ import {
   tagsCoursesTagsGet,
 } from "./api/endpoints";
 import { sortByKeys } from "./utils";
+import { toast } from "react-toastify";
 
 // MSCI 100, MSCI 211, etc.
 type CourseCode = string;
@@ -149,6 +150,9 @@ export const usePlanStore = create<PlanState>()(
           element.remove(); // cleanup
         },
         validatePlan: async () => {
+          const toastId = toast.info("Validating plan...", {
+            autoClose: false,
+          });
           const courses = get().courses;
           const coursesWarnings = await Promise.all(
             Object.entries(courses).flatMap(
@@ -261,7 +265,19 @@ export const usePlanStore = create<PlanState>()(
 
           const filteredWarnings = [...coursesWarnings, overloadingWarnings]
             .flat()
+            .filter((x) => x)
             .filter(Boolean)
+            .filter(
+              // dedup warnings
+              (warning, ind, arr) =>
+                arr.findIndex(
+                  (x) =>
+                    x &&
+                    warning &&
+                    x?.affectedCourse?.code === warning?.affectedCourse?.code &&
+                    x?.affectedCourse?.term === warning?.affectedCourse?.term,
+                ) === ind,
+            )
             .map((x, ind) => {
               return {
                 ...x,
@@ -270,6 +286,7 @@ export const usePlanStore = create<PlanState>()(
             }) as PlanState["warnings"];
 
           console.log("filteredWarnings", filteredWarnings);
+          toast.dismiss(toastId);
 
           set({
             warnings: filteredWarnings,
