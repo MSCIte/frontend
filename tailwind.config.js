@@ -22,11 +22,11 @@ export default {
   safelist: [
     {
       pattern:
-        /bg-(red|green|orange|yellow|blue|purple|pink|indigo|gray)-[0-9]{1,2}00/,
+        /bg-(red|green|orange|yellow|blue|purple|pink|indigo|gray|slate)-[0-9]{1,2}00/,
     },
     {
       pattern:
-        /border-l-(red|green|orange|yellow|blue|purple|pink|indigo|gray)-400/,
+        /border-l-(red|green|orange|yellow|blue|purple|pink|indigo|gray|slate)-400/,
     },
   ],
   plugins: [],

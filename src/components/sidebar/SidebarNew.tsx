@@ -62,7 +62,7 @@ export const Sidebar = () => {
         requirementsCompleted:
           data.numberOfMandatoryCourses - data.mandatoryCourses.length,
         requirementsTotal: data.numberOfMandatoryCourses,
-        color: "blue",
+        color:data.tag.color,
       },
     ];
 
@@ -73,7 +73,7 @@ export const Sidebar = () => {
         name: categoryCode,
         requirementsCompleted: parseInt(completionStatus.completed),
         requirementsTotal: parseInt(completionStatus.total),
-        color: "blue",
+        color: completionStatus.tag.color,
       });
     }
 
@@ -96,7 +96,7 @@ export const Sidebar = () => {
             (course) => course,
           ).length,
           requirementsTotal: req.totalCourseToComplete,
-          color: "purple",
+          color: req.tag.color,
         };
       })
       .sort((a, b) => a.requirementsTotal - b.requirementsTotal);

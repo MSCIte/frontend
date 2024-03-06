@@ -65,7 +65,7 @@ export const CourseLarge = (props: CourseProps) => {
             <div
               className={styles.textPill}
               key={`courseLarge-${props.course.courseCode}-${tag.longName}`}
-              style={{ border: `1px solid ${tag.color}` }}
+              style={{ border: `1.5px solid ${tag.color}` }}
             >
               {tag.longName}
             </div>

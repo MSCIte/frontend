@@ -15,18 +15,29 @@ interface RequirementsPaneProps {
   className?: string;
 }
 
-const colorVariants = {
-  red: "[&::-webkit-progress-value]:bg-red-400 [&::-moz-progress-bar]:bg-red-400",
+export const colorVariants = {
+  red: 
+    "[&::-webkit-progress-value]:bg-red-400 [&::-moz-progress-bar]:bg-red-400",
   yellow:
     "[&::-webkit-progress-value]:bg-yellow-400 [&::-moz-progress-bar]:bg-yellow-400",
   green:
     "[&::-webkit-progress-value]:bg-green-400 [&::-moz-progress-bar]:bg-green-400",
-  blue: "[&::-webkit-progress-value]:bg-blue-400 [&::-moz-progress-bar]:bg-blue-400",
+  blue: 
+    "[&::-webkit-progress-value]:bg-blue-400 [&::-moz-progress-bar]:bg-blue-400",
   indigo:
     "[&::-webkit-progress-value]:bg-indigo-400 [&::-moz-progress-bar]:bg-indigo-400",
   purple:
     "[&::-webkit-progress-value]:bg-purple-400 [&::-moz-progress-bar]:bg-purple-400",
-  pink: "[&::-webkit-progress-value]:bg-pink-400 [&::-moz-progress-bar]:bg-pink-400",
+  pink: 
+    "[&::-webkit-progress-value]:bg-pink-400 [&::-moz-progress-bar]:bg-pink-400",
+  slate:
+    "[&::-webkit-progress-value]:bg-slate-400 [&::-moz-progress-bar]:bg-slate-400",
+  orange:
+    "[&::-webkit-progress-value]:bg-orange-400 [&::-moz-progress-bar]:bg-orange-400",
+  sky:
+    "[&::-webkit-progress-value]:bg-sky-200 [&::-moz-progress-bar]:bg-sky-200",
+  rose:
+    "[&::-webkit-progress-value]:bg-rose-200 [&::-moz-progress-bar]:bg-pink-200"
 };
 
 export const RequirementsPane = (props: RequirementsPaneProps) => {

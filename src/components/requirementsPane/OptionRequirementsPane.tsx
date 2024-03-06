@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { Pane } from "../pane/Pane";
 import { twMerge } from "tailwind-merge";
-import { RequirementData } from "./RequirementsPane";
+import { RequirementData, colorVariants } from "./RequirementsPane";
 import { usePlanStore } from "~/stores";
 
 interface MajorRequirementsPaneProps {
@@ -10,19 +10,6 @@ interface MajorRequirementsPaneProps {
   className?: string;
 }
 
-const colorVariants = {
-  red: "[&::-webkit-progress-value]:bg-red-400 [&::-moz-progress-bar]:bg-red-400",
-  yellow:
-    "[&::-webkit-progress-value]:bg-yellow-400 [&::-moz-progress-bar]:bg-yellow-400",
-  green:
-    "[&::-webkit-progress-value]:bg-green-400 [&::-moz-progress-bar]:bg-green-400",
-  blue: "[&::-webkit-progress-value]:bg-blue-400 [&::-moz-progress-bar]:bg-blue-400",
-  indigo:
-    "[&::-webkit-progress-value]:bg-indigo-400 [&::-moz-progress-bar]:bg-indigo-400",
-  purple:
-    "[&::-webkit-progress-value]:bg-purple-400 [&::-moz-progress-bar]:bg-purple-400",
-  pink: "[&::-webkit-progress-value]:bg-pink-400 [&::-moz-progress-bar]:bg-pink-400",
-};
 
 const optionReqNameToTitle = (name: string) => {
   if (name === "organizational_studies") {
@@ -32,7 +19,7 @@ const optionReqNameToTitle = (name: string) => {
   } else if (name === "opti_1") {
     return "Introduction to Optimization";
   } else if (name === "elective") {
-    return "Electives";
+    return "Option Electives";
   } else {
     return name;
   }
@@ -49,7 +36,7 @@ export const OptionsRequirementsPane = (props: MajorRequirementsPaneProps) => {
     <Pane className={props?.className}>
       <h3
         className={twMerge(" text-lg font-medium   ")}
-        // onClick={() => setIsOnboardingWindowOpen(true)}
+      // onClick={() => setIsOnboardingWindowOpen(true)}
       >
         MSCI Option declared in{" "}
         <select
@@ -95,7 +82,7 @@ export const OptionsRequirementsPane = (props: MajorRequirementsPaneProps) => {
                   "h-2 w-full rounded bg-slate-200 [&::-webkit-progress-bar]:rounded [&::-webkit-progress-value]:rounded ",
                   `[&::-webkit-progress-bar]:bg-slate-300`,
                   colorVariants?.[
-                    requirement.color as keyof typeof colorVariants
+                  requirement.color as keyof typeof colorVariants
                   ],
                 )}
               />
