@@ -338,6 +338,9 @@ export const usePlanStore = create<PlanState>()(
             }) as PlanState["warnings"];
 
           console.log("filteredWarnings", filteredWarnings);
+          toast("Plan validated!", {
+              type: "success",
+          });
           toast.dismiss(toastId);
 
           set({
