@@ -6,6 +6,7 @@ import { useMemo } from "react";
 import { CourseLarge } from "../courseLarge/CourseLarge";
 import { twMerge } from "tailwind-merge";
 import { ModalMode } from "~/pages/PlanningPage";
+import { mandatoryTagRegex } from "~/utils";
 
 interface TermColumnProps {
   term: string;
@@ -26,7 +27,7 @@ export const TermColumn = (props: TermColumnProps) => {
 
   const colWidth = useMemo(() => {
     if (props.courseWidth === "small") {
-      return "w-32 2xl:w-36";
+      return "w-40 2xl:w-48";
     } else if (props.courseWidth === "medium") {
       return "w-72";
     } else {
@@ -35,9 +36,9 @@ export const TermColumn = (props: TermColumnProps) => {
   }, [props.courseWidth]);
 
   return (
-    <div key={props.term} className={twMerge("flex w-36 flex-col", colWidth)}>
+    <div key={props.term} className={twMerge("flex w-40 flex-col", colWidth)}>
       <TermTitle termName={props.term} />
-      <div className={twMerge("w-36", colWidth)}>
+      <div className={twMerge("w-40", colWidth)}>
         {coursesInTerm?.map((course) => {
           if (course) {
             if (
