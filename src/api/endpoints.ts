@@ -15,9 +15,12 @@ import type {
 } from "@tanstack/react-query";
 import * as axios from "axios";
 import type { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+<<<<<<< HEAD
+=======
+import { faker } from "@faker-js/faker";
+import { HttpResponse, delay, http } from "msw";
+>>>>>>> 362fbd2 (it's ugly)
 export type ReadRootHealthcheckGet200 = {};
-
-export type SamplePathSamplePathGet200 = {};
 
 export type TagsCoursesTagsGetParams = {
   degree_name: string;
@@ -28,13 +31,20 @@ export type TagsCoursesTagsGetParams = {
 
 export type SearchCoursesCoursesSearchGetParams = {
   degree_name: string;
+<<<<<<< HEAD
   degree_year: string;
+=======
+  degree_year: number;
+>>>>>>> 362fbd2 (it's ugly)
   option_name?: string;
   option_year?: string;
   q?: string | null;
   offset?: number | null;
   page_size?: number | null;
+<<<<<<< HEAD
   tag?: string | null;
+=======
+>>>>>>> 362fbd2 (it's ugly)
 };
 
 export type DegreeReqsDegreeDegreeNameReqsGetParams = {
@@ -62,6 +72,11 @@ export interface TagSchema {
   color: ColorsEnum;
   longName: string;
   shortName: string;
+}
+
+export interface SamplePath {
+  courseCode: string;
+  orderNum: number;
 }
 
 export interface RequirementsResult {
@@ -150,7 +165,7 @@ export interface CourseWithTagsSchema {
   antirequisites?: CourseWithTagsSchemaAntirequisites;
   corequisites?: CourseWithTagsSchemaCorequisites;
   courseCode: string;
-  courseName: string;
+  courseName?: string;
   credit?: CourseWithTagsSchemaCredit;
   description?: string;
   location?: CourseWithTagsSchemaLocation;
@@ -1000,6 +1015,7 @@ export const useSearchCoursesCoursesSearchGet = <
 
   return query;
 };
+<<<<<<< HEAD
 
 /**
  * @summary Get All Tags
@@ -1073,6 +1089,8 @@ export const useGetAllTagsTagsGet = <
 
   return query;
 };
+=======
+>>>>>>> 362fbd2 (it's ugly)
 
 /**
  * @summary Tags
@@ -1163,6 +1181,7 @@ export const useTagsCoursesTagsGet = <
 /**
  * @summary Sample Path
  */
+<<<<<<< HEAD
 export const samplePathSamplePathGet = (
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<SamplePathSamplePathGet200>> => {
@@ -1206,10 +1225,70 @@ export type SamplePathSamplePathGetQueryResult = NonNullable<
   Awaited<ReturnType<typeof samplePathSamplePathGet>>
 >;
 export type SamplePathSamplePathGetQueryError = AxiosError<unknown>;
+=======
+export const samplePathSamplePathDegreeNameGet = (
+  degreeName: string,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<SamplePath[]>> => {
+  return axios.default.get(`/sample-path/${degreeName}`, options);
+};
+
+export const getSamplePathSamplePathDegreeNameGetQueryKey = (
+  degreeName: string,
+) => {
+  return [`/sample-path/${degreeName}`] as const;
+};
+
+export const getSamplePathSamplePathDegreeNameGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof samplePathSamplePathDegreeNameGet>>,
+  TError = AxiosError<HTTPValidationError>,
+>(
+  degreeName: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof samplePathSamplePathDegreeNameGet>>,
+        TError,
+        TData
+      >
+    >;
+    axios?: AxiosRequestConfig;
+  },
+) => {
+  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getSamplePathSamplePathDegreeNameGetQueryKey(degreeName);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof samplePathSamplePathDegreeNameGet>>
+  > = ({ signal }) =>
+    samplePathSamplePathDegreeNameGet(degreeName, { signal, ...axiosOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!degreeName,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof samplePathSamplePathDegreeNameGet>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type SamplePathSamplePathDegreeNameGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof samplePathSamplePathDegreeNameGet>>
+>;
+export type SamplePathSamplePathDegreeNameGetQueryError =
+  AxiosError<HTTPValidationError>;
+>>>>>>> 362fbd2 (it's ugly)
 
 /**
  * @summary Sample Path
  */
+<<<<<<< HEAD
 export const useSamplePathSamplePathGet = <
   TData = Awaited<ReturnType<typeof samplePathSamplePathGet>>,
   TError = AxiosError<unknown>,
@@ -1224,6 +1303,28 @@ export const useSamplePathSamplePathGet = <
   axios?: AxiosRequestConfig;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const queryOptions = getSamplePathSamplePathGetQueryOptions(options);
+=======
+export const useSamplePathSamplePathDegreeNameGet = <
+  TData = Awaited<ReturnType<typeof samplePathSamplePathDegreeNameGet>>,
+  TError = AxiosError<HTTPValidationError>,
+>(
+  degreeName: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof samplePathSamplePathDegreeNameGet>>,
+        TError,
+        TData
+      >
+    >;
+    axios?: AxiosRequestConfig;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getSamplePathSamplePathDegreeNameGetQueryOptions(
+    degreeName,
+    options,
+  );
+>>>>>>> 362fbd2 (it's ugly)
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -1307,3 +1408,528 @@ export const useReadRootHealthcheckGet = <
 
   return query;
 };
+<<<<<<< HEAD
+=======
+
+export const getReadRootGetResponseMock = (): ReadRootGet200 => ({});
+
+export const getReadItemQueryGetResponseMock = (): ReadItemQueryGet200 => ({});
+
+export const getOptionsReqsOptionOptIdReqsGetResponseMock = (
+  overrideResponse: any = {},
+): OptionsSchema => ({
+  optionName: faker.word.sample(),
+  requirements: Array.from(
+    { length: faker.number.int({ min: 1, max: 10 }) },
+    (_, i) => i + 1,
+  ).map(() => ({
+    courses: Array.from(
+      { length: faker.number.int({ min: 1, max: 10 }) },
+      (_, i) => i + 1,
+    ).map(() => faker.word.sample()),
+    name: faker.word.sample(),
+    numberOfCourses: faker.number.int({ min: undefined, max: undefined }),
+    ...overrideResponse,
+  })),
+  ...overrideResponse,
+});
+
+export const getOptionsMissingReqsOptionOptIdMissingReqsPostResponseMock = (
+  overrideResponse: any = {},
+): MissingReqs => ({
+  lists: Array.from(
+    { length: faker.number.int({ min: 1, max: 10 }) },
+    (_, i) => i + 1,
+  ).map(() => ({
+    courses: {
+      [faker.string.alphanumeric(5)]: faker.datatype.boolean(),
+    },
+    listName: faker.word.sample(),
+    tag: {
+      code: faker.word.sample(),
+      color: faker.helpers.arrayElement(Object.values(ColorsEnum)),
+      longName: faker.word.sample(),
+      shortName: faker.word.sample(),
+      ...overrideResponse,
+    },
+    totalCourseToComplete: faker.number.int({ min: undefined, max: undefined }),
+    ...overrideResponse,
+  })),
+  ...overrideResponse,
+});
+
+export const getDegreeReqsDegreeDegreeNameReqsGetResponseMock = (
+  overrideResponse: any = {},
+): DegreeReqs => ({
+  additionalReqs: {
+    [faker.string.alphanumeric(5)]: {
+      courses: Array.from(
+        { length: faker.number.int({ min: 1, max: 10 }) },
+        (_, i) => i + 1,
+      ).map(() => faker.word.sample()),
+      numberOfCourses: faker.number.int({ min: undefined, max: undefined }),
+      ...overrideResponse,
+    },
+  },
+  mandatoryCourses: Array.from(
+    { length: faker.number.int({ min: 1, max: 10 }) },
+    (_, i) => i + 1,
+  ).map(() => faker.word.sample()),
+  ...overrideResponse,
+});
+
+export const getDegreesDegreeGetResponseMock = (): string[] =>
+  Array.from({ length: faker.number.int({ min: 1, max: 10 }) }, () =>
+    faker.word.sample(),
+  );
+
+export const getDegreeMissingReqsDegreeDegreeIdMissingReqsPostResponseMock = (
+  overrideResponse: any = {},
+): DegreeMissingReqs => ({
+  additionalReqs: {
+    [faker.string.alphanumeric(5)]: {
+      completed: faker.word.sample(),
+      tag: {
+        code: faker.word.sample(),
+        color: faker.helpers.arrayElement(Object.values(ColorsEnum)),
+        longName: faker.word.sample(),
+        shortName: faker.word.sample(),
+        ...overrideResponse,
+      },
+      total: faker.word.sample(),
+      ...overrideResponse,
+    },
+  },
+  mandatoryCourses: Array.from(
+    { length: faker.number.int({ min: 1, max: 10 }) },
+    (_, i) => i + 1,
+  ).map(() => faker.word.sample()),
+  numberOfMandatoryCourses: faker.number.int({
+    min: undefined,
+    max: undefined,
+  }),
+  tag: {
+    code: faker.word.sample(),
+    color: faker.helpers.arrayElement(Object.values(ColorsEnum)),
+    longName: faker.word.sample(),
+    shortName: faker.word.sample(),
+    ...overrideResponse,
+  },
+  ...overrideResponse,
+});
+
+export const getCoursesCanTakeBatchCoursesCanTakeBatchPostResponseMock = (
+  overrideResponse: any = {},
+): RequirementsResults => ({
+  results: Array.from(
+    { length: faker.number.int({ min: 1, max: 10 }) },
+    (_, i) => i + 1,
+  ).map(() => ({
+    message: faker.word.sample(),
+    result: faker.datatype.boolean(),
+    ...overrideResponse,
+  })),
+  ...overrideResponse,
+});
+
+export const getCoursesCanTakeCoursesCanTakeCourseCodePostResponseMock = (
+  overrideResponse: any = {},
+): RequirementsResult => ({
+  message: faker.word.sample(),
+  result: faker.datatype.boolean(),
+  ...overrideResponse,
+});
+
+export const getSearchCoursesCoursesSearchGetResponseMock = (
+  overrideResponse: any = {},
+): CourseWithTagsSchema[] =>
+  Array.from(
+    { length: faker.number.int({ min: 1, max: 10 }) },
+    (_, i) => i + 1,
+  ).map(() => ({
+    antirequisites: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+    corequisites: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+    courseCode: faker.word.sample(),
+    courseName: faker.word.sample(),
+    credit: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([
+        faker.number.int({ min: undefined, max: undefined }),
+        {},
+      ]),
+      undefined,
+    ]),
+    description: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+    location: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+    prerequisites: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+    tags: faker.helpers.arrayElement([
+      Array.from(
+        { length: faker.number.int({ min: 1, max: 10 }) },
+        (_, i) => i + 1,
+      ).map(() => ({
+        code: faker.word.sample(),
+        color: faker.helpers.arrayElement(Object.values(ColorsEnum)),
+        longName: faker.word.sample(),
+        shortName: faker.word.sample(),
+        ...overrideResponse,
+      })),
+      undefined,
+    ]),
+    ...overrideResponse,
+  }));
+
+export const getTagsCoursesTagsGetResponseMock = (
+  overrideResponse: any = {},
+): CourseWithTagsSchema[] =>
+  Array.from(
+    { length: faker.number.int({ min: 1, max: 10 }) },
+    (_, i) => i + 1,
+  ).map(() => ({
+    antirequisites: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+    corequisites: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+    courseCode: faker.word.sample(),
+    courseName: faker.word.sample(),
+    credit: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([
+        faker.number.int({ min: undefined, max: undefined }),
+        {},
+      ]),
+      undefined,
+    ]),
+    description: faker.helpers.arrayElement([faker.word.sample(), undefined]),
+    location: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+    prerequisites: faker.helpers.arrayElement([
+      faker.helpers.arrayElement([faker.word.sample(), {}]),
+      undefined,
+    ]),
+    tags: faker.helpers.arrayElement([
+      Array.from(
+        { length: faker.number.int({ min: 1, max: 10 }) },
+        (_, i) => i + 1,
+      ).map(() => ({
+        code: faker.word.sample(),
+        color: faker.helpers.arrayElement(Object.values(ColorsEnum)),
+        longName: faker.word.sample(),
+        shortName: faker.word.sample(),
+        ...overrideResponse,
+      })),
+      undefined,
+    ]),
+    ...overrideResponse,
+  }));
+
+export const getSamplePathSamplePathDegreeNameGetResponseMock = (
+  overrideResponse: any = {},
+): SamplePath[] =>
+  Array.from(
+    { length: faker.number.int({ min: 1, max: 10 }) },
+    (_, i) => i + 1,
+  ).map(() => ({
+    courseCode: faker.word.sample(),
+    orderNum: faker.number.int({ min: undefined, max: undefined }),
+    ...overrideResponse,
+  }));
+
+export const getReadRootHealthcheckGetResponseMock =
+  (): ReadRootHealthcheckGet200 => ({});
+
+export const getReadRootGetMockHandler = (
+  overrideResponse?: ReadRootGet200,
+) => {
+  return http.get("*/", async () => {
+    await delay(1000);
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse ? overrideResponse : getReadRootGetResponseMock(),
+      ),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+  });
+};
+
+export const getReadItemQueryGetMockHandler = (
+  overrideResponse?: ReadItemQueryGet200,
+) => {
+  return http.get("*/query", async () => {
+    await delay(1000);
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse ? overrideResponse : getReadItemQueryGetResponseMock(),
+      ),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+  });
+};
+
+export const getOptionsReqsOptionOptIdReqsGetMockHandler = (
+  overrideResponse?: OptionsSchema,
+) => {
+  return http.get("*/option/:optId/reqs", async () => {
+    await delay(1000);
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse
+          ? overrideResponse
+          : getOptionsReqsOptionOptIdReqsGetResponseMock(),
+      ),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+  });
+};
+
+export const getOptionsMissingReqsOptionOptIdMissingReqsPostMockHandler = (
+  overrideResponse?: MissingReqs,
+) => {
+  return http.post("*/option/:optId/missing_reqs", async () => {
+    await delay(1000);
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse
+          ? overrideResponse
+          : getOptionsMissingReqsOptionOptIdMissingReqsPostResponseMock(),
+      ),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+  });
+};
+
+export const getDegreeReqsDegreeDegreeNameReqsGetMockHandler = (
+  overrideResponse?: DegreeReqs,
+) => {
+  return http.get("*/degree/:degreeName/reqs", async () => {
+    await delay(1000);
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse
+          ? overrideResponse
+          : getDegreeReqsDegreeDegreeNameReqsGetResponseMock(),
+      ),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+  });
+};
+
+export const getDegreesDegreeGetMockHandler = (overrideResponse?: string[]) => {
+  return http.get("*/degree", async () => {
+    await delay(1000);
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse ? overrideResponse : getDegreesDegreeGetResponseMock(),
+      ),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+  });
+};
+
+export const getDegreeMissingReqsDegreeDegreeIdMissingReqsPostMockHandler = (
+  overrideResponse?: DegreeMissingReqs,
+) => {
+  return http.post("*/degree/:degreeId/missing_reqs", async () => {
+    await delay(1000);
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse
+          ? overrideResponse
+          : getDegreeMissingReqsDegreeDegreeIdMissingReqsPostResponseMock(),
+      ),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+  });
+};
+
+export const getCoursesCanTakeBatchCoursesCanTakeBatchPostMockHandler = (
+  overrideResponse?: RequirementsResults,
+) => {
+  return http.post("*/courses/can-take/batch", async () => {
+    await delay(1000);
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse
+          ? overrideResponse
+          : getCoursesCanTakeBatchCoursesCanTakeBatchPostResponseMock(),
+      ),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+  });
+};
+
+export const getCoursesCanTakeCoursesCanTakeCourseCodePostMockHandler = (
+  overrideResponse?: RequirementsResult,
+) => {
+  return http.post("*/courses/can-take/:courseCode", async () => {
+    await delay(1000);
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse
+          ? overrideResponse
+          : getCoursesCanTakeCoursesCanTakeCourseCodePostResponseMock(),
+      ),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+  });
+};
+
+export const getSearchCoursesCoursesSearchGetMockHandler = (
+  overrideResponse?: CourseWithTagsSchema[],
+) => {
+  return http.get("*/courses/search", async () => {
+    await delay(1000);
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse
+          ? overrideResponse
+          : getSearchCoursesCoursesSearchGetResponseMock(),
+      ),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+  });
+};
+
+export const getTagsCoursesTagsGetMockHandler = (
+  overrideResponse?: CourseWithTagsSchema[],
+) => {
+  return http.get("*/courses/tags", async () => {
+    await delay(1000);
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse
+          ? overrideResponse
+          : getTagsCoursesTagsGetResponseMock(),
+      ),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+  });
+};
+
+export const getSamplePathSamplePathDegreeNameGetMockHandler = (
+  overrideResponse?: SamplePath[],
+) => {
+  return http.get("*/sample-path/:degreeName", async () => {
+    await delay(1000);
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse
+          ? overrideResponse
+          : getSamplePathSamplePathDegreeNameGetResponseMock(),
+      ),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+  });
+};
+
+export const getReadRootHealthcheckGetMockHandler = (
+  overrideResponse?: ReadRootHealthcheckGet200,
+) => {
+  return http.get("*/healthcheck", async () => {
+    await delay(1000);
+    return new HttpResponse(
+      JSON.stringify(
+        overrideResponse
+          ? overrideResponse
+          : getReadRootHealthcheckGetResponseMock(),
+      ),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+    );
+  });
+};
+export const getFastAPIMock = () => [
+  getReadRootGetMockHandler(),
+  getReadItemQueryGetMockHandler(),
+  getOptionsReqsOptionOptIdReqsGetMockHandler(),
+  getOptionsMissingReqsOptionOptIdMissingReqsPostMockHandler(),
+  getDegreeReqsDegreeDegreeNameReqsGetMockHandler(),
+  getDegreesDegreeGetMockHandler(),
+  getDegreeMissingReqsDegreeDegreeIdMissingReqsPostMockHandler(),
+  getCoursesCanTakeBatchCoursesCanTakeBatchPostMockHandler(),
+  getCoursesCanTakeCoursesCanTakeCourseCodePostMockHandler(),
+  getSearchCoursesCoursesSearchGetMockHandler(),
+  getTagsCoursesTagsGetMockHandler(),
+  getSamplePathSamplePathDegreeNameGetMockHandler(),
+  getReadRootHealthcheckGetMockHandler(),
+];
+>>>>>>> 362fbd2 (it's ugly)
