@@ -6,7 +6,6 @@ import { useMemo } from "react";
 import { CourseLarge } from "../courseLarge/CourseLarge";
 import { twMerge } from "tailwind-merge";
 import { ModalMode } from "~/pages/PlanningPage";
-import { mandatoryTagRegex } from "~/utils";
 
 interface TermColumnProps {
   term: string;

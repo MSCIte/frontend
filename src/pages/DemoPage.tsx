@@ -88,6 +88,7 @@ export const DemoPage = () => {
           term="1A"
           onDelete={() => {}}
           onReplace={() => {}}
+          onClick={() => {}}
           {...courseData}
         />
       </div>
