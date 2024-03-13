@@ -95,7 +95,7 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
               <Pane className="h-[inherit] p-4">
                 <div className="space-y-4">
                   {onboardingStep === "msci-opt-info" && (
-                    <div className="px-4 space-y-4">
+                    <div className="space-y-4 px-4">
                       <h1 className="text-3xl font-medium">
                         Management Science option requirements
                       </h1>
