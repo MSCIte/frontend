@@ -254,7 +254,11 @@ export const PlanningPage = () => {
       </div>
 
       {/* Place warnings in a root spot to make it display over all other elements */}
-      <div>{warnings?.map((warning) => <Tooltip id={warning.id} />)}</div>
+      <div>
+        {warnings?.map((warning) => (
+          <Tooltip id={warning.id} key={`warning-root-${warning.id}`} />
+        ))}
+      </div>
     </div>
   );
 };

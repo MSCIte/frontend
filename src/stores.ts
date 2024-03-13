@@ -89,6 +89,8 @@ export const usePlanStore = create<PlanState>()(
           const coursesWithTags = await tagsCoursesTagsGet({
             degree_name: get().major.name,
             degree_year: get().major.year.toString(),
+            option_name: get().option.name,
+            option_year: get().option.year.toString(),
           });
 
           if (coursesWithTags?.data) {
@@ -104,6 +106,7 @@ export const usePlanStore = create<PlanState>()(
                       if (!acc[tag.code]) {
                         acc[tag.code] = {};
                       }
+                      console.log("Adding course", course, "to", tag.code);
                       acc[tag.code][course.courseCode] = course;
                     }
                   }
@@ -339,7 +342,7 @@ export const usePlanStore = create<PlanState>()(
 
           console.log("filteredWarnings", filteredWarnings);
           toast("Plan validated!", {
-              type: "success",
+            type: "success",
           });
           toast.dismiss(toastId);
 

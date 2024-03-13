@@ -81,3 +81,5 @@ export const blacklistedDegrees = [
   "management_engineering",
   "systems_design_engineering",
 ];
+
+export const mandatoryTagRegex = /^\d[AB]$/i;

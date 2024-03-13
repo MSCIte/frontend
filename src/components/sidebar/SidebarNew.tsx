@@ -194,7 +194,7 @@ export const Sidebar = () => {
               icon={<TrashIcon className="h-6 w-6 text-gray-400" />}
               onClick={() => {
                 localStorage.clear();
-                toast("Cleared, please reload!")
+                toast("Cleared, please reload!");
               }}
             />
           </Pane>
