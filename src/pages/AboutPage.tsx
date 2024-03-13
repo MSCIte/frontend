@@ -1,6 +1,7 @@
 import Markdown from "react-markdown";
 import { useSamplePathSamplePathGet } from "~/api/endpoints";
 import { Navbar } from "~/components/navbar/NavBar";
+import MermaidDiagram from "~/components/mermaidDiagram/mermaidDiagram";
 
 const aboutPageMarkdown = `
 ## What is the Management Sciences (MSCI) Option?
@@ -75,6 +76,8 @@ export const AboutPage = () => {
       </div>
 
       {/* CTA */}
+      <h1>HELLO?</h1>
+      <MermaidDiagram />
     </div>
   );
 };
