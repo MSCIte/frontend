@@ -112,7 +112,6 @@ export const CourseSelectionPane = ({
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-
   const { data } = useSearchCoursesCoursesSearchGet({
     q: searchQuery,
     degree_name: major.name,

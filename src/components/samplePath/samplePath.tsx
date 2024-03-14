@@ -1,4 +1,3 @@
-import React, { SetStateAction, useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { usePlanStore } from "~/stores";
 import { blacklistedDegrees, disciplineNameToFriendly } from "~/utils";
@@ -27,6 +26,7 @@ const SamplePaths = () => {
       <h1 className="text-2xl">Sample Paths</h1>
       <div style={{ marginBottom: "10px", marginTop: "10px" }}>
         <h3 className={twMerge("cursor-pointer text-lg font-medium")}>
+          Select your major:{" "}
           <select
             className="cursor-pointer rounded-sm border bg-gray-100 hover:bg-white"
             value={major.name}
@@ -46,10 +46,11 @@ const SamplePaths = () => {
       </div>
       {samplePath?.data && samplePath.data.length > 0 ? (
         <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-          }}
+          className="grid grid-cols-3 gap-4 bg-slate-500 rounded p-4"
+          // style={{
+          //   display: "grid",
+          //   gridTemplateColumns: "repeat(3, 1fr)",
+          // }}
         >
           {samplePath.data
             .sort((a, b) => a.orderNum - b.orderNum)

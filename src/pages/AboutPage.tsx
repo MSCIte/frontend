@@ -68,6 +68,8 @@ export const AboutPage = () => {
           .
         </div>
         <hr className="my-4" />
+        <SamplePaths />
+        <hr className="my-4" />
         <h1 className="text-2xl">Testing connection to backend</h1>
         <p>
           If it stays loading for more than a few seconds you probably don't
@@ -75,8 +77,6 @@ export const AboutPage = () => {
           might be sleeping.
         </p>
         {isLoading ? <p>Loading...</p> : <p>{JSON.stringify(data?.data)}</p>}
-        <hr className="my-4" />
-        <SamplePaths />
       </div>
 
       {/* CTA */}

@@ -11,7 +11,6 @@ interface MajorRequirementsPaneProps {
   className?: string;
 }
 
-
 export const OptionsRequirementsPane = (props: MajorRequirementsPaneProps) => {
   const { option, setOption, setIsMsciInfoModalOpen } = usePlanStore(
     (state) => ({
@@ -47,7 +46,10 @@ export const OptionsRequirementsPane = (props: MajorRequirementsPaneProps) => {
       </h3>
       <div className="my-4 space-y-4">
         {props.data.map((requirement, ind) => (
-          <OptionRequirementElement key={`req-${props.title}-${ind}`} requirement={requirement} />
+          <OptionRequirementElement
+            key={`req-${props.title}-${ind}`}
+            requirement={requirement}
+          />
         ))}
       </div>
       <button

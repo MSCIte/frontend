@@ -289,11 +289,7 @@
             "name": "degree_year",
             "in": "query",
             "required": true,
-<<<<<<< HEAD
             "schema": { "type": "string", "title": "Degree Year" }
-=======
-            "schema": { "type": "integer", "title": "Degree Year" }
->>>>>>> 362fbd2 (it's ugly)
           },
           {
             "name": "option_name",
@@ -349,7 +345,6 @@
               "title": "Number of results returned",
               "default": 20
             }
-<<<<<<< HEAD
           },
           {
             "name": "tag",
@@ -359,8 +354,6 @@
               "anyOf": [{ "type": "string" }, { "type": "null" }],
               "title": "Tag"
             }
-=======
->>>>>>> 362fbd2 (it's ugly)
           }
         ],
         "responses": {
@@ -389,29 +382,6 @@
         }
       }
     },
-<<<<<<< HEAD
-    "/tags": {
-      "get": {
-        "summary": "Get All Tags",
-        "operationId": "get_all_tags_tags_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "items": { "$ref": "#/components/schemas/TagSchema" },
-                  "type": "array",
-                  "title": "Response Get All Tags Tags Get"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-=======
->>>>>>> 362fbd2 (it's ugly)
     "/courses/tags": {
       "get": {
         "summary": "Tags",
@@ -476,16 +446,6 @@
         }
       }
     },
-<<<<<<< HEAD
-    "/sample-path": {
-      "get": {
-        "summary": "Sample Path",
-        "operationId": "sample_path_sample_path_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": { "application/json": { "schema": {} } }
-=======
     "/sample-path/{degree_name}": {
       "get": {
         "summary": "Sample Path",
@@ -518,7 +478,6 @@
                 "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
               }
             }
->>>>>>> 362fbd2 (it's ugly)
           }
         }
       }
@@ -567,18 +526,11 @@
             "items": { "type": "string" },
             "type": "array",
             "title": "Coursecodestaken"
-<<<<<<< HEAD
           },
           "term": { "type": "string", "title": "Term" }
         },
         "type": "object",
         "required": ["courseCode", "courseCodesTaken", "term"],
-=======
-          }
-        },
-        "type": "object",
-        "required": ["courseCode", "courseCodesTaken"],
->>>>>>> 362fbd2 (it's ugly)
         "title": "CanTakeCourseQuery"
       },
       "ColorsEnum": {
@@ -649,18 +601,11 @@
             "items": { "type": "string" },
             "type": "array",
             "title": "Coursecodestaken"
-<<<<<<< HEAD
           },
           "term": { "type": "string", "title": "Term" }
         },
         "type": "object",
         "required": ["courseCodesTaken", "term"],
-=======
-          }
-        },
-        "type": "object",
-        "required": ["courseCodesTaken"],
->>>>>>> 362fbd2 (it's ugly)
         "title": "CoursesTakenIn"
       },
       "DegreeMissingIn": {
@@ -808,19 +753,12 @@
       "RequirementsResult": {
         "properties": {
           "result": { "type": "boolean", "title": "Result" },
-<<<<<<< HEAD
           "message": { "type": "string", "title": "Message" },
           "courseCode": { "type": "string", "title": "Coursecode" },
           "term": { "type": "string", "title": "Term" }
         },
         "type": "object",
         "required": ["result", "message", "courseCode", "term"],
-=======
-          "message": { "type": "string", "title": "Message" }
-        },
-        "type": "object",
-        "required": ["result", "message"],
->>>>>>> 362fbd2 (it's ugly)
         "title": "RequirementsResult"
       },
       "RequirementsResults": {
@@ -835,8 +773,6 @@
         "required": ["results"],
         "title": "RequirementsResults"
       },
-<<<<<<< HEAD
-=======
       "SamplePath": {
         "properties": {
           "courseCode": { "type": "string", "title": "Coursecode" },
@@ -846,7 +782,6 @@
         "required": ["courseCode", "orderNum"],
         "title": "SamplePath"
       },
->>>>>>> 362fbd2 (it's ugly)
       "TagSchema": {
         "properties": {
           "code": { "type": "string", "title": "Code" },

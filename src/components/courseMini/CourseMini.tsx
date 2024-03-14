@@ -1,4 +1,8 @@
+import { usePlanStore } from "~/stores";
+import { CoursePills } from "../courseSmallPill/CourseSmallPill";
 import { Pane } from "../pane/Pane";
+import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
+import { Link } from "wouter";
 
 interface CourseMiniSchema {
   courseCode: string;
@@ -7,30 +11,46 @@ interface CourseMiniSchema {
 }
 
 export const CourseMini = (props: CourseMiniSchema) => {
+  const { getCourseById, completedCourseCodes } = usePlanStore();
+
+  const course = getCourseById(props.courseCode);
+  const hasPlannedThisCourse = completedCourseCodes().includes(
+    props.courseCode,
+  );
+
   return (
     <Pane
-      className="group relative mb-4 h-24 w-24 cursor-pointer transition duration-200 hover:scale-105 2xl:h-28 2xl:w-32"
+      className=" group relative m-auto mb-4 h-32 w-36 drop-shadow-lg transition duration-200"
       onClick={props.onClick}
     >
+      <div className="text-lg 2xl:text-xl">{props.courseCode}</div>
       <div className="flex flex-col justify-between">
-        <div className="flex flex-row justify-between ">
-          <div className="text-lg 2xl:text-xl">{props.courseCode}</div>
-          <button
-            className="transform text-gray-300 transition duration-200 hover:scale-105 hover:text-gray-400 "
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-          ></button>
-          <div>
-            <div className="line-clamp-3 text-xs text-gray-400">
-              {props.orderNumber}
-            </div>
+        <div>
+          <div className="line-clamp-3 text-xs text-gray-400 ">
+            {course.courseName}
           </div>
         </div>
       </div>
-      <button className="absolute bottom-0 right-0 mb-4 mr-4 flex items-center rounded-lg bg-white p-1 transition-transform hover:scale-105">
-        <div className="bg-none text-4xl">+</div>
-      </button>
+      <div className="absolute bottom-4 left-4 ml-0 flex items-center">
+        <div>
+          {course.tags && (
+            <CoursePills courseCode={props.courseCode} tags={course.tags} />
+          )}
+
+          <Link to={hasPlannedThisCourse ? "#" : "/plan"}>
+            <div className="inline-block cursor-pointer rounded-lg border bg-gradient-to-r from-green-400 to-blue-500 px-1 text-sm hover:scale-105 hover:from-pink-500 hover:to-yellow-500 text-white font-medium">
+              {hasPlannedThisCourse ? (
+                "Planned!"
+              ) : (
+                <span>
+                  Add{" "}
+                  <ArrowTopRightOnSquareIcon className="inline-block h-4 w-4" />
+                </span>
+              )}
+            </div>
+          </Link>
+        </div>
+      </div>
     </Pane>
   );
 };
