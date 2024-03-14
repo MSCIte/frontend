@@ -1,16 +1,11 @@
 import clsx from "clsx";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
   ExclamationTriangleIcon,
 } from "@heroicons/react/24/solid";
-import { RequirementData } from "../requirementsPane/RequirementsPane";
 import { usePlanStore } from "~/stores";
-import {
-  useDegreeMissingReqsDegreeDegreeIdMissingReqsPost,
-  useOptionsMissingReqsOptionOptIdMissingReqsPost,
-} from "~/api/endpoints";
 import { MajorRequirementsPane } from "../requirementsPane/MajorRequirementsPane";
 import { OptionsRequirementsPane } from "../requirementsPane/OptionRequirementsPane";
 import { Pane } from "../pane/Pane";

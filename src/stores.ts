@@ -9,7 +9,6 @@ import {
   degreeMissingReqsDegreeDegreeIdMissingReqsPost,
   optionsMissingReqsOptionOptIdMissingReqsPost,
   tagsCoursesTagsGet,
-  useDegreeMissingReqsDegreeDegreeIdMissingReqsPost,
 } from "./api/endpoints";
 import { sortByKeys } from "./utils";
 import { toast } from "react-toastify";
