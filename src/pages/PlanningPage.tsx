@@ -94,7 +94,6 @@ export const PlanningPage = () => {
       );
 
       const newCoursesSorted = sortByKeys(newCourses);
-      console.log("setting courses", newCourses);
       setCourses(newCoursesSorted);
     }
   };

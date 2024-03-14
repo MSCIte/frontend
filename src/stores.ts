@@ -4,6 +4,7 @@ import { devtools, persist } from "zustand/middleware";
 import { CourseData } from "./sampleData";
 import {
   CanTakeCourseQuery,
+  CourseWithTagsSchema,
   coursesCanTakeBatchCoursesCanTakeBatchPost,
   tagsCoursesTagsGet,
 } from "./api/endpoints";
@@ -22,6 +23,7 @@ export interface PlanState {
     year: number;
     name: string;
   };
+  coursesCache: Record<string, CourseWithTagsSchema>;
   setMajor: (major: PlanState["major"]) => void;
   setOption: (option: PlanState["option"]) => void;
   courses: CourseData;
@@ -57,13 +59,18 @@ export const usePlanStore = create<PlanState>()(
           name: "management_sciences_option",
           year: 2023,
         },
+        coursesCache: {},
         setMajor: (major) => {
-          set({ major });
-          get().resetCourses();
+          if (get().major !== major) {
+            set({ major });
+            get().resetCourses();
+          }
         },
         setOption: (option) => {
-          set({ option });
-          get().resetCourses();
+          if (get().option !== option) {
+            set({ option });
+            get().resetCourses();
+          }
         },
         courses: {},
         setCourses: (courses) => {
@@ -106,7 +113,6 @@ export const usePlanStore = create<PlanState>()(
                       if (!acc[tag.code]) {
                         acc[tag.code] = {};
                       }
-                      console.log("Adding course", course, "to", tag.code);
                       acc[tag.code][course.courseCode] = course;
                     }
                   }
