@@ -1,5 +1,4 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
-import { CourseBlock } from "./CourseBlock";
 import clsx from "clsx";
 import {
   CourseWithTagsSchema,
@@ -13,6 +12,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Pane } from "../pane/Pane";
 import { ModalMode } from "~/pages/PlanningPage";
 import { twMerge } from "tailwind-merge";
+import { CourseBlock } from "./CourseBlock";
 
 interface CourseSelectionPaneProps {
   initialCourse?: CourseWithTagsSchema;
@@ -99,6 +99,7 @@ export const CourseSelectionPane = ({
     if (initialCourse?.courseCode && searchQuery == null) {
       setSearchQuery(initialCourse?.courseCode);
     }
+    setSearchTag("all");
   }, [initialCourse, searchQuery]);
 
   useEffect(() => {
@@ -234,7 +235,7 @@ export const CourseSelectionPane = ({
                 <div className="mx-4 grid h-full grid-cols-3 gap-4 overflow-y-hidden">
                   <div className="overflow-y-scroll">
                     {SearchElement}
-                    {/* <div className="col-span-1 space-y-2 rounded-lg bg-gray-100  p-4">
+                    <div className="col-span-1 space-y-2 rounded-lg bg-gray-100  p-4">
                       <div className="space-y-2">
                         {data?.data?.map((course) => (
                           <CourseBlock
@@ -244,7 +245,7 @@ export const CourseSelectionPane = ({
                           />
                         ))}
                       </div>
-                    </div> */}
+                    </div>
                   </div>
                   <div className="col-span-2 flex flex-col space-y-4 p-8">
                     {selectedCourse?.courseCode ? (
