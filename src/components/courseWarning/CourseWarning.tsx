@@ -12,21 +12,18 @@ export const CourseWarnings = ({ warnings, size }: CourseWarningsProps) => {
     <div>
       {warnings.length > 0 ? (
         <div className="flex flex-row items-center">
-          {warnings.map((warning) => {
+          {warnings.map((warning, ind) => {
             return (
-              <>
-                <ExclamationTriangleIcon
-                  className={twMerge(
-                    "inline text-yellow-400",
-                    size === "small" ? "h-5 w-5" : "h-6 w-6",
-
-                  )}
-                  data-tooltip-id={warning.id}
-                  data-tooltip-content={warning.text}
-                  data-tooltip-variant="warning"
-                />
-                {/* <Tooltip id={warning.id} className="z-50" /> */}
-              </>
+              <ExclamationTriangleIcon
+                key={`${warning.id}-${ind}`}
+                className={twMerge(
+                  "inline text-yellow-400",
+                  size === "small" ? "h-5 w-5" : "h-6 w-6",
+                )}
+                data-tooltip-id={warning.id}
+                data-tooltip-content={warning.text}
+                data-tooltip-variant="warning"
+              />
             );
           })}
         </div>

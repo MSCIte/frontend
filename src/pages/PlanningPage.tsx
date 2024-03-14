@@ -52,6 +52,7 @@ export const PlanningPage = () => {
     major,
     coursesToCSV,
     validatePlan,
+    option,
   } = usePlanStore();
 
   useEffect(() => {
@@ -64,6 +65,8 @@ export const PlanningPage = () => {
   const { data: coursesWithTags } = useTagsCoursesTagsGet({
     degree_name: major.name,
     degree_year: major.year.toString(),
+    option_name: option.name,
+    option_year: option.year.toString(),
   });
 
   const resetCourses = () => {
@@ -251,7 +254,11 @@ export const PlanningPage = () => {
       </div>
 
       {/* Place warnings in a root spot to make it display over all other elements */}
-      <div>{warnings?.map((warning) => <Tooltip id={warning.id} />)}</div>
+      <div>
+        {warnings?.map((warning) => (
+          <Tooltip id={warning.id} key={`warning-root-${warning.id}`} />
+        ))}
+      </div>
     </div>
   );
 };

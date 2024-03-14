@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { Pane } from "../pane/Pane";
 import { twMerge } from "tailwind-merge";
-import { RequirementData } from "./RequirementsPane";
+import { RequirementData, colorVariants } from "./RequirementsPane";
 import { usePlanStore } from "~/stores";
 
 interface MajorRequirementsPaneProps {
@@ -9,20 +9,6 @@ interface MajorRequirementsPaneProps {
   data: RequirementData[];
   className?: string;
 }
-
-const colorVariants = {
-  red: "[&::-webkit-progress-value]:bg-red-400 [&::-moz-progress-bar]:bg-red-400",
-  yellow:
-    "[&::-webkit-progress-value]:bg-yellow-400 [&::-moz-progress-bar]:bg-yellow-400",
-  green:
-    "[&::-webkit-progress-value]:bg-green-400 [&::-moz-progress-bar]:bg-green-400",
-  blue: "[&::-webkit-progress-value]:bg-blue-400 [&::-moz-progress-bar]:bg-blue-400",
-  indigo:
-    "[&::-webkit-progress-value]:bg-indigo-400 [&::-moz-progress-bar]:bg-indigo-400",
-  purple:
-    "[&::-webkit-progress-value]:bg-purple-400 [&::-moz-progress-bar]:bg-purple-400",
-  pink: "[&::-webkit-progress-value]:bg-pink-400 [&::-moz-progress-bar]:bg-pink-400",
-};
 
 const optionReqNameToTitle = (name: string) => {
   if (name === "organizational_studies") {
@@ -32,7 +18,7 @@ const optionReqNameToTitle = (name: string) => {
   } else if (name === "opti_1") {
     return "Introduction to Optimization";
   } else if (name === "elective") {
-    return "Electives";
+    return "Option Electives";
   } else {
     return name;
   }

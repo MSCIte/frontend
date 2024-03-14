@@ -3,7 +3,16 @@ export default {
     output: {
       client: "react-query",
       target: "./src/api/endpoints.ts",
-      mock: true,
+      mock: false,
+      override: {
+        searchCoursesCoursesSearchGet: {
+          query: {
+            useQuery: true,
+            useInfinite: true,
+            useInfiniteQueryParam: "nextPage",
+          },
+        },
+      },
     },
     input: {
       target: "./openapi.json",

@@ -26,7 +26,7 @@ export const TermColumn = (props: TermColumnProps) => {
 
   const colWidth = useMemo(() => {
     if (props.courseWidth === "small") {
-      return "w-32 2xl:w-36";
+      return "w-36 2xl:w-40";
     } else if (props.courseWidth === "medium") {
       return "w-72";
     } else {
@@ -35,9 +35,9 @@ export const TermColumn = (props: TermColumnProps) => {
   }, [props.courseWidth]);
 
   return (
-    <div key={props.term} className={twMerge("flex w-36 flex-col", colWidth)}>
+    <div key={props.term} className={twMerge("flex w-40 flex-col relative", colWidth)}>
       <TermTitle termName={props.term} />
-      <div className={twMerge("w-36", colWidth)}>
+      <div className={twMerge("w-40", colWidth)}>
         {coursesInTerm?.map((course) => {
           if (course) {
             if (

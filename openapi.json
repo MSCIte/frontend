@@ -202,6 +202,38 @@
         }
       }
     },
+    "/courses/can-take/batch": {
+      "post": {
+        "summary": "Courses Can Take Batch",
+        "operationId": "courses_can_take_batch_courses_can_take_batch_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CanTakeCourseBatch" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/RequirementsResults" }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
+          }
+        }
+      }
+    },
     "/courses/can-take/{course_code}": {
       "post": {
         "summary": "Courses Can Take",
@@ -227,7 +259,7 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/RequirementsResults" }
+                "schema": { "$ref": "#/components/schemas/RequirementsResult" }
               }
             }
           },
@@ -258,6 +290,26 @@
             "in": "query",
             "required": true,
             "schema": { "type": "integer", "title": "Degree Year" }
+          },
+          {
+            "name": "option_name",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": "Option Name"
+            }
+          },
+          {
+            "name": "option_year",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "",
+              "title": "Option Year"
+            }
           },
           {
             "name": "q",
@@ -415,11 +467,38 @@
       "AdditionalReqCount": {
         "properties": {
           "completed": { "type": "string", "title": "Completed" },
-          "total": { "type": "string", "title": "Total" }
+          "total": { "type": "string", "title": "Total" },
+          "tag": { "$ref": "#/components/schemas/TagSchema" }
         },
         "type": "object",
-        "required": ["completed", "total"],
+        "required": ["completed", "total", "tag"],
         "title": "AdditionalReqCount"
+      },
+      "CanTakeCourseBatch": {
+        "properties": {
+          "canTakeCourseCodes": {
+            "items": { "$ref": "#/components/schemas/CanTakeCourseQuery" },
+            "type": "array",
+            "title": "Cantakecoursecodes"
+          }
+        },
+        "type": "object",
+        "required": ["canTakeCourseCodes"],
+        "title": "CanTakeCourseBatch"
+      },
+      "CanTakeCourseQuery": {
+        "properties": {
+          "courseCode": { "type": "string", "title": "Coursecode" },
+          "courseCodesTaken": {
+            "items": { "type": "string" },
+            "type": "array",
+            "title": "Coursecodestaken"
+          },
+          "term": { "type": "string", "title": "Term" }
+        },
+        "type": "object",
+        "required": ["courseCode", "courseCodesTaken", "term"],
+        "title": "CanTakeCourseQuery"
       },
       "ColorsEnum": {
         "type": "string",
@@ -432,7 +511,9 @@
           "purple",
           "pink",
           "indigo",
-          "gray"
+          "gray",
+          "slate",
+          "rose"
         ],
         "title": "ColorsEnum"
       },
@@ -487,10 +568,11 @@
             "items": { "type": "string" },
             "type": "array",
             "title": "Coursecodestaken"
-          }
+          },
+          "term": { "type": "string", "title": "Term" }
         },
         "type": "object",
-        "required": ["courseCodesTaken"],
+        "required": ["courseCodesTaken", "term"],
         "title": "CoursesTakenIn"
       },
       "DegreeMissingIn": {
@@ -523,13 +605,15 @@
             },
             "type": "object",
             "title": "Additionalreqs"
-          }
+          },
+          "tag": { "$ref": "#/components/schemas/TagSchema" }
         },
         "type": "object",
         "required": [
           "mandatoryCourses",
           "numberOfMandatoryCourses",
-          "additionalReqs"
+          "additionalReqs",
+          "tag"
         ],
         "title": "DegreeMissingReqs"
       },
@@ -587,10 +671,11 @@
           "totalCourseToComplete": {
             "type": "integer",
             "title": "Totalcoursetocomplete"
-          }
+          },
+          "tag": { "$ref": "#/components/schemas/TagSchema" }
         },
         "type": "object",
-        "required": ["listName", "courses", "totalCourseToComplete"],
+        "required": ["listName", "courses", "totalCourseToComplete", "tag"],
         "title": "MissingList"
       },
       "MissingReqs": {
@@ -632,13 +717,27 @@
         "required": ["optionName", "requirements"],
         "title": "OptionsSchema"
       },
-      "RequirementsResults": {
+      "RequirementsResult": {
         "properties": {
           "result": { "type": "boolean", "title": "Result" },
-          "message": { "type": "string", "title": "Message" }
+          "message": { "type": "string", "title": "Message" },
+          "courseCode": { "type": "string", "title": "Coursecode" },
+          "term": { "type": "string", "title": "Term" }
         },
         "type": "object",
-        "required": ["result", "message"],
+        "required": ["result", "message", "courseCode", "term"],
+        "title": "RequirementsResult"
+      },
+      "RequirementsResults": {
+        "properties": {
+          "results": {
+            "items": { "$ref": "#/components/schemas/RequirementsResult" },
+            "type": "array",
+            "title": "Results"
+          }
+        },
+        "type": "object",
+        "required": ["results"],
         "title": "RequirementsResults"
       },
       "TagSchema": {

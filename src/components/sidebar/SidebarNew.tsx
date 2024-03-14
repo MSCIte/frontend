@@ -17,6 +17,7 @@ import { Pane } from "../pane/Pane";
 import { ActionButton } from "../actionButton/ActionButton";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { groupBy } from "~/utils";
+import { toast } from "react-toastify";
 
 export const Sidebar = () => {
   const [isExpanded, setIsExpanded] = useState(true);
@@ -62,7 +63,7 @@ export const Sidebar = () => {
         requirementsCompleted:
           data.numberOfMandatoryCourses - data.mandatoryCourses.length,
         requirementsTotal: data.numberOfMandatoryCourses,
-        color: "blue",
+        color: data.tag.color,
       },
     ];
 
@@ -73,7 +74,7 @@ export const Sidebar = () => {
         name: categoryCode,
         requirementsCompleted: parseInt(completionStatus.completed),
         requirementsTotal: parseInt(completionStatus.total),
-        color: "blue",
+        color: completionStatus.tag.color,
       });
     }
 
@@ -96,7 +97,7 @@ export const Sidebar = () => {
             (course) => course,
           ).length,
           requirementsTotal: req.totalCourseToComplete,
-          color: "purple",
+          color: req.tag.color,
         };
       })
       .sort((a, b) => a.requirementsTotal - b.requirementsTotal);
@@ -182,7 +183,7 @@ export const Sidebar = () => {
                 })}
               </div>
             ) : (
-              <p>Congratuations, no warnings!</p>
+              <p>Congrats, no warnings!</p>
             )}
           </Pane>
 
@@ -191,7 +192,10 @@ export const Sidebar = () => {
             <ActionButton
               text="Clear Localstorage"
               icon={<TrashIcon className="h-6 w-6 text-gray-400" />}
-              onClick={() => localStorage.clear()}
+              onClick={() => {
+                localStorage.clear();
+                toast("Cleared, please reload!");
+              }}
             />
           </Pane>
           {/* {sampleRequirementsData.map((requirement, ind) => (

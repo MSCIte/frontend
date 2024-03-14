@@ -17,7 +17,7 @@ const OptionFAQData: FAQEntry[] = [
   {
     question:
       "There is a time conflict between the Management Sciences course and another course I need to take. What should I do?",
-    answer: `You would need to contact the course instructor to sign a [Course Override Form](https://uwaterloo.ca/forms/undergraduate-studies/course-override). However, an override might or might not be granted depending on the case. In the case where you are not able to enroll in a course of desire, we recommend you to consider other alternative courses.`,
+    answer: `You would need to contact the course instructor to sign a [Course Override Form](https://uwaterloo.ca/forms/undergraduate-studies/course-override). However, an override may or may not be granted depending on the case. In the case where you are not able to enroll in a course of desire, we recommend you to consider other alternative courses.`,
   },
   {
     question:
