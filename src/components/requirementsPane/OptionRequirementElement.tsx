@@ -34,7 +34,7 @@ export const OptionRequirementElement = ({
         isTaking: isTakingCourse(course.courseCode),
       };
     });
-  }, [major, option]);
+  }, [major, option, getCoursesByTag, isTakingCourse, requirement]);
 
   return (
     <div className="my-2">

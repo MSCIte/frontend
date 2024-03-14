@@ -2,7 +2,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { useDegreesDegreeGet } from "~/api/endpoints";
 import { usePlanStore } from "~/stores";
 import { Pane } from "../pane/Pane";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { Button } from "../Button";
 import { blacklistedDegrees, disciplineNameToFriendly } from "~/utils";
 
@@ -14,7 +14,13 @@ interface OnboardingModalProps {
 type OnboardingSteps = "msci-opt-info" | "select-major";
 
 export const OnboardingModal = (props: OnboardingModalProps) => {
-  const { major, setMajor, setOption, hardResetCourses } = usePlanStore();
+  const {
+    major,
+    setMajor,
+    setOption,
+    hardResetCourses,
+    setIsMsciInfoModalOpen,
+  } = usePlanStore();
 
   const { data: degrees, isLoading } = useDegreesDegreeGet();
 
@@ -27,7 +33,7 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
   const [modalOptionYear, setModalOptionYear] = useState(2020);
 
   const [onboardingStep, setOnboardingStep] =
-    useState<OnboardingSteps>("msci-opt-info");
+    useState<OnboardingSteps>("select-major");
 
   useEffect(() => {
     if (2020 <= modalMajorYear && modalMajorYear <= 2023) {
@@ -45,6 +51,23 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
     }
   }, [modalOptionYear, setMajor]);
 
+  const onClose = useCallback(() => {
+    console.log("On close");
+    setIsMsciInfoModalOpen(true);
+    props.setIsOpen(false);
+    console.log("closing onboarding modal")
+    setMajor({
+      name: modalMajorName,
+      year: modalMajorYear,
+    });
+    setOption({
+      name: "management_sciences_option",
+      year: modalOptionYear,
+    });
+    hardResetCourses();
+    localStorage.setItem("onboardingComplete", "true");
+  }, [modalMajorName, modalMajorYear, modalOptionYear]);
+
   return (
     <Transition
       show={props.isOpen}
@@ -58,20 +81,7 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
     >
       <Dialog
         open={props.isOpen}
-        onClose={() => {
-          console.log("On close");
-          props.setIsOpen(false);
-          setMajor({
-            name: modalMajorName,
-            year: modalMajorYear,
-          });
-          setOption({
-            name: "management_sciences_option",
-            year: modalOptionYear,
-          });
-          hardResetCourses();
-          localStorage.setItem("onboardingComplete", "true");
-        }}
+        onClose={onClose}
         className="relative z-50"
       >
         <Transition.Child
@@ -98,48 +108,6 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
             <Dialog.Panel className="h-[36rem] w-[40rem]">
               <Pane className="h-[inherit] p-4">
                 <div className="space-y-4">
-                  {onboardingStep === "msci-opt-info" && (
-                    <div className="space-y-4 px-4">
-                      <h1 className="text-3xl font-medium">
-                        Management Science option requirements
-                      </h1>
-                      <p>
-                        The option consists simply of six courses. Many of these
-                        courses have equivalents from other programs.
-                      </p>
-                      <ul className="list-disc pl-6">
-                        <li>
-                          At least three of the six courses must be MSCI/MSE
-                          courses from the Department of Management Science and
-                          Engineering.
-                        </li>
-                        <li>
-                          A maximum of one course not from the approved list may
-                          be counted toward the option, with approval from the
-                          option coordinator. The course must be related to
-                          management science.
-                        </li>
-                        <li>
-                          You may take both MSCI/MSE 211 and MSCI/MSE 311, in
-                          which case one will count toward the required courses
-                          and the other toward the elective courses.
-                        </li>
-                        <li>
-                          For the designation "Option in Management Science" to
-                          be included on your transcript, you must achieve a
-                          minimum overall cumulative average of 60% in the six
-                          courses.
-                        </li>
-                      </ul>
-                      <Button
-                        text="Next"
-                        className="mx-auto block"
-                        onClick={() => {
-                          setOnboardingStep("select-major");
-                        }}
-                      />
-                    </div>
-                  )}
                   {onboardingStep === "select-major" && (
                     <>
                       <h1 className="text-3xl font-medium">
@@ -251,13 +219,9 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
                       )}
 
                       <Button
-                        text="Get Started"
+                        text="Continue"
                         className="mx-auto block"
-                        onClick={() => {
-                          console.log("on get started button click");
-                          props.setIsOpen(false);
-                          localStorage.setItem("onboardingComplete", "true");
-                        }}
+                        onClick={onClose}
                       />
                     </>
                   )}

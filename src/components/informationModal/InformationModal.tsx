@@ -114,7 +114,7 @@ export const InformationModal = (props: OnboardingModalProps) => {
                       <ul className="list-disc pl-6">
                         <li>
                           At least{" "}
-                          <b>three of the six courses must be MSCI courses</b>
+                          <b>three of the six courses must be MSCI courses </b>
                           from the Department of Management Science and
                           Engineering.
                         </li>
@@ -164,7 +164,7 @@ export const InformationModal = (props: OnboardingModalProps) => {
                       <ul className="list-disc pl-6">
                         <li>
                           At least{" "}
-                          <b>three of the six courses must be MSCI courses</b>
+                          <b>three of the six courses must be MSCI courses </b>
                           from the Department of Management Science and
                           Engineering.
                         </li>
@@ -213,7 +213,7 @@ export const InformationModal = (props: OnboardingModalProps) => {
                       <ul className="list-disc pl-6">
                         <li>
                           At least{" "}
-                          <b>three of the six courses must be MSCI courses</b>
+                          <b>three of the six courses must be MSCI courses </b>
                           from the Department of Management Science and
                           Engineering.
                         </li>
