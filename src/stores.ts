@@ -385,6 +385,10 @@ export const usePlanStore = create<PlanState>()(
         updateAllCourses: async () => {
           set({ coursesCache: {} });
 
+          const toastId = toast.info("Updating all courses...", {
+            autoClose: false,
+          });
+
           const allCourses = await tagsCoursesTagsGet({
             degree_name: get().major.name,
             degree_year: get().major.year.toString(),
@@ -403,6 +407,8 @@ export const usePlanStore = create<PlanState>()(
             return acc;
           }, {});
 
+          toast.dismiss(toastId);
+          toast.success("All courses updated!");
           set({ coursesCache: courseObj });
         },
         warnings: [] as PlanState["warnings"],
