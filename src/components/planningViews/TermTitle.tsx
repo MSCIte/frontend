@@ -13,7 +13,7 @@ export const TermTitle = (props: TermTitleProps) => {
 
   if (warnings.length > 0) {
     return (
-      <h2 className="fixed top-1/4 my-2 text-center text-xl font-semibold">
+      <h2 className="sticky top-0 z-20 mx-0 my-2 bg-[#f3f3f3]  text-center text-xl font-semibold">
         {props.termName}{" "}
         <ExclamationTriangleIcon
           className="inline h-6 w-6 text-yellow-400"
@@ -26,7 +26,7 @@ export const TermTitle = (props: TermTitleProps) => {
   }
 
   return (
-    <h2 className="sticky top-0 my-2 text-center  text-xl font-semibold">
+    <h2 className="sticky top-0 z-20 mx-0 my-2 bg-[#f3f3f3] text-center text-xl font-semibold">
       {props.termName}
     </h2>
   );

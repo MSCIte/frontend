@@ -102,7 +102,9 @@ export const Sidebar = () => {
                         return (
                           <div className="text-sm" key={warning.id}>
                             <p>
-                              {warning.affectedCourse.code}: {warning.text}
+                              {warning.affectedCourse.code ||
+                                warning.affectedCourse.term}
+                              : {warning.text}
                             </p>
                           </div>
                         );

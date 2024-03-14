@@ -92,10 +92,10 @@ export const usePlanStore = create<PlanState>()(
         setCourses: (courses) => {
           if (typeof courses === "function") {
             set({ courses: courses(get().courses) });
-            return;
           } else {
             set({ courses });
           }
+          get().updateMissingReqs();
         },
         completedCourseCodes: () => {
           return Object.values(get().courses)
@@ -109,6 +109,7 @@ export const usePlanStore = create<PlanState>()(
           set({ isOnboardingModalOpen: isOpen }),
         hardResetCourses: async () => {
           console.log("hard resetting courses");
+          set({ warnings: [] });
           await get().updateAllCourses();
           await get().resetCourses();
         },
@@ -143,6 +144,7 @@ export const usePlanStore = create<PlanState>()(
           const newCoursesSorted = sortByKeys(newCourses);
           console.log("setting courses", newCourses);
           set({ courses: newCoursesSorted });
+          get().updateMissingReqs();
         },
         coursesToCSV: () => {
           const courses = get().courses;
@@ -301,6 +303,7 @@ export const usePlanStore = create<PlanState>()(
           const major = get().major;
           const option = get().option;
 
+          // TODO: Cache this stuff
           const degreeMissingReqs =
             degreeMissingReqsDegreeDegreeIdMissingReqsPost(major.name, {
               courseCodesTaken: plannedCourses,

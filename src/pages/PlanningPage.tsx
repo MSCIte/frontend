@@ -21,8 +21,6 @@ import { twMerge } from "tailwind-merge";
 import { Tooltip } from "react-tooltip";
 
 export interface CourseViewProps {
-  courseData: CourseData;
-  setCourseData: Dispatch<SetStateAction<CourseData>>;
   focusedTerm: number;
   setFocusedTerm: Dispatch<SetStateAction<number>>;
   maxCoursesInATerm: number;
@@ -185,26 +183,20 @@ export const PlanningPage = () => {
 
           {selectedView === "all" ? (
             <AllTermsTableView
-              courseData={courses}
               maxCoursesInATerm={maxCoursesInATerm}
-              setCourseData={setCourses}
               focusedTerm={selectedTerm}
               setFocusedTerm={setSelectedTerm}
             />
           ) : selectedView === "year" ? (
             <YearTableView
-              courseData={courses}
               maxCoursesInATerm={maxCoursesInATerm}
-              setCourseData={setCourses}
               focusedTerm={selectedTerm}
               setFocusedTerm={setSelectedTerm}
             />
           ) : (
             // Term view
             <TermTableView
-              courseData={courses}
               maxCoursesInATerm={maxCoursesInATerm}
-              setCourseData={setCourses}
               focusedTerm={selectedTerm}
               setFocusedTerm={setSelectedTerm}
             />

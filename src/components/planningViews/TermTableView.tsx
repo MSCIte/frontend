@@ -5,12 +5,15 @@ import { CourseSelectionPane } from "../courseSelectionPane/CourseSelectionPane"
 import { toast } from "react-toastify";
 import { TermColumn } from "./TermColumn";
 import { CourseInfoPane } from "./CourseInfoPane";
+import { usePlanStore } from "~/stores";
 
 export const TermTableView = ({
-  courseData,
   focusedTerm,
-  setCourseData,
 }: CourseViewProps) => {
+
+
+  const { setCourses, courses: courseData } = usePlanStore();
+
   const selectedCourseData = Object.fromEntries(
     Object.entries(courseData).filter((_, ind) => ind === focusedTerm),
   );
@@ -49,7 +52,7 @@ export const TermTableView = ({
   };
 
   const onAcceptCourse = (course: CourseWithTagsSchema) => {
-    setCourseData((prev) => {
+    setCourses((prev) => {
       if (course.courseCode === selectedCourse.courseCode) {
         return prev;
       }
@@ -68,7 +71,7 @@ export const TermTableView = ({
 
   const onDeleteCourse = (term: string, courseCode: string) => {
     console.log("onDeleteCourse", term, courseCode);
-    setCourseData((prev) => {
+    setCourses((prev) => {
       const newCourseData = { ...prev };
       delete newCourseData[term][courseCode.replace(" ", "")];
       return newCourseData;

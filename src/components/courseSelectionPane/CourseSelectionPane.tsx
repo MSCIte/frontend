@@ -37,6 +37,57 @@ export const colorVariants = {
   rose: "bg-rose-200",
 };
 
+export const allowedTags: TagSchema[] = [
+  {
+    code: "",
+    color: "red",
+    shortName: "All",
+    longName: "All",
+  },
+  {
+    code: "CSE",
+    color: "indigo",
+    shortName: "CSE",
+    longName: "Complimentary Studies Elective",
+  },
+  {
+    code: "NSE",
+    color: "yellow",
+    shortName: "NSE",
+    longName: "Natural Science Elective",
+  },
+  {
+    code: "TE",
+    color: "rose",
+    shortName: "TE",
+    longName: "Technical Elective",
+  },
+  {
+    code: "elective",
+    color: "green",
+    shortName: "Opt Elective",
+    longName: "Option Elective",
+  },
+  {
+    code: "organizational_studies",
+    color: "red",
+    shortName: "Org Studies",
+    longName: "Organizational Studies",
+  },
+  {
+    code: "eng_econ",
+    color: "orange",
+    shortName: "Eng Econ",
+    longName: "Engineering Economics",
+  },
+  {
+    code: "opti_1",
+    color: "yellow",
+    shortName: "Optimization",
+    longName: "Optimization",
+  },
+];
+
 // This will be inside another pane (rounded courners padding etc.)
 // could be a modal (when you add a course), or maybe replaces the right sidebar in year/term view
 export const CourseSelectionPane = ({
@@ -52,38 +103,38 @@ export const CourseSelectionPane = ({
     CourseWithTagsSchema | undefined
   >(initialCourse);
 
-  const { data: allTags, isLoading: isTagsLoading } = useGetAllTagsTagsGet();
+  // const { data: allTags, isLoading: isTagsLoading } = useGetAllTagsTagsGet();
 
   const searchButtonRef = useRef<HTMLInputElement>(null);
 
   const { major, option } = usePlanStore();
 
-  const [searchTag, setSearchTag] = useState<string | null>(null);
-
-  const searchTagChoices = useMemo<TagSchema[]>(() => {
-    if (allTags?.data) {
-      return [
-        {
-          code: "all",
-          longName: "All",
-          color: "gray",
-          shortName: "All",
-        },
-        ...allTags.data,
-      ];
-    } else {
-      return [
-        {
-          code: "all",
-          longName: "All",
-          color: "gray",
-          shortName: "All",
-        },
-      ];
-    }
-  }, [allTags]);
+  const [searchTag, setSearchTag] = useState<string | undefined>("");
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  // const searchTagChoices = useMemo<TagSchema[]>(() => {
+  //   if (allTags?.data) {
+  //     return [
+  //       {
+  //         code: "all",
+  //         longName: "All",
+  //         color: "gray",
+  //         shortName: "All",
+  //       },
+  //       ...allTags.data,
+  //     ];
+  //   } else {
+  //     return [
+  //       {
+  //         code: "",
+  //         longName: "All",
+  //         color: "gray",
+  //         shortName: "All",
+  //       },
+  //     ];
+  //   }
+  // }, [allTags]);
 
   const { data } = useSearchCoursesCoursesSearchGet({
     q: searchQuery,
@@ -99,7 +150,6 @@ export const CourseSelectionPane = ({
     if (initialCourse?.courseCode && searchQuery == null) {
       setSearchQuery(initialCourse?.courseCode);
     }
-    setSearchTag("all");
   }, [initialCourse, searchQuery]);
 
   useEffect(() => {
@@ -116,13 +166,13 @@ export const CourseSelectionPane = ({
       >
         Search
       </label>
+
       <button
-        id="dropdown-button"
-        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-        className="z-10 inline-flex flex-shrink-0 items-center rounded-s-lg border border-gray-300 bg-gray-100 px-4 py-2.5 text-center text-sm font-medium text-gray-900 hover:bg-gray-200 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-700"
+        className="z-10 inline-flex flex-shrink-0 items-center rounded-s-lg border border-gray-300 bg-gray-100 px-4 py-2.5 text-center text-sm font-medium text-gray-900 hover:bg-gray-200 focus:outline-none  dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 "
         type="button"
+        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
       >
-        All courses{" "}
+        {allowedTags.find((tag) => tag.code === searchTag)?.shortName || "All"}
         <svg
           className="ms-2.5 h-2.5 w-2.5"
           aria-hidden="true"
@@ -132,9 +182,9 @@ export const CourseSelectionPane = ({
         >
           <path
             stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
             d="m1 1 4 4 4-4"
           />
         </svg>
@@ -142,35 +192,28 @@ export const CourseSelectionPane = ({
       <div
         id="dropdown"
         className={twMerge(
-          "z-10 w-44 divide-y divide-gray-100 rounded-lg bg-white shadow dark:bg-gray-700",
-          isDropdownOpen ? "block" : "hidden",
+          "z-10 flex w-44 flex-col divide-y divide-gray-100 rounded-lg bg-white shadow dark:bg-gray-700",
+          isDropdownOpen ? "absolute top-16" : "hidden",
         )}
       >
         <ul
-          className="bg-red-800 py-2 text-sm text-gray-700 dark:text-gray-200 flex flex-col"
+          className=" py-2 text-sm text-gray-700 dark:text-gray-200"
           aria-labelledby="dropdown-button"
         >
-          {isTagsLoading ? (
-            <li>
+          {allowedTags.map((tag) => (
+            <li key={tag.code}>
               <button
                 type="button"
-                className="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                onClick={() => {
+                  setSearchTag(tag.code);
+                  setIsDropdownOpen(false);
+                }}
+                className="inline-flex w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
               >
-                Loading...
+                {tag.longName}
               </button>
             </li>
-          ) : (
-            searchTagChoices.map((tag) => (
-              <li key={tag.code}>
-                <button
-                  type="button"
-                  className="inline-flex w-full bg-blue-700 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  {tag.longName}
-                </button>
-              </li>
-            ))
-          )}
+          ))}
         </ul>
       </div>
       <div className="relative w-full">
@@ -232,8 +275,8 @@ export const CourseSelectionPane = ({
           <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
             <Dialog.Panel className="h-[90svh] w-[80svw] 2xl:h-[50rem] 2xl:w-[80rem]">
               <Pane className="h-[inherit]">
-                <div className="mx-4 grid h-full grid-cols-3 gap-4 overflow-y-hidden">
-                  <div className="overflow-y-scroll">
+                <div className="mx-4 grid h-full grid-cols-5 gap-4 overflow-y-hidden">
+                  <div className="col-span-2 overflow-y-scroll">
                     {SearchElement}
                     <div className="col-span-1 space-y-2 rounded-lg bg-gray-100  p-4">
                       <div className="space-y-2">
@@ -247,7 +290,7 @@ export const CourseSelectionPane = ({
                       </div>
                     </div>
                   </div>
-                  <div className="col-span-2 flex flex-col space-y-4 p-8">
+                  <div className="col-span-3 flex flex-col space-y-4 p-8">
                     {selectedCourse?.courseCode ? (
                       <>
                         <h1 className="text-3xl">

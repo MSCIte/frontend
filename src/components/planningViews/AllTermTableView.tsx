@@ -4,11 +4,9 @@ import { CourseSelectionPane } from "../courseSelectionPane/CourseSelectionPane"
 import { CourseWithTagsSchema } from "~/api/endpoints";
 import { toast } from "react-toastify";
 import { TermColumn } from "./TermColumn";
+import { usePlanStore } from "~/stores";
 
-export const AllTermsTableView = ({
-  courseData,
-  setCourseData,
-}: CourseViewProps) => {
+export const AllTermsTableView = (_: CourseViewProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTerm, setSelectedTerm] = useState<string>("1A");
   const [selectedCourse, setSelectedCourse] = useState<CourseWithTagsSchema>({
@@ -16,6 +14,8 @@ export const AllTermsTableView = ({
     courseName: "",
   });
   const [modalMode, setModalMode] = useState<ModalMode>("add");
+
+  const { setCourses, courses: courseData } = usePlanStore();
 
   const openModal = (
     term: string,
@@ -36,7 +36,7 @@ export const AllTermsTableView = ({
   };
 
   const onAcceptCourse = (course: CourseWithTagsSchema) => {
-    setCourseData((prev) => {
+    setCourses((prev) => {
       if (course.courseCode === selectedCourse.courseCode) {
         return prev;
       }
@@ -55,7 +55,7 @@ export const AllTermsTableView = ({
 
   const onDeleteCourse = (term: string, courseCode: string) => {
     console.log("onDeleteCourse", term, courseCode);
-    setCourseData((prev) => {
+    setCourses((prev) => {
       const newCourseData = { ...prev };
       delete newCourseData[term][courseCode.replace(" ", "")];
       return newCourseData;
@@ -77,7 +77,7 @@ export const AllTermsTableView = ({
         onCancel={unsetCourseSelections}
         mode={modalMode}
       />
-      <div className="flex space-x-4">
+      <div className="flex">
         {Object.keys(courseData).map((term) => {
           return (
             <TermColumn

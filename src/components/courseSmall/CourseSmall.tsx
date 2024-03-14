@@ -22,7 +22,7 @@ export const CourseSmall = (props: CourseSmallSchema) => {
 
   return (
     <Pane
-      className="group relative mb-4 h-32 w-36 cursor-pointer transition duration-200 hover:scale-105 2xl:w-40"
+      className="group relative mb-4 h-32 w-36 scale-95 cursor-pointer transition duration-200 hover:scale-100 2xl:w-40"
       onClick={props.onClick}
     >
       <div className="flex flex-col justify-between">
@@ -32,7 +32,7 @@ export const CourseSmall = (props: CourseSmallSchema) => {
             <>
               <button
                 aria-description="Confirm"
-                className="transform text-gray-300 transition duration-200 hover:scale-105 hover:text-gray-400 "
+                className="transform text-gray-300 transition duration-200  hover:scale-105 hover:text-gray-400 "
                 onClick={(e) => {
                   e.stopPropagation();
                   props.onDelete();
