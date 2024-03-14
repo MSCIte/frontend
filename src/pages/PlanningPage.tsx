@@ -46,6 +46,7 @@ export const PlanningPage = () => {
     setIsOnboardingModalOpen,
     courses,
     setCourses,
+    hardResetCourses,
     resetCourses,
     coursesToCSV,
     validatePlan,
@@ -150,7 +151,7 @@ export const PlanningPage = () => {
         <ActionButton
           text="Reset Courses"
           icon={<ArrowPathIcon className="h-6 w-6 text-gray-400" />}
-          onClick={() => resetCourses()}
+          onClick={() => hardResetCourses()}
         />
         <ActionButton
           text="Validate Plan"
