@@ -1,9 +1,9 @@
-import clsx from "clsx";
 import { Pane } from "../pane/Pane";
 import { twMerge } from "tailwind-merge";
-import { RequirementData, colorVariants } from "./RequirementsPane";
+import { RequirementData } from "./RequirementsPane";
 import { usePlanStore } from "~/stores";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
+import { OptionRequirementElement } from "./OptionRequirementElement";
 
 interface MajorRequirementsPaneProps {
   title: string;
@@ -11,19 +11,6 @@ interface MajorRequirementsPaneProps {
   className?: string;
 }
 
-const optionReqNameToTitle = (name: string) => {
-  if (name === "organizational_studies") {
-    return "Organizational Studies";
-  } else if (name === "eng_econ") {
-    return "Engineering Economics";
-  } else if (name === "opti_1") {
-    return "Introduction to Optimization";
-  } else if (name === "elective") {
-    return "Option Electives";
-  } else {
-    return name;
-  }
-};
 
 export const OptionsRequirementsPane = (props: MajorRequirementsPaneProps) => {
   const { option, setOption, setIsMsciInfoModalOpen } = usePlanStore(
@@ -58,38 +45,9 @@ export const OptionsRequirementsPane = (props: MajorRequirementsPaneProps) => {
           <option value="2023">2023</option>
         </select>
       </h3>
-      <div className="mt-4">
+      <div className="my-4 space-y-4">
         {props.data.map((requirement, ind) => (
-          <div className="my-2" key={`req-${props.title}-${ind}`}>
-            <div className="font-light">
-              <span>{optionReqNameToTitle(requirement.name)}</span>
-              <span className="float-right  text-slate-500">
-                {requirement.requirementsCompleted}/
-                {requirement.requirementsTotal}
-              </span>
-            </div>
-            <div className="">
-              <progress
-                value={
-                  requirement.requirementsCompleted !== 0
-                    ? requirement.requirementsCompleted
-                    : 1
-                }
-                max={
-                  requirement.requirementsCompleted !== 0
-                    ? requirement.requirementsTotal
-                    : 75
-                }
-                className={clsx(
-                  "h-2 w-full rounded bg-slate-200 [&::-webkit-progress-bar]:rounded [&::-webkit-progress-value]:rounded ",
-                  `[&::-webkit-progress-bar]:bg-slate-300`,
-                  colorVariants?.[
-                    requirement.color as keyof typeof colorVariants
-                  ],
-                )}
-              />
-            </div>
-          </div>
+          <OptionRequirementElement key={`req-${props.title}-${ind}`} requirement={requirement} />
         ))}
       </div>
       <button

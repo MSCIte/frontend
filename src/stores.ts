@@ -28,6 +28,8 @@ export interface PlanState {
   };
   coursesCache: Record<string, CourseWithTagsSchema>;
   clearCoursesCache: () => void;
+  getCoursesByTag: (tag: string) => CourseWithTagsSchema[];
+  isTakingCourse: (courseCode: CourseCode) => boolean;
   setMajor: (major: PlanState["major"]) => void;
   setOption: (option: PlanState["option"]) => void;
   courses: CourseData;
@@ -73,6 +75,14 @@ export const usePlanStore = create<PlanState>()(
         coursesCache: {},
         clearCoursesCache: () => {
           set({ coursesCache: {} });
+        },
+        getCoursesByTag: (tag: string) => {
+          return Object.values(get().coursesCache).filter((course) =>
+            course.tags?.some((t) => t.code === tag),
+          );
+        },
+        isTakingCourse: (courseCode) => {
+          return get().completedCourseCodes().includes(courseCode);
         },
         setMajor: (major) => {
           if (get().major !== major) {
