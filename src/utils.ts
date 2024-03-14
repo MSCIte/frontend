@@ -35,7 +35,7 @@ export const groupBy = <T>(
 
 export const disciplineNameToFriendly = (discipline: string) => {
   switch (discipline) {
-    case "architectual_engineering":
+    case "architectual_engineering": // misspelt oop
       return "Architectural Engineering";
     case "architecture":
       return "Architecture";
@@ -87,7 +87,7 @@ export const backgroundColors = {
 
 // Majors we don't need to show in the dropdowns
 export const blacklistedDegrees = [
-  'architectural_engineering',
+  "architectural_engineering",
   "management_engineering",
   "systems_design_engineering",
 ];

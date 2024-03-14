@@ -14,9 +14,11 @@ interface OnboardingModalProps {
 type OnboardingSteps = "msci-opt-info" | "select-major";
 
 export const OnboardingModal = (props: OnboardingModalProps) => {
-  const { major, setMajor, setOption, resetCourses } = usePlanStore();
+  const { major, setMajor, setOption, hardResetCourses } = usePlanStore();
 
   const { data: degrees, isLoading } = useDegreesDegreeGet();
+
+  const [modalMajorName, setModalMajorName] = useState<string>(major.name);
 
   const [majorYearWarning, setMajorYearWarning] = useState(false);
   const [modalMajorYear, setModalMajorYear] = useState(2020);
@@ -29,10 +31,6 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
 
   useEffect(() => {
     if (2020 <= modalMajorYear && modalMajorYear <= 2023) {
-      setMajor({
-        name: major.name,
-        year: modalMajorYear,
-      });
       setMajorYearWarning(false);
     } else {
       setMajorYearWarning(true);
@@ -41,10 +39,6 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
 
   useEffect(() => {
     if (2020 <= modalOptionYear && modalOptionYear <= 2023) {
-      setOption({
-        name: "management_sciences_option",
-        year: modalOptionYear,
-      });
       setOptionYearWarning(false);
     } else {
       setOptionYearWarning(true);
@@ -65,7 +59,17 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
       <Dialog
         open={props.isOpen}
         onClose={() => {
+          console.log("On close");
           props.setIsOpen(false);
+          setMajor({
+            name: modalMajorName,
+            year: modalMajorYear,
+          });
+          setOption({
+            name: "management_sciences_option",
+            year: modalOptionYear,
+          });
+          hardResetCourses();
           localStorage.setItem("onboardingComplete", "true");
         }}
         className="relative z-50"
@@ -168,12 +172,9 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
                             </label>
                             <select
                               id="major"
-                              value={major.name}
+                              value={modalMajorName}
                               onChange={(e) =>
-                                setMajor({
-                                  name: e.target.value,
-                                  year: major.year,
-                                })
+                                setModalMajorName(e.target.value)
                               }
                               className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                             >
@@ -253,8 +254,9 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
                         text="Get Started"
                         className="mx-auto block"
                         onClick={() => {
+                          console.log("on get started button click");
                           props.setIsOpen(false);
-                          resetCourses();
+                          hardResetCourses();
                           localStorage.setItem("onboardingComplete", "true");
                         }}
                       />

@@ -61,7 +61,7 @@ export const usePlanStore = create<PlanState>()(
     persist(
       (set, get) => ({
         major: {
-          name: "architectural_engineering",
+          name: "chemical_engineering",
           year: 2023,
         },
         option: {
@@ -74,6 +74,7 @@ export const usePlanStore = create<PlanState>()(
         },
         setMajor: (major) => {
           if (get().major !== major) {
+            console.log("set major getting called");
             set({ major });
             get().clearCoursesCache();
             get().resetCourses();
@@ -81,6 +82,7 @@ export const usePlanStore = create<PlanState>()(
         },
         setOption: (option) => {
           if (get().option !== option) {
+            console.log("set option getting called");
             set({ option });
             get().clearCoursesCache();
             get().resetCourses();
@@ -106,6 +108,7 @@ export const usePlanStore = create<PlanState>()(
         setIsOnboardingModalOpen: (isOpen) =>
           set({ isOnboardingModalOpen: isOpen }),
         hardResetCourses: async () => {
+          console.log("hard resetting courses");
           await get().updateAllCourses();
           await get().resetCourses();
         },

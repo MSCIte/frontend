@@ -1002,6 +1002,79 @@ export const useSearchCoursesCoursesSearchGet = <
 };
 
 /**
+ * @summary Get All Tags
+ */
+export const getAllTagsTagsGet = (
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<TagSchema[]>> => {
+  return axios.default.get(`/tags`, options);
+};
+
+export const getGetAllTagsTagsGetQueryKey = () => {
+  return [`/tags`] as const;
+};
+
+export const getGetAllTagsTagsGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof getAllTagsTagsGet>>,
+  TError = AxiosError<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof getAllTagsTagsGet>>,
+      TError,
+      TData
+    >
+  >;
+  axios?: AxiosRequestConfig;
+}) => {
+  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetAllTagsTagsGetQueryKey();
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getAllTagsTagsGet>>
+  > = ({ signal }) => getAllTagsTagsGet({ signal, ...axiosOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getAllTagsTagsGet>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetAllTagsTagsGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getAllTagsTagsGet>>
+>;
+export type GetAllTagsTagsGetQueryError = AxiosError<unknown>;
+
+/**
+ * @summary Get All Tags
+ */
+export const useGetAllTagsTagsGet = <
+  TData = Awaited<ReturnType<typeof getAllTagsTagsGet>>,
+  TError = AxiosError<unknown>,
+>(options?: {
+  query?: Partial<
+    UseQueryOptions<
+      Awaited<ReturnType<typeof getAllTagsTagsGet>>,
+      TError,
+      TData
+    >
+  >;
+  axios?: AxiosRequestConfig;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getGetAllTagsTagsGetQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+};
+
+/**
  * @summary Tags
  */
 export const tagsCoursesTagsGet = (

@@ -382,6 +382,26 @@
         }
       }
     },
+    "/tags": {
+      "get": {
+        "summary": "Get All Tags",
+        "operationId": "get_all_tags_tags_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": { "$ref": "#/components/schemas/TagSchema" },
+                  "type": "array",
+                  "title": "Response Get All Tags Tags Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/courses/tags": {
       "get": {
         "summary": "Tags",

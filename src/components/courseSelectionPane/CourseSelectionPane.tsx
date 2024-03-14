@@ -1,8 +1,10 @@
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { CourseBlock } from "./CourseBlock";
 import clsx from "clsx";
 import {
   CourseWithTagsSchema,
+  TagSchema,
+  useGetAllTagsTagsGet,
   useSearchCoursesCoursesSearchGet,
 } from "~/api/endpoints";
 import { usePlanStore } from "~/stores";
@@ -10,6 +12,7 @@ import { usePlanStore } from "~/stores";
 import { Dialog, Transition } from "@headlessui/react";
 import { Pane } from "../pane/Pane";
 import { ModalMode } from "~/pages/PlanningPage";
+import { twMerge } from "tailwind-merge";
 
 interface CourseSelectionPaneProps {
   initialCourse?: CourseWithTagsSchema;
@@ -49,9 +52,38 @@ export const CourseSelectionPane = ({
     CourseWithTagsSchema | undefined
   >(initialCourse);
 
+  const { data: allTags, isLoading: isTagsLoading } = useGetAllTagsTagsGet();
+
   const searchButtonRef = useRef<HTMLInputElement>(null);
 
   const { major, option } = usePlanStore();
+
+  const [searchTag, setSearchTag] = useState<string | null>(null);
+
+  const searchTagChoices = useMemo<TagSchema[]>(() => {
+    if (allTags?.data) {
+      return [
+        {
+          code: "all",
+          longName: "All",
+          color: "gray",
+          shortName: "All",
+        },
+        ...allTags.data,
+      ];
+    } else {
+      return [
+        {
+          code: "all",
+          longName: "All",
+          color: "gray",
+          shortName: "All",
+        },
+      ];
+    }
+  }, [allTags]);
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const { data } = useSearchCoursesCoursesSearchGet({
     q: searchQuery,
@@ -59,6 +91,7 @@ export const CourseSelectionPane = ({
     degree_year: major.year.toString(),
     option_name: option.name,
     option_year: option.year.toString(),
+    tag: searchTag,
   });
 
   useEffect(() => {
@@ -75,40 +108,80 @@ export const CourseSelectionPane = ({
   }, [isOpen]);
 
   const SearchElement = (
-    <div className="sticky top-0 bg-gray-100">
+    <div className="sticky top-0 flex bg-gray-100">
       <label
         htmlFor="courseSearch"
         className="sr-only mb-2 text-sm font-medium text-gray-900 dark:text-white"
       >
         Search
       </label>
-      <div className="relative">
-        <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3">
-          <svg
-            className="h-4 w-4 text-gray-500 dark:text-gray-400"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 20 20"
-          >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-            />
-          </svg>
-        </div>
+      <button
+        id="dropdown-button"
+        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+        className="z-10 inline-flex flex-shrink-0 items-center rounded-s-lg border border-gray-300 bg-gray-100 px-4 py-2.5 text-center text-sm font-medium text-gray-900 hover:bg-gray-200 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-700"
+        type="button"
+      >
+        All courses{" "}
+        <svg
+          className="ms-2.5 h-2.5 w-2.5"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 10 6"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m1 1 4 4 4-4"
+          />
+        </svg>
+      </button>
+      <div
+        id="dropdown"
+        className={twMerge(
+          "z-10 w-44 divide-y divide-gray-100 rounded-lg bg-white shadow dark:bg-gray-700",
+          isDropdownOpen ? "block" : "hidden",
+        )}
+      >
+        <ul
+          className="bg-red-800 py-2 text-sm text-gray-700 dark:text-gray-200 flex flex-col"
+          aria-labelledby="dropdown-button"
+        >
+          {isTagsLoading ? (
+            <li>
+              <button
+                type="button"
+                className="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+              >
+                Loading...
+              </button>
+            </li>
+          ) : (
+            searchTagChoices.map((tag) => (
+              <li key={tag.code}>
+                <button
+                  type="button"
+                  className="inline-flex w-full bg-blue-700 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                >
+                  {tag.longName}
+                </button>
+              </li>
+            ))
+          )}
+        </ul>
+      </div>
+      <div className="relative w-full">
         <input
           ref={searchButtonRef}
           type="search"
           id="courseSearch"
-          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-4 ps-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+          className="block w-full rounded-r-lg border border-gray-300 bg-gray-50 p-4 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
           placeholder="Search for a course"
           value={searchQuery || ""}
           onChange={(e) => setSearchQuery(e.target.value)}
-        />
+        />{" "}
       </div>
     </div>
   );
@@ -161,7 +234,7 @@ export const CourseSelectionPane = ({
                 <div className="mx-4 grid h-full grid-cols-3 gap-4 overflow-y-hidden">
                   <div className="overflow-y-scroll">
                     {SearchElement}
-                    <div className="col-span-1 space-y-2 rounded-lg bg-gray-100  p-4">
+                    {/* <div className="col-span-1 space-y-2 rounded-lg bg-gray-100  p-4">
                       <div className="space-y-2">
                         {data?.data?.map((course) => (
                           <CourseBlock
@@ -171,7 +244,7 @@ export const CourseSelectionPane = ({
                           />
                         ))}
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                   <div className="col-span-2 flex flex-col space-y-4 p-8">
                     {selectedCourse?.courseCode ? (
