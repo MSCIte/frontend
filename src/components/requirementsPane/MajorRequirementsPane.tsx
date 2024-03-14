@@ -30,7 +30,6 @@ export const MajorRequirementsPane = (props: MajorRequirementsPaneProps) => {
   const { major, setMajor } = usePlanStore((state) => ({
     major: state.major,
     setMajor: state.setMajor,
-    resetCourses: state.resetCourses,
   }));
 
   const { data: degrees } = useDegreesDegreeGet();

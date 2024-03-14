@@ -6,10 +6,14 @@ import {
   CanTakeCourseQuery,
   CourseWithTagsSchema,
   coursesCanTakeBatchCoursesCanTakeBatchPost,
+  degreeMissingReqsDegreeDegreeIdMissingReqsPost,
+  optionsMissingReqsOptionOptIdMissingReqsPost,
   tagsCoursesTagsGet,
+  useDegreeMissingReqsDegreeDegreeIdMissingReqsPost,
 } from "./api/endpoints";
 import { sortByKeys } from "./utils";
 import { toast } from "react-toastify";
+import { RequirementData } from "./components/requirementsPane/RequirementsPane";
 
 // MSCI 100, MSCI 211, etc.
 type CourseCode = string;
@@ -24,6 +28,7 @@ export interface PlanState {
     name: string;
   };
   coursesCache: Record<string, CourseWithTagsSchema>;
+  clearCoursesCache: () => void;
   setMajor: (major: PlanState["major"]) => void;
   setOption: (option: PlanState["option"]) => void;
   courses: CourseData;
@@ -36,6 +41,10 @@ export interface PlanState {
   resetCourses: () => Promise<void>;
   coursesToCSV: () => void;
   validatePlan: () => Promise<void>;
+  updateMissingReqs: () => Promise<void>;
+  updateAllCourses: () => Promise<void>;
+  missingReqsMajor: RequirementData[];
+  missingReqsOption: RequirementData[];
   warnings: Array<{
     id: string;
     affectedCourse: {
@@ -52,7 +61,7 @@ export const usePlanStore = create<PlanState>()(
     persist(
       (set, get) => ({
         major: {
-          name: "management_engineering",
+          name: "architectural_engineering",
           year: 2023,
         },
         option: {
@@ -60,6 +69,9 @@ export const usePlanStore = create<PlanState>()(
           year: 2023,
         },
         coursesCache: {},
+        clearCoursesCache: () => {
+          set({ coursesCache: {} });
+        },
         setMajor: (major) => {
           if (get().major !== major) {
             set({ major });
@@ -93,40 +105,34 @@ export const usePlanStore = create<PlanState>()(
           set({ isOnboardingModalOpen: isOpen }),
 
         resetCourses: async () => {
-          const coursesWithTags = await tagsCoursesTagsGet({
-            degree_name: get().major.name,
-            degree_year: get().major.year.toString(),
-            option_name: get().option.name,
-            option_year: get().option.year.toString(),
-          });
-
-          if (coursesWithTags?.data) {
-            const newCourses = coursesWithTags.data.reduce<CourseData>(
-              (acc, course) => {
-                if (course?.tags) {
-                  for (const tag of course.tags) {
-                    if (
-                      ["1A", "1B", "2A", "2B", "3A", "3B", "4A", "4B"].includes(
-                        tag.code,
-                      )
-                    ) {
-                      if (!acc[tag.code]) {
-                        acc[tag.code] = {};
-                      }
-                      acc[tag.code][course.courseCode] = course;
-                    }
-                  }
-                }
-
-                return acc;
-              },
-              {} as CourseData,
-            );
-
-            const newCoursesSorted = sortByKeys(newCourses);
-            console.log("setting courses", newCourses);
-            set({ courses: newCoursesSorted });
+          if (Object.keys(get().coursesCache).length === 0) {
+            await get().updateAllCourses();
           }
+
+          const newCourses = Object.values(
+            get().coursesCache,
+          ).reduce<CourseData>((acc, course) => {
+            if (course?.tags) {
+              for (const tag of course.tags) {
+                if (
+                  ["1A", "1B", "2A", "2B", "3A", "3B", "4A", "4B"].includes(
+                    tag.code,
+                  )
+                ) {
+                  if (!acc[tag.code]) {
+                    acc[tag.code] = {};
+                  }
+                  acc[tag.code][course.courseCode] = course;
+                }
+              }
+            }
+
+            return acc;
+          }, {} as CourseData);
+
+          const newCoursesSorted = sortByKeys(newCourses);
+          console.log("setting courses", newCourses);
+          set({ courses: newCoursesSorted });
         },
         coursesToCSV: () => {
           const courses = get().courses;
@@ -355,6 +361,116 @@ export const usePlanStore = create<PlanState>()(
           set({
             warnings: filteredWarnings,
           });
+        },
+        updateMissingReqs: async () => {
+          const plannedCourses = get().completedCourseCodes();
+          const major = get().major;
+          const option = get().option;
+
+          const degreeMissingReqs =
+            degreeMissingReqsDegreeDegreeIdMissingReqsPost(major.name, {
+              courseCodesTaken: plannedCourses,
+              year: major.year.toString(),
+            });
+
+          const optionMissingReqs =
+            optionsMissingReqsOptionOptIdMissingReqsPost(
+              "management_sciences_option",
+              {
+                courseCodesTaken: plannedCourses,
+                year: option.year.toString(),
+              },
+            );
+
+          const [degreeReqs, optionReqs] = await Promise.all([
+            degreeMissingReqs,
+            optionMissingReqs,
+          ]);
+
+          if (degreeReqs?.data) {
+            if (!degreeReqs?.data?.additionalReqs) {
+              set({
+                missingReqsMajor: [],
+              });
+            }
+            const degreeData = degreeReqs.data;
+
+            const statusBarMajor: RequirementData[] = [
+              {
+                name: "Mandatory",
+                requirementsCompleted:
+                  degreeData.numberOfMandatoryCourses -
+                  degreeData.mandatoryCourses.length,
+                requirementsTotal: degreeData.numberOfMandatoryCourses,
+                color: degreeData.tag.color,
+              },
+            ];
+
+            for (const [categoryCode, completionStatus] of Object.entries(
+              degreeData.additionalReqs,
+            )) {
+              statusBarMajor.push({
+                name: categoryCode,
+                requirementsCompleted: parseInt(completionStatus.completed),
+                requirementsTotal: parseInt(completionStatus.total),
+                color: completionStatus.tag.color,
+              });
+            }
+
+            set({
+              missingReqsMajor: statusBarMajor,
+            });
+          }
+
+          if (optionReqs?.data) {
+            if (!optionReqs?.data?.lists) {
+              set({
+                missingReqsOption: [],
+              });
+            }
+
+            const optionData = optionReqs.data;
+
+            const reqStatus = optionData.lists
+              .map((req) => {
+                return {
+                  name: req.listName,
+                  requirementsCompleted: Object.values(req.courses).filter(
+                    (course) => course,
+                  ).length,
+                  requirementsTotal: req.totalCourseToComplete,
+                  color: req.tag.color,
+                };
+              })
+              .sort((a, b) => a.requirementsTotal - b.requirementsTotal);
+
+            set({
+              missingReqsOption: reqStatus,
+            });
+          }
+        },
+        missingReqsMajor: [],
+        missingReqsOption: [],
+        updateAllCourses: async () => {
+          const allCourses = await tagsCoursesTagsGet({
+            degree_name: get().major.name,
+            degree_year: get().major.year.toString(),
+            option_name: get().option.name,
+            option_year: get().option.year.toString(),
+          });
+
+          if (!allCourses?.data) {
+            return;
+          }
+
+          const courseObj = allCourses?.data?.reduce<
+            Record<string, CourseWithTagsSchema>
+          >((acc, course) => {
+            acc[course.courseCode] = course;
+            return acc;
+          }, {});
+
+          set({ coursesCache: courseObj });
         },
         warnings: [] as PlanState["warnings"],
       }),

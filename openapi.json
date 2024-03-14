@@ -289,7 +289,7 @@
             "name": "degree_year",
             "in": "query",
             "required": true,
-            "schema": { "type": "integer", "title": "Degree Year" }
+            "schema": { "type": "string", "title": "Degree Year" }
           },
           {
             "name": "option_name",
@@ -344,6 +344,15 @@
               ],
               "title": "Number of results returned",
               "default": 20
+            }
+          },
+          {
+            "name": "tag",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [{ "type": "string" }, { "type": "null" }],
+              "title": "Tag"
             }
           }
         ],

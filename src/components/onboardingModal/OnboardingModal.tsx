@@ -127,10 +127,6 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
                           courses.
                         </li>
                       </ul>
-                      <p>
-                        Add information about how MSCIte trackers help them
-                        track and where they can see the eligible courses.
-                      </p>
                       <Button
                         text="Next"
                         className="mx-auto block"

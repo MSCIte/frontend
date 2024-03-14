@@ -28,12 +28,13 @@ export type TagsCoursesTagsGetParams = {
 
 export type SearchCoursesCoursesSearchGetParams = {
   degree_name: string;
-  degree_year: number;
+  degree_year: string;
   option_name?: string;
   option_year?: string;
   q?: string | null;
   offset?: number | null;
   page_size?: number | null;
+  tag?: string | null;
 };
 
 export type DegreeReqsDegreeDegreeNameReqsGetParams = {

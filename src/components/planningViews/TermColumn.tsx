@@ -35,7 +35,10 @@ export const TermColumn = (props: TermColumnProps) => {
   }, [props.courseWidth]);
 
   return (
-    <div key={props.term} className={twMerge("flex w-40 flex-col relative", colWidth)}>
+    <div
+      key={props.term}
+      className={twMerge("relative flex w-40 flex-col", colWidth)}
+    >
       <TermTitle termName={props.term} />
       <div className={twMerge("w-40", colWidth)}>
         {coursesInTerm?.map((course) => {

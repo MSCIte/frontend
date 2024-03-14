@@ -56,7 +56,7 @@ export const CourseSelectionPane = ({
   const { data } = useSearchCoursesCoursesSearchGet({
     q: searchQuery,
     degree_name: major.name,
-    degree_year: major.year,
+    degree_year: major.year.toString(),
     option_name: option.name,
     option_year: option.year.toString(),
   });

@@ -12,14 +12,11 @@ import clsx from "clsx";
 import { Navbar } from "~/components/navbar/NavBar";
 import { OnboardingModal } from "~/components/onboardingModal/OnboardingModal";
 import { usePlanStore } from "~/stores";
-import { useTagsCoursesTagsGet } from "~/api/endpoints";
-
 import { ArrowPathIcon } from "@heroicons/react/24/solid";
 import {
   CheckBadgeIcon,
   DocumentChartBarIcon,
 } from "@heroicons/react/24/outline";
-import { sortByKeys } from "~/utils";
 import { twMerge } from "tailwind-merge";
 import { Tooltip } from "react-tooltip";
 
@@ -49,10 +46,9 @@ export const PlanningPage = () => {
     setIsOnboardingModalOpen,
     courses,
     setCourses,
-    major,
+    resetCourses,
     coursesToCSV,
     validatePlan,
-    option,
   } = usePlanStore();
 
   useEffect(() => {
@@ -61,42 +57,6 @@ export const PlanningPage = () => {
       setIsOnboardingModalOpen(true);
     }
   }, [setIsOnboardingModalOpen]);
-
-  const { data: coursesWithTags } = useTagsCoursesTagsGet({
-    degree_name: major.name,
-    degree_year: major.year.toString(),
-    option_name: option.name,
-    option_year: option.year.toString(),
-  });
-
-  const resetCourses = () => {
-    if (coursesWithTags?.data) {
-      const newCourses = coursesWithTags.data.reduce<CourseData>(
-        (acc, course) => {
-          if (course?.tags) {
-            for (const tag of course.tags) {
-              if (
-                ["1A", "1B", "2A", "2B", "3A", "3B", "4A", "4B"].includes(
-                  tag.code,
-                )
-              ) {
-                if (!acc[tag.code]) {
-                  acc[tag.code] = {};
-                }
-                acc[tag.code][course.courseCode] = course;
-              }
-            }
-          }
-
-          return acc;
-        },
-        {} as CourseData,
-      );
-
-      const newCoursesSorted = sortByKeys(newCourses);
-      setCourses(newCoursesSorted);
-    }
-  };
 
   const header = (
     <div className="my-2 flex justify-between">

@@ -16,98 +16,31 @@ import { OptionsRequirementsPane } from "../requirementsPane/OptionRequirementsP
 import { Pane } from "../pane/Pane";
 import { ActionButton } from "../actionButton/ActionButton";
 import { TrashIcon } from "@heroicons/react/24/outline";
-import { groupBy } from "~/utils";
+import { groupBy, useLazyEffect } from "~/utils";
 import { toast } from "react-toastify";
 
 export const Sidebar = () => {
   const [isExpanded, setIsExpanded] = useState(true);
 
-  const { major, option, courses, completedCourseCodes } = usePlanStore();
-
-  const { data: missingDegreeReqs, mutateAsync: getDegreeMissingReqs } =
-    useDegreeMissingReqsDegreeDegreeIdMissingReqsPost();
-
-  const { data: missingOptionReqs, mutate: getOptionMissingReqs } =
-    useOptionsMissingReqsOptionOptIdMissingReqsPost();
-
-  useEffect(() => {
-    getDegreeMissingReqs({
-      degreeId: major.name,
-      data: {
-        courseCodesTaken: completedCourseCodes(),
-        year: major.year.toString(),
-      },
-    });
-  }, [major, courses, completedCourseCodes, getDegreeMissingReqs]);
-
-  useEffect(() => {
-    getOptionMissingReqs({
-      optId: "management_sciences_option",
-      data: {
-        courseCodesTaken: completedCourseCodes(),
-        year: option.year.toString(),
-      },
-    });
-  }, [option, courses, completedCourseCodes, getOptionMissingReqs]);
-
-  const majorCompletionObj = useMemo<RequirementData[]>(() => {
-    if (!missingDegreeReqs?.data?.additionalReqs) {
-      return [];
-    }
-
-    const { data } = missingDegreeReqs;
-
-    const statusBarMajor: RequirementData[] = [
-      {
-        name: "Mandatory",
-        requirementsCompleted:
-          data.numberOfMandatoryCourses - data.mandatoryCourses.length,
-        requirementsTotal: data.numberOfMandatoryCourses,
-        color: data.tag.color,
-      },
-    ];
-
-    for (const [categoryCode, completionStatus] of Object.entries(
-      data.additionalReqs,
-    )) {
-      statusBarMajor.push({
-        name: categoryCode,
-        requirementsCompleted: parseInt(completionStatus.completed),
-        requirementsTotal: parseInt(completionStatus.total),
-        color: completionStatus.tag.color,
-      });
-    }
-
-    // console.log("statusBarMajor", statusBarMajor);
-    return statusBarMajor;
-  }, [missingDegreeReqs]);
-
-  const optionCompletionObj = useMemo<RequirementData[]>(() => {
-    if (!missingOptionReqs?.data) {
-      return [];
-    }
-
-    const { data } = missingOptionReqs;
-
-    const reqStatus = data.lists
-      .map((req) => {
-        return {
-          name: req.listName,
-          requirementsCompleted: Object.values(req.courses).filter(
-            (course) => course,
-          ).length,
-          requirementsTotal: req.totalCourseToComplete,
-          color: req.tag.color,
-        };
-      })
-      .sort((a, b) => a.requirementsTotal - b.requirementsTotal);
-
-    return reqStatus;
-  }, [missingOptionReqs]);
+  const {
+    missingReqsMajor,
+    missingReqsOption,
+    major,
+    option,
+    updateMissingReqs,
+  } = usePlanStore();
 
   const toggleSidebar = useCallback(() => {
     setIsExpanded(!isExpanded);
   }, [isExpanded]);
+
+  useLazyEffect(
+    () => {
+      updateMissingReqs();
+    },
+    [major, option],
+    200,
+  );
 
   const warnings = usePlanStore((state) => state.warnings);
 
@@ -143,12 +76,12 @@ export const Sidebar = () => {
         >
           <MajorRequirementsPane
             title="Major Requirement"
-            data={majorCompletionObj}
+            data={missingReqsMajor}
           />
           {/* Option requirement */}
           <OptionsRequirementsPane
             title="MSCI Option"
-            data={optionCompletionObj}
+            data={missingReqsOption}
           />
 
           <Pane className="space-y-4">
