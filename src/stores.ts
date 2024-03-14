@@ -37,6 +37,8 @@ export interface PlanState {
   completedCourseCodes: () => CourseCode[];
   isOnboardingModalOpen: boolean;
   setIsOnboardingModalOpen: (isOpen: boolean) => void;
+  isMsciInfoModalOpen: boolean;
+  setIsMsciInfoModalOpen: (isOpen: boolean) => void;
   resetCourses: () => Promise<void>;
   hardResetCourses: () => Promise<void>;
   coursesToCSV: () => void;
@@ -107,6 +109,9 @@ export const usePlanStore = create<PlanState>()(
         isOnboardingModalOpen: false as boolean,
         setIsOnboardingModalOpen: (isOpen) =>
           set({ isOnboardingModalOpen: isOpen }),
+        isMsciInfoModalOpen: false as boolean,
+        setIsMsciInfoModalOpen: (isOpen) =>
+          set({ isMsciInfoModalOpen: isOpen }),
         hardResetCourses: async () => {
           console.log("hard resetting courses");
           set({ warnings: [] });
@@ -230,6 +235,8 @@ export const usePlanStore = create<PlanState>()(
               return false;
             }
           });
+
+          console.log("coursses warnings", coursesWarnings);
 
           console.log("canTakeQueryBodies", canTakeQueryBodies);
 

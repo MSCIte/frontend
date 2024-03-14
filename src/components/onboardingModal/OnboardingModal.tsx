@@ -256,7 +256,6 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
                         onClick={() => {
                           console.log("on get started button click");
                           props.setIsOpen(false);
-                          hardResetCourses();
                           localStorage.setItem("onboardingComplete", "true");
                         }}
                       />

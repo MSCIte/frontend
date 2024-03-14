@@ -19,6 +19,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { twMerge } from "tailwind-merge";
 import { Tooltip } from "react-tooltip";
+import { InformationModal } from "~/components/informationModal/InformationModal";
 
 export interface CourseViewProps {
   focusedTerm: number;
@@ -43,7 +44,8 @@ export const PlanningPage = () => {
     isOnboardingModalOpen,
     setIsOnboardingModalOpen,
     courses,
-    setCourses,
+    isMsciInfoModalOpen,
+    setIsMsciInfoModalOpen,
     hardResetCourses,
     coursesToCSV,
     validatePlan,
@@ -172,6 +174,10 @@ export const PlanningPage = () => {
       <OnboardingModal
         isOpen={isOnboardingModalOpen}
         setIsOpen={setIsOnboardingModalOpen}
+      />
+      <InformationModal
+        isOpen={isMsciInfoModalOpen}
+        setIsOpen={setIsMsciInfoModalOpen}
       />
 
       <div className="flex">

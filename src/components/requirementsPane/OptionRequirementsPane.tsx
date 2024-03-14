@@ -3,6 +3,7 @@ import { Pane } from "../pane/Pane";
 import { twMerge } from "tailwind-merge";
 import { RequirementData, colorVariants } from "./RequirementsPane";
 import { usePlanStore } from "~/stores";
+import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 
 interface MajorRequirementsPaneProps {
   title: string;
@@ -25,11 +26,13 @@ const optionReqNameToTitle = (name: string) => {
 };
 
 export const OptionsRequirementsPane = (props: MajorRequirementsPaneProps) => {
-  const { option, setOption } = usePlanStore((state) => ({
-    option: state.option,
-    setOption: state.setOption,
-    setIsOnboardingWindowOpen: state.setIsOnboardingModalOpen,
-  }));
+  const { option, setOption, setIsMsciInfoModalOpen } = usePlanStore(
+    (state) => ({
+      option: state.option,
+      setOption: state.setOption,
+      setIsMsciInfoModalOpen: state.setIsMsciInfoModalOpen,
+    }),
+  );
 
   return (
     <Pane className={props?.className}>
@@ -89,6 +92,14 @@ export const OptionsRequirementsPane = (props: MajorRequirementsPaneProps) => {
           </div>
         ))}
       </div>
+      <button
+        type="button"
+        className="flex items-center rounded-full border border-gray-300 p-1 text-sm transition-transform hover:scale-110"
+        onClick={() => setIsMsciInfoModalOpen(true)}
+      >
+        <QuestionMarkCircleIcon className="inline-block h-4 w-4" /> Show
+        Requirements
+      </button>
     </Pane>
   );
 };
