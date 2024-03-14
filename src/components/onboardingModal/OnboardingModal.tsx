@@ -32,9 +32,6 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
   const [optionYearWarning, setOptionYearWarning] = useState(false);
   const [modalOptionYear, setModalOptionYear] = useState(2020);
 
-  const [onboardingStep, setOnboardingStep] =
-    useState<OnboardingSteps>("select-major");
-
   useEffect(() => {
     if (2020 <= modalMajorYear && modalMajorYear <= 2023) {
       setMajorYearWarning(false);
@@ -55,7 +52,7 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
     console.log("On close");
     setIsMsciInfoModalOpen(true);
     props.setIsOpen(false);
-    console.log("closing onboarding modal")
+    console.log("closing onboarding modal");
     setMajor({
       name: modalMajorName,
       year: modalMajorYear,
@@ -79,11 +76,7 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
       // leaveTo="transform scale-95 opacity-0"
       as={Fragment}
     >
-      <Dialog
-        open={props.isOpen}
-        onClose={onClose}
-        className="relative z-50"
-      >
+      <Dialog open={props.isOpen} onClose={onClose} className="relative z-50">
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -108,123 +101,119 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
             <Dialog.Panel className="h-[36rem] w-[40rem]">
               <Pane className="h-[inherit] p-4">
                 <div className="space-y-4">
-                  {onboardingStep === "select-major" && (
-                    <>
-                      <h1 className="text-3xl font-medium">
-                        Prefill Course Information
-                      </h1>
+                  <>
+                    <h1 className="text-3xl font-medium">
+                      Prefill Course Information
+                    </h1>
 
-                      <p className="">
-                        Welcome to your planner! Before you get started, enter
-                        your program and the year you started that program to
-                        automatically fill out your mandatory courses.
-                      </p>
-                      <p className="">
-                        We also use this information to set the tags for your
-                        degree completion.
-                      </p>
-                      <p className="font-bold text-red-800">
-                        !!! If this is changed your current plan will be erased
-                        !!!
-                      </p>
-                      {!degrees?.data || isLoading ? (
-                        <p>Loading...</p>
-                      ) : (
+                    <p className="">
+                      Welcome to your planner! Before you get started, enter
+                      your program and the year you started that program to
+                      automatically fill out your mandatory courses.
+                    </p>
+                    <p className="">
+                      We also use this information to set the tags for your
+                      degree completion.
+                    </p>
+                    <p className="font-bold text-red-800">
+                      !!! If this is changed your current plan will be erased
+                      !!!
+                    </p>
+                    {!degrees?.data || isLoading ? (
+                      <p>Loading...</p>
+                    ) : (
+                      <div>
                         <div>
-                          <div>
-                            <label
-                              htmlFor="major"
-                              className="mb-2 block text-sm font-medium text-gray-900"
-                            >
-                              Major:{" "}
-                            </label>
-                            <select
-                              id="major"
-                              value={modalMajorName}
-                              onChange={(e) =>
-                                setModalMajorName(e.target.value)
-                              }
-                              className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                            >
-                              {degrees?.data
-                                ?.filter(
-                                  (degree) =>
-                                    !blacklistedDegrees.includes(degree),
-                                )
-                                ?.map((degree) => (
-                                  <option key={degree} value={degree}>
-                                    {disciplineNameToFriendly(degree)}
-                                  </option>
-                                ))}
-                            </select>
-                          </div>
-                          <div className="mt-4">
-                            <label
-                              htmlFor="year"
-                              className="mb-2 block text-sm font-medium text-gray-900"
-                            >
-                              Entrance Year:{" "}
-                            </label>
-                            {majorYearWarning && (
-                              <span className="text-sm text-red-400">
-                                Please enter a year between 2020 and 2023
-                                (inclusive).
-                              </span>
-                            )}
-                            <input
-                              type="number"
-                              id="year"
-                              value={modalMajorYear}
-                              min={2020}
-                              max={2023}
-                              onChange={(e) => {
-                                setModalMajorYear(parseInt(e.target.value));
-                              }}
-                              aria-describedby="helper-text-explanation"
-                              className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                              placeholder="2020"
-                              required
-                            />
-                          </div>
-
-                          <div className="mt-4">
-                            <label
-                              htmlFor="year"
-                              className="mb-2 block text-sm font-medium text-gray-900 "
-                            >
-                              Year MSCI Option Declared:{" "}
-                            </label>
-                            {optionYearWarning && (
-                              <span className="text-sm text-red-400">
-                                Please enter a year between 2020 and 2023
-                                (inclusive).
-                              </span>
-                            )}
-                            <input
-                              type="number"
-                              id="year"
-                              value={modalOptionYear}
-                              min={2020}
-                              max={2023}
-                              onChange={(e) => {
-                                setModalOptionYear(parseInt(e.target.value));
-                              }}
-                              aria-describedby="helper-text-explanation"
-                              className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                              placeholder="2020"
-                              required
-                            />
-                          </div>
+                          <label
+                            htmlFor="major"
+                            className="mb-2 block text-sm font-medium text-gray-900"
+                          >
+                            Major:{" "}
+                          </label>
+                          <select
+                            id="major"
+                            value={modalMajorName}
+                            onChange={(e) => setModalMajorName(e.target.value)}
+                            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                          >
+                            {degrees?.data
+                              ?.filter(
+                                (degree) =>
+                                  !blacklistedDegrees.includes(degree),
+                              )
+                              ?.map((degree) => (
+                                <option key={degree} value={degree}>
+                                  {disciplineNameToFriendly(degree)}
+                                </option>
+                              ))}
+                          </select>
                         </div>
-                      )}
+                        <div className="mt-4">
+                          <label
+                            htmlFor="year"
+                            className="mb-2 block text-sm font-medium text-gray-900"
+                          >
+                            Entrance Year:{" "}
+                          </label>
+                          {majorYearWarning && (
+                            <span className="text-sm text-red-400">
+                              Please enter a year between 2020 and 2023
+                              (inclusive).
+                            </span>
+                          )}
+                          <input
+                            type="number"
+                            id="year"
+                            value={modalMajorYear}
+                            min={2020}
+                            max={2023}
+                            onChange={(e) => {
+                              setModalMajorYear(parseInt(e.target.value));
+                            }}
+                            aria-describedby="helper-text-explanation"
+                            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                            placeholder="2020"
+                            required
+                          />
+                        </div>
 
-                      <Button
-                        text="Continue"
-                        className="mx-auto block"
-                        onClick={onClose}
-                      />
-                    </>
-                  )}
+                        <div className="mt-4">
+                          <label
+                            htmlFor="year"
+                            className="mb-2 block text-sm font-medium text-gray-900 "
+                          >
+                            Year MSCI Option Declared:{" "}
+                          </label>
+                          {optionYearWarning && (
+                            <span className="text-sm text-red-400">
+                              Please enter a year between 2020 and 2023
+                              (inclusive).
+                            </span>
+                          )}
+                          <input
+                            type="number"
+                            id="year"
+                            value={modalOptionYear}
+                            min={2020}
+                            max={2023}
+                            onChange={(e) => {
+                              setModalOptionYear(parseInt(e.target.value));
+                            }}
+                            aria-describedby="helper-text-explanation"
+                            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                            placeholder="2020"
+                            required
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    <Button
+                      text="Continue"
+                      className="mx-auto block"
+                      onClick={onClose}
+                    />
+                  </>
                 </div>
               </Pane>
             </Dialog.Panel>
