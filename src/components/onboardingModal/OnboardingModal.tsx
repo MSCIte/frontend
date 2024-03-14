@@ -11,8 +11,6 @@ interface OnboardingModalProps {
   setIsOpen: (isOpen: boolean) => void;
 }
 
-type OnboardingSteps = "msci-opt-info" | "select-major";
-
 export const OnboardingModal = (props: OnboardingModalProps) => {
   const {
     major,

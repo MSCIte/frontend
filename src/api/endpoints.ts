@@ -17,8 +17,6 @@ import * as axios from "axios";
 import type { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 export type ReadRootHealthcheckGet200 = {};
 
-export type SamplePathSamplePathGet200 = {};
-
 export type TagsCoursesTagsGetParams = {
   degree_name: string;
   degree_year: string;
@@ -62,6 +60,11 @@ export interface TagSchema {
   color: ColorsEnum;
   longName: string;
   shortName: string;
+}
+
+export interface SamplePath {
+  courseCode: string;
+  orderNum: number;
 }
 
 export interface RequirementsResult {
@@ -1002,79 +1005,6 @@ export const useSearchCoursesCoursesSearchGet = <
 };
 
 /**
- * @summary Get All Tags
- */
-export const getAllTagsTagsGet = (
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<TagSchema[]>> => {
-  return axios.default.get(`/tags`, options);
-};
-
-export const getGetAllTagsTagsGetQueryKey = () => {
-  return [`/tags`] as const;
-};
-
-export const getGetAllTagsTagsGetQueryOptions = <
-  TData = Awaited<ReturnType<typeof getAllTagsTagsGet>>,
-  TError = AxiosError<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof getAllTagsTagsGet>>,
-      TError,
-      TData
-    >
-  >;
-  axios?: AxiosRequestConfig;
-}) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
-
-  const queryKey = queryOptions?.queryKey ?? getGetAllTagsTagsGetQueryKey();
-
-  const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof getAllTagsTagsGet>>
-  > = ({ signal }) => getAllTagsTagsGet({ signal, ...axiosOptions });
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getAllTagsTagsGet>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
-};
-
-export type GetAllTagsTagsGetQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getAllTagsTagsGet>>
->;
-export type GetAllTagsTagsGetQueryError = AxiosError<unknown>;
-
-/**
- * @summary Get All Tags
- */
-export const useGetAllTagsTagsGet = <
-  TData = Awaited<ReturnType<typeof getAllTagsTagsGet>>,
-  TError = AxiosError<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof getAllTagsTagsGet>>,
-      TError,
-      TData
-    >
-  >;
-  axios?: AxiosRequestConfig;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getGetAllTagsTagsGetQueryOptions(options);
-
-  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
-    queryKey: QueryKey;
-  };
-
-  query.queryKey = queryOptions.queryKey;
-
-  return query;
-};
-
-/**
  * @summary Tags
  */
 export const tagsCoursesTagsGet = (
@@ -1163,67 +1093,87 @@ export const useTagsCoursesTagsGet = <
 /**
  * @summary Sample Path
  */
-export const samplePathSamplePathGet = (
+export const samplePathSamplePathDegreeNameGet = (
+  degreeName: string,
   options?: AxiosRequestConfig,
-): Promise<AxiosResponse<SamplePathSamplePathGet200>> => {
-  return axios.default.get(`/sample-path`, options);
+): Promise<AxiosResponse<SamplePath[]>> => {
+  return axios.default.get(`/sample-path/${degreeName}`, options);
 };
 
-export const getSamplePathSamplePathGetQueryKey = () => {
-  return [`/sample-path`] as const;
+export const getSamplePathSamplePathDegreeNameGetQueryKey = (
+  degreeName: string,
+) => {
+  return [`/sample-path/${degreeName}`] as const;
 };
 
-export const getSamplePathSamplePathGetQueryOptions = <
-  TData = Awaited<ReturnType<typeof samplePathSamplePathGet>>,
-  TError = AxiosError<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof samplePathSamplePathGet>>,
-      TError,
-      TData
-    >
-  >;
-  axios?: AxiosRequestConfig;
-}) => {
+export const getSamplePathSamplePathDegreeNameGetQueryOptions = <
+  TData = Awaited<ReturnType<typeof samplePathSamplePathDegreeNameGet>>,
+  TError = AxiosError<HTTPValidationError>,
+>(
+  degreeName: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof samplePathSamplePathDegreeNameGet>>,
+        TError,
+        TData
+      >
+    >;
+    axios?: AxiosRequestConfig;
+  },
+) => {
   const { query: queryOptions, axios: axiosOptions } = options ?? {};
 
   const queryKey =
-    queryOptions?.queryKey ?? getSamplePathSamplePathGetQueryKey();
+    queryOptions?.queryKey ??
+    getSamplePathSamplePathDegreeNameGetQueryKey(degreeName);
 
   const queryFn: QueryFunction<
-    Awaited<ReturnType<typeof samplePathSamplePathGet>>
-  > = ({ signal }) => samplePathSamplePathGet({ signal, ...axiosOptions });
+    Awaited<ReturnType<typeof samplePathSamplePathDegreeNameGet>>
+  > = ({ signal }) =>
+    samplePathSamplePathDegreeNameGet(degreeName, { signal, ...axiosOptions });
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof samplePathSamplePathGet>>,
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!degreeName,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof samplePathSamplePathDegreeNameGet>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type SamplePathSamplePathGetQueryResult = NonNullable<
-  Awaited<ReturnType<typeof samplePathSamplePathGet>>
+export type SamplePathSamplePathDegreeNameGetQueryResult = NonNullable<
+  Awaited<ReturnType<typeof samplePathSamplePathDegreeNameGet>>
 >;
-export type SamplePathSamplePathGetQueryError = AxiosError<unknown>;
+export type SamplePathSamplePathDegreeNameGetQueryError =
+  AxiosError<HTTPValidationError>;
 
 /**
  * @summary Sample Path
  */
-export const useSamplePathSamplePathGet = <
-  TData = Awaited<ReturnType<typeof samplePathSamplePathGet>>,
-  TError = AxiosError<unknown>,
->(options?: {
-  query?: Partial<
-    UseQueryOptions<
-      Awaited<ReturnType<typeof samplePathSamplePathGet>>,
-      TError,
-      TData
-    >
-  >;
-  axios?: AxiosRequestConfig;
-}): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
-  const queryOptions = getSamplePathSamplePathGetQueryOptions(options);
+export const useSamplePathSamplePathDegreeNameGet = <
+  TData = Awaited<ReturnType<typeof samplePathSamplePathDegreeNameGet>>,
+  TError = AxiosError<HTTPValidationError>,
+>(
+  degreeName: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<ReturnType<typeof samplePathSamplePathDegreeNameGet>>,
+        TError,
+        TData
+      >
+    >;
+    axios?: AxiosRequestConfig;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions = getSamplePathSamplePathDegreeNameGetQueryOptions(
+    degreeName,
+    options,
+  );
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;

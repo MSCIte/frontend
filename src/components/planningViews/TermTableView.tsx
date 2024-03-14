@@ -7,11 +7,7 @@ import { TermColumn } from "./TermColumn";
 import { CourseInfoPane } from "./CourseInfoPane";
 import { usePlanStore } from "~/stores";
 
-export const TermTableView = ({
-  focusedTerm,
-}: CourseViewProps) => {
-
-
+export const TermTableView = ({ focusedTerm }: CourseViewProps) => {
   const { setCourses, courses: courseData } = usePlanStore();
 
   const selectedCourseData = Object.fromEntries(

@@ -382,26 +382,6 @@
         }
       }
     },
-    "/tags": {
-      "get": {
-        "summary": "Get All Tags",
-        "operationId": "get_all_tags_tags_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "items": { "$ref": "#/components/schemas/TagSchema" },
-                  "type": "array",
-                  "title": "Response Get All Tags Tags Get"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/courses/tags": {
       "get": {
         "summary": "Tags",
@@ -466,14 +446,38 @@
         }
       }
     },
-    "/sample-path": {
+    "/sample-path/{degree_name}": {
       "get": {
         "summary": "Sample Path",
-        "operationId": "sample_path_sample_path_get",
+        "operationId": "sample_path_sample_path__degree_name__get",
+        "parameters": [
+          {
+            "name": "degree_name",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "title": "Degree Name" }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",
-            "content": { "application/json": { "schema": {} } }
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/SamplePath" },
+                  "title": "Response Sample Path Sample Path  Degree Name  Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HTTPValidationError" }
+              }
+            }
           }
         }
       }
@@ -768,6 +772,15 @@
         "type": "object",
         "required": ["results"],
         "title": "RequirementsResults"
+      },
+      "SamplePath": {
+        "properties": {
+          "courseCode": { "type": "string", "title": "Coursecode" },
+          "orderNum": { "type": "integer", "title": "Ordernum" }
+        },
+        "type": "object",
+        "required": ["courseCode", "orderNum"],
+        "title": "SamplePath"
       },
       "TagSchema": {
         "properties": {

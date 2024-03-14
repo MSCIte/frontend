@@ -1,6 +1,7 @@
 import Markdown from "react-markdown";
-import { useSamplePathSamplePathGet } from "~/api/endpoints";
+import { useSamplePathSamplePathDegreeNameGet } from "~/api/endpoints";
 import { Navbar } from "~/components/navbar/NavBar";
+import SamplePaths from "~/components/samplePath/samplePath";
 
 const aboutPageMarkdown = `
 ## What is the Management Sciences (MSCI) Option?
@@ -23,7 +24,9 @@ Management Sciences concepts are broadly applicable in a variety of industries, 
 `;
 
 export const AboutPage = () => {
-  const { data, isLoading } = useSamplePathSamplePathGet();
+  const { data, isLoading } = useSamplePathSamplePathDegreeNameGet(
+    "nanotechnology_engineering",
+  );
   return (
     <div>
       <Navbar />
@@ -64,6 +67,8 @@ export const AboutPage = () => {
           </a>
           .
         </div>
+        <hr className="my-4" />
+        <SamplePaths />
         <hr className="my-4" />
         <h1 className="text-2xl">Testing connection to backend</h1>
         <p>

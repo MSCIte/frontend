@@ -29,6 +29,7 @@ export interface PlanState {
   coursesCache: Record<string, CourseWithTagsSchema>;
   clearCoursesCache: () => void;
   getCoursesByTag: (tag: string) => CourseWithTagsSchema[];
+  getCourseById: (courseCode: CourseCode) => CourseWithTagsSchema;
   isTakingCourse: (courseCode: CourseCode) => boolean;
   setMajor: (major: PlanState["major"]) => void;
   setOption: (option: PlanState["option"]) => void;
@@ -80,6 +81,19 @@ export const usePlanStore = create<PlanState>()(
           return Object.values(get().coursesCache).filter((course) =>
             course.tags?.some((t) => t.code === tag),
           );
+        },
+        getCourseById: (courseCode) => {
+          if (!get().coursesCache[courseCode]) {
+            console.error(
+              `Course with code ${courseCode} not found in cache. Returning empty object.`,
+            );
+            return {
+              courseCode: courseCode,
+              courseName: "",
+              tags: [],
+            };
+          } 
+          return get().coursesCache[courseCode];
         },
         isTakingCourse: (courseCode) => {
           return get().completedCourseCodes().includes(courseCode);

@@ -37,7 +37,7 @@ export const TermColumn = (props: TermColumnProps) => {
   return (
     <div
       key={props.term}
-      className={twMerge("relative flex w-40  mr-4 flex-col", colWidth)}
+      className={twMerge("relative mr-4 flex  w-40 flex-col", colWidth)}
     >
       <TermTitle termName={props.term} />
       <div className={twMerge("w-40", colWidth)}>
