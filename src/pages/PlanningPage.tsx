@@ -3,7 +3,6 @@ import { Sidebar } from "~/components/sidebar/SidebarNew";
 import AllTermsView from "~/assets/allTermsView.svg?react";
 import YearView from "~/assets/yearView.svg?react";
 import TermView from "~/assets/termView.svg?react";
-import { CourseData } from "~/sampleData";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { AllTermsTableView } from "~/components/planningViews/AllTermTableView";
 import { TermTableView } from "~/components/planningViews/TermTableView";

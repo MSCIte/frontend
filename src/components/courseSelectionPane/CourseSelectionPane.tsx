@@ -1,9 +1,8 @@
-import { Fragment, useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import {
   CourseWithTagsSchema,
   TagSchema,
-  useGetAllTagsTagsGet,
   useSearchCoursesCoursesSearchGet,
 } from "~/api/endpoints";
 import { usePlanStore } from "~/stores";
@@ -113,28 +112,6 @@ export const CourseSelectionPane = ({
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  // const searchTagChoices = useMemo<TagSchema[]>(() => {
-  //   if (allTags?.data) {
-  //     return [
-  //       {
-  //         code: "all",
-  //         longName: "All",
-  //         color: "gray",
-  //         shortName: "All",
-  //       },
-  //       ...allTags.data,
-  //     ];
-  //   } else {
-  //     return [
-  //       {
-  //         code: "",
-  //         longName: "All",
-  //         color: "gray",
-  //         shortName: "All",
-  //       },
-  //     ];
-  //   }
-  // }, [allTags]);
 
   const { data } = useSearchCoursesCoursesSearchGet({
     q: searchQuery,

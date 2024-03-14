@@ -1,10 +1,8 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { useDegreesDegreeGet } from "~/api/endpoints";
 import { usePlanStore } from "~/stores";
 import { Pane } from "../pane/Pane";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment } from "react";
 import { Button } from "../Button";
-import { blacklistedDegrees, disciplineNameToFriendly } from "~/utils";
 
 interface OnboardingModalProps {
   isOpen: boolean;

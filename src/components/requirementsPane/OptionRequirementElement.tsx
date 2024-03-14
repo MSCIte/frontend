@@ -1,7 +1,7 @@
 import { twMerge } from "tailwind-merge";
 import { RequirementData, colorVariants } from "./RequirementsPane";
 import { usePlanStore } from "~/stores";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 
 interface OptionRequirementElementProps {
   requirement: RequirementData;
