@@ -47,7 +47,6 @@ export const PlanningPage = () => {
     courses,
     setCourses,
     hardResetCourses,
-    resetCourses,
     coursesToCSV,
     validatePlan,
   } = usePlanStore();
