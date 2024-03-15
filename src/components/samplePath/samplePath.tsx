@@ -23,7 +23,11 @@ const SamplePaths = () => {
 
   return (
     <div>
-      <h1 className="text-2xl">Sample Paths</h1>
+      <h2 className="mt-4 text-2xl font-medium">Sample Paths</h2>
+      <p>
+        Sample paths are examples of common courses alumni have historically
+        taken to successfully complete the MSCI Option.
+      </p>
       <div style={{ marginBottom: "10px", marginTop: "10px" }}>
         <h3 className={twMerge("cursor-pointer text-lg font-medium")}>
           Select your major:{" "}
@@ -46,7 +50,7 @@ const SamplePaths = () => {
       </div>
       {samplePath?.data && samplePath.data.length > 0 ? (
         <div
-          className="grid grid-cols-3 gap-4 bg-slate-500 rounded p-4"
+          className="grid grid-cols-3 gap-4 rounded bg-slate-500 p-4"
           // style={{
           //   display: "grid",
           //   gridTemplateColumns: "repeat(3, 1fr)",

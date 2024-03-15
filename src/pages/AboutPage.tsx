@@ -69,14 +69,7 @@ export const AboutPage = () => {
         </div>
         <hr className="my-4" />
         <SamplePaths />
-        <hr className="my-4" />
-        <h1 className="text-2xl">Testing connection to backend</h1>
-        <p>
-          If it stays loading for more than a few seconds you probably don't
-          have connectivity. Please wait a minute and try again, the backend
-          might be sleeping.
-        </p>
-        {isLoading ? <p>Loading...</p> : <p>{JSON.stringify(data?.data)}</p>}
+        <div className="mt-8" />
       </div>
 
       {/* CTA */}
