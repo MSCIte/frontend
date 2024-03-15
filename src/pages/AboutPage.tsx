@@ -1,5 +1,4 @@
 import Markdown from "react-markdown";
-import { useSamplePathSamplePathDegreeNameGet } from "~/api/endpoints";
 import { Navbar } from "~/components/navbar/NavBar";
 import SamplePaths from "~/components/samplePath/samplePath";
 
@@ -24,9 +23,6 @@ Management Sciences concepts are broadly applicable in a variety of industries, 
 `;
 
 export const AboutPage = () => {
-  const { data, isLoading } = useSamplePathSamplePathDegreeNameGet(
-    "nanotechnology_engineering",
-  );
   return (
     <div>
       <Navbar />
