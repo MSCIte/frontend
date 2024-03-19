@@ -32,7 +32,8 @@ export const Sidebar = () => {
   useLazyEffect(
     () => {
       console.log("Firing lazy effect");
-      updateMissingReqs();
+      console.log("update missing reqs", updateMissingReqs);
+      updateMissingReqs?.();
     },
     [major, option],
     200,

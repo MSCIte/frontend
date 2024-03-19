@@ -316,6 +316,11 @@ export const CourseSelectionPane = ({
                     {SearchElement}
                     <div className="col-span-1 space-y-2 rounded-lg bg-gray-100  p-4">
                       <div className="space-y-2">
+                        {data?.data?.length === 0 && (
+                          <div className="text-center">
+                            No courses found. Try a different search.
+                          </div>
+                        )}
                         {data?.data?.map((course) => (
                           <CourseBlock
                             course={course}
