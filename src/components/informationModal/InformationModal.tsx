@@ -46,7 +46,7 @@ export const InformationModal = (props: OnboardingModalProps) => {
           leaveTo="opacity-0 scale-95"
         >
           <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-            <Dialog.Panel className="h-[36rem] w-[40rem]">
+            <Dialog.Panel className="h-[38rem] w-[42rem]">
               <Pane className="h-[inherit] p-4">
                 <div className="space-y-4">
                   {option.year === 2020 && (
@@ -55,10 +55,10 @@ export const InformationModal = (props: OnboardingModalProps) => {
                         Management Science Option Requirements
                       </h1>
                       <p>
-                        The MSCI option consists of six courses, including three
-                        required courses (or their equivalents) and three
-                        elective courses (or equivalents), all of which are
-                        captured in the MSCIte course planner.
+                        The MSCI option consists of <b>six courses</b>,
+                        including three required courses (or their equivalents)
+                        and three elective courses (or equivalents), all of
+                        which are captured in the MSCIte course planner.
                       </p>
                       <h2 className="text-2xl font-medium">Notes:</h2>
                       <ul className="list-disc pl-6">
@@ -74,11 +74,15 @@ export const InformationModal = (props: OnboardingModalProps) => {
                           the other toward the elective courses.
                         </li>
                         <li>
+                          Students must take an Intro to Optimization course,
+                          such as MSCI 331 or equivalent.
+                        </li>
+                        <li>
                           A maximum of one course from outside the approved list
                           may be counted towards the option, subject to written
                           approval of the MSCI option coordinator and the
                           associate chair of undergraduate studies in the
-                          student’s home department.
+                          student's home department.
                         </li>
                         <li>
                           For the designation Management Sciences Option to be
@@ -105,10 +109,10 @@ export const InformationModal = (props: OnboardingModalProps) => {
                         Management Science Option Requirements
                       </h1>
                       <p>
-                        The MSCI option consists of six courses, including two
-                        required courses (or their equivalents) and four
-                        elective courses (or equivalents), all of which are
-                        captured in the MSCIte course planner.
+                        The MSCI option consists of <b>six courses</b>,
+                        including two required courses (or their equivalents)
+                        and four elective courses (or equivalents), all of which
+                        are captured in the MSCIte course planner.
                       </p>
                       <h2 className="text-2xl font-medium">Notes:</h2>
                       <ul className="list-disc pl-6">
@@ -122,6 +126,14 @@ export const InformationModal = (props: OnboardingModalProps) => {
                           Students may take both MSCI 221 and MSCI 311, in which
                           case, one will count towards the required courses and
                           the other toward the elective courses.
+                        </li>
+                        <li>
+                          Students must take an Intro to Optimization course,
+                          such as MSCI 331 or equivalent.
+                        </li>
+                        <li>
+                          Students must take an Intro to Optimization course,
+                          such as MSCI 331 or equivalent.
                         </li>
                         <li>
                           A maximum of one course from outside the approved list
@@ -155,10 +167,10 @@ export const InformationModal = (props: OnboardingModalProps) => {
                         Management Science Option Requirements
                       </h1>
                       <p>
-                        The MSCI option consists of six courses, including two
-                        required courses (or their equivalents) and four
-                        elective courses (or equivalents), all of which are
-                        captured in the MSCIte course planner.
+                        The MSCI option consists of <b>six courses</b>,
+                        including two required courses (or their equivalents)
+                        and four elective courses (or equivalents), all of which
+                        are captured in the MSCIte course planner.
                       </p>
                       <h2 className="text-2xl font-medium">Notes:</h2>
                       <ul className="list-disc pl-6">
@@ -172,6 +184,10 @@ export const InformationModal = (props: OnboardingModalProps) => {
                           Students may take both MSCI 221 and MSCI 311, in which
                           case, one will count towards the required courses and
                           the other toward the elective courses.
+                        </li>
+                        <li>
+                          Students must take an Intro to Optimization course,
+                          such as MSCI 331 or equivalent.
                         </li>
                         <li>
                           A maximum of one course from outside the approved list
@@ -204,10 +220,10 @@ export const InformationModal = (props: OnboardingModalProps) => {
                         Management Science Option Requirements
                       </h1>
                       <p>
-                        The MSCI option consists of six courses, including two
-                        required courses (or their equivalents) and four
-                        elective courses (or equivalents), all of which are
-                        captured in the MSCIte course planner.
+                        The MSCI option consists of <b>six courses</b>,
+                        including two required courses (or their equivalents)
+                        and four elective courses (or equivalents), all of which
+                        are captured in the MSCIte course planner.
                       </p>
                       <h2 className="text-2xl font-medium">Notes:</h2>
                       <ul className="list-disc pl-6">
@@ -221,6 +237,10 @@ export const InformationModal = (props: OnboardingModalProps) => {
                           Students may take both MSCI/MSE 211 and MSCI/MSE 311,
                           in which case, one will count towards the required
                           courses and the other toward the elective courses.
+                        </li>
+                        <li>
+                          Students must take an Intro to Optimization course,
+                          such as MSCI 331 or equivalent.
                         </li>
                         <li>
                           A maximum of one course from outside the approved list

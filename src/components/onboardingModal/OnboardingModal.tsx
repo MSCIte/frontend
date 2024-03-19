@@ -5,6 +5,8 @@ import { Pane } from "../pane/Pane";
 import { Fragment, useCallback, useEffect, useState } from "react";
 import { Button } from "../Button";
 import { blacklistedDegrees, disciplineNameToFriendly } from "~/utils";
+import { useTour } from "@reactour/tour";
+import { twMerge } from "tailwind-merge";
 
 interface OnboardingModalProps {
   isOpen: boolean;
@@ -29,6 +31,8 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
 
   const [optionYearWarning, setOptionYearWarning] = useState(false);
   const [modalOptionYear, setModalOptionYear] = useState(2020);
+
+  const { currentStep } = useTour();
 
   useEffect(() => {
     if (2020 <= modalMajorYear && modalMajorYear <= 2023) {
@@ -74,7 +78,7 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
       // leaveTo="transform scale-95 opacity-0"
       as={Fragment}
     >
-      <Dialog open={props.isOpen} onClose={onClose} className="relative z-50">
+      <Dialog open={props.isOpen} onClose={onClose} className="relative z-30" >
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -95,9 +99,15 @@ export const OnboardingModal = (props: OnboardingModalProps) => {
           leaveFrom="opacity-100 scale-100"
           leaveTo="opacity-0 scale-95"
         >
-          <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
+          <div
+            className={twMerge(
+              "fixed inset-0 flex w-screen items-center justify-center p-4",
+              currentStep === 0 && "pointer-events-none",
+            )}
+            id="onboarding-modal"
+          >
             <Dialog.Panel className="h-[36rem] w-[40rem]">
-              <Pane className="h-[inherit] p-4">
+              <Pane className="h-[inherit] p-4 ">
                 <div className="space-y-4">
                   <>
                     <h1 className="text-3xl font-medium">

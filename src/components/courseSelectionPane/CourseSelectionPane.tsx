@@ -1,5 +1,4 @@
 import { Fragment, useEffect, useRef, useState } from "react";
-import clsx from "clsx";
 import {
   CourseWithTagsSchema,
   TagSchema,
@@ -25,18 +24,54 @@ interface CourseSelectionPaneProps {
 }
 
 export const colorVariants = {
-  red: "text-red-400",
-  yellow: "text-yellow-400",
-  green: "text-green-400",
-  blue: "text-blue-400",
-  indigo: "text-indigo-600",
-  purple: "text-purple-400",
-  pink: "text-pink-400",
-  slate: "text-slate-400",
-  orange: "text-orange-400",
-  sky: "text-sky-200",
-  rose: "text-rose-200",
-  gray: "text-gray-400",
+  red: {
+    fg: "text-red-400",
+    bg: "bg-red-400",
+  },
+  yellow: {
+    fg: "text-yellow-400",
+    bg: "bg-yellow-400",
+  },
+  green: {
+    fg: "text-green-400",
+    bg: "bg-green-400",
+  },
+  blue: {
+    fg: "text-blue-400",
+    bg: "bg-blue-400",
+  },
+  indigo: {
+    fg: "text-indigo-600",
+    bg: "bg-indigo-600",
+  },
+  purple: {
+    fg: "text-purple-400",
+    bg: "bg-purple-400",
+  },
+  pink: {
+    fg: "text-pink-400",
+    bg: "bg-pink-400",
+  },
+  slate: {
+    fg: "text-slate-400",
+    bg: "bg-slate-400",
+  },
+  orange: {
+    fg: "text-orange-400",
+    bg: "bg-orange-400",
+  },
+  sky: {
+    fg: "text-sky-200",
+    bg: "bg-sky-200",
+  },
+  rose: {
+    fg: "text-rose-200",
+    bg: "bg-rose-200",
+  },
+  gray: {
+    fg: "text-gray-400",
+    bg: "bg-gray-400",
+  },
 };
 
 export const allowedTags: TagSchema[] = [
@@ -163,7 +198,7 @@ export const CourseSelectionPane = ({
               colorVariants?.[
                 allowedTags.find((tag) => tag.code === searchTag)?.color ||
                   "gray"
-              ],
+              ].fg,
             )}
           />
         }{" "}
@@ -201,7 +236,7 @@ export const CourseSelectionPane = ({
               className="flex items-center px-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
             >
               <AcademicCapIcon
-                className={twMerge("h-6 w-6", colorVariants?.[tag.color])}
+                className={twMerge("h-6 w-6", colorVariants?.[tag.color].fg)}
               />{" "}
               <button
                 type="button"
@@ -303,11 +338,11 @@ export const CourseSelectionPane = ({
                           {selectedCourse?.tags?.map((tag) => (
                             <span
                               key={tag.code}
-                              className={clsx(
+                              className={twMerge(
                                 "inline-block rounded-full px-2 py-1 text-white",
                                 colorVariants?.[
                                   tag.color as keyof typeof colorVariants
-                                ],
+                                ].bg,
                               )}
                             >
                               {tag.longName}

@@ -19,6 +19,7 @@ import {
 import { twMerge } from "tailwind-merge";
 import { Tooltip } from "react-tooltip";
 import { InformationModal } from "~/components/informationModal/InformationModal";
+import { useTour } from "@reactour/tour";
 
 export interface CourseViewProps {
   focusedTerm: number;
@@ -50,11 +51,17 @@ export const PlanningPage = () => {
     validatePlan,
   } = usePlanStore();
 
+  const { setIsOpen } = useTour();
+
   useEffect(() => {
-    if (!localStorage.getItem("onboardingComplete")) {
-      console.log("opening onboarding modal");
+    if (!localStorage.getItem("tourStarted")) {
+      setIsOpen(true);
       setIsOnboardingModalOpen(true);
+      // localStorage.setItem("tourStarted", "true");
     }
+    // if (!localStorage.getItem("onboardingComplete")) {
+    //   console.log("opening onboarding modal");
+    // }
   }, [setIsOnboardingModalOpen]);
 
   const header = (
