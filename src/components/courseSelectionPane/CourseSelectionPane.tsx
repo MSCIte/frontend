@@ -12,6 +12,8 @@ import { Pane } from "../pane/Pane";
 import { ModalMode } from "~/pages/PlanningPage";
 import { twMerge } from "tailwind-merge";
 import { CourseBlock } from "./CourseBlock";
+import { useClickOutside } from "~/utils";
+import { AcademicCapIcon } from "@heroicons/react/24/solid";
 
 interface CourseSelectionPaneProps {
   initialCourse?: CourseWithTagsSchema;
@@ -23,17 +25,18 @@ interface CourseSelectionPaneProps {
 }
 
 export const colorVariants = {
-  red: "bg-red-400",
-  yellow: "bg-yellow-400",
-  green: "bg-green-400",
-  blue: "bg-blue-400",
-  indigo: "bg-indigo-600",
-  purple: "bg-purple-400",
-  pink: "bg-pink-400",
-  slate: "bg-slate-400",
-  orange: "bg-orange-400",
-  sky: "bg-sky-200",
-  rose: "bg-rose-200",
+  red: "text-red-400",
+  yellow: "text-yellow-400",
+  green: "text-green-400",
+  blue: "text-blue-400",
+  indigo: "text-indigo-600",
+  purple: "text-purple-400",
+  pink: "text-pink-400",
+  slate: "text-slate-400",
+  orange: "text-orange-400",
+  sky: "text-sky-200",
+  rose: "text-rose-200",
+  gray: "text-gray-400",
 };
 
 export const allowedTags: TagSchema[] = [
@@ -105,12 +108,17 @@ export const CourseSelectionPane = ({
   // const { data: allTags, isLoading: isTagsLoading } = useGetAllTagsTagsGet();
 
   const searchButtonRef = useRef<HTMLInputElement>(null);
+  const searchElementRef = useRef<HTMLDivElement>(null);
 
   const { major, option } = usePlanStore();
 
   const [searchTag, setSearchTag] = useState<string | undefined>("");
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  useClickOutside(searchElementRef, () => {
+    setIsDropdownOpen(false);
+  });
 
   const { data } = useSearchCoursesCoursesSearchGet({
     q: searchQuery,
@@ -135,7 +143,7 @@ export const CourseSelectionPane = ({
   }, [isOpen]);
 
   const SearchElement = (
-    <div className="sticky top-0 flex bg-gray-100">
+    <div className="sticky top-0 flex bg-gray-100" ref={searchElementRef}>
       <label
         htmlFor="courseSearch"
         className="sr-only mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -148,6 +156,17 @@ export const CourseSelectionPane = ({
         type="button"
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
       >
+        {
+          <AcademicCapIcon
+            className={twMerge(
+              "h-6 w-6",
+              colorVariants?.[
+                allowedTags.find((tag) => tag.code === searchTag)?.color ||
+                  "gray"
+              ],
+            )}
+          />
+        }{" "}
         {allowedTags.find((tag) => tag.code === searchTag)?.shortName || "All"}
         <svg
           className="ms-2.5 h-2.5 w-2.5"
@@ -177,14 +196,20 @@ export const CourseSelectionPane = ({
           aria-labelledby="dropdown-button"
         >
           {allowedTags.map((tag) => (
-            <li key={tag.code}>
+            <li
+              key={tag.code}
+              className="flex items-center px-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+            >
+              <AcademicCapIcon
+                className={twMerge("h-6 w-6", colorVariants?.[tag.color])}
+              />{" "}
               <button
                 type="button"
                 onClick={() => {
                   setSearchTag(tag.code);
                   setIsDropdownOpen(false);
                 }}
-                className="inline-flex w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                className="inline-flex w-full px-4 py-2 text-left "
               >
                 {tag.longName}
               </button>
