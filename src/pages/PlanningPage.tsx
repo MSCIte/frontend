@@ -53,14 +53,14 @@ export const PlanningPage = () => {
   // const { setIsOpen } = useTour();
 
   useEffect(() => {
-    if (!localStorage.getItem("tourStarted")) {
-      // setIsOpen(true);
-      setIsOnboardingModalOpen(true);
-      // localStorage.setItem("tourStarted", "true");
-    }
-    // if (!localStorage.getItem("onboardingComplete")) {
-    //   console.log("opening onboarding modal");
+    // if (!localStorage.getItem("tourStarted")) {
+    //   // setIsOpen(true);
+    //   // localStorage.setItem("tourStarted", "true");
     // }
+    if (!localStorage.getItem("onboardingComplete")) {
+      console.log("opening onboarding modal");
+      setIsOnboardingModalOpen(true);
+    }
   }, [setIsOnboardingModalOpen]);
 
   const header = (
