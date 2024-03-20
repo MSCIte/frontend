@@ -9,7 +9,6 @@ import { AboutPage } from "./pages/AboutPage";
 import { queryClient } from "./queryClient"; // Import the queryClient variable
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { UserGuidePage } from "./pages/UserGuidePage";
 
 import { TourProvider } from "@reactour/tour";
 import { tourSteps } from "./tourSteps";
