@@ -40,7 +40,7 @@ export const Navbar = () => {
                   <Link href="/">
                     <img
                       className="h-8 w-auto"
-                      src="/public/favicon.svg"
+                      src="/favicon.svg"
                       alt="MSCIte"
                   />
                   </Link>
