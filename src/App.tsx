@@ -33,7 +33,7 @@ function App() {
           <Route path="/about" component={AboutPage} />
           <Route path="/faq" component={FAQPage} />
           <Route path="/plan" component={PlanningPage} />
-          <Route path="/user-guide" component={UserGuidePage} />
+          {/* <Route path="/user-guide" component={UserGuidePage} /> */}
           <Route path="/demo" component={DemoPage} />
           <Route path="/" component={LandingPage} />
         </Switch>

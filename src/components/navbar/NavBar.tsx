@@ -7,13 +7,13 @@ export const Navbar = () => {
   const isPlan = useRoute("/plan")[0];
   const isAbout = useRoute("/about")[0];
   const isFAQ = useRoute("/faq")[0];
-  const isUserGuide = useRoute("/user-guide")[0];
+  // const isUserGuide = useRoute("/user-guide")[0];
 
   const navigation = [
     { name: "Plan", href: "/plan", current: isPlan },
     { name: "About MSCI Option", href: "/about", current: isAbout },
     { name: "FAQ", href: "/faq", current: isFAQ },
-    { name: "User Guide", href: "/user-guide", current: isUserGuide },
+    // { name: "User Guide", href: "/user-guide", current: isUserGuide },
     // { name: "Component Playground", href: "/demo", current: isDemo },
   ];
 

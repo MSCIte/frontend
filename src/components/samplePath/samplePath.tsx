@@ -30,7 +30,7 @@ const SamplePaths = () => {
       </p>
       <div style={{ marginBottom: "10px", marginTop: "10px" }}>
         <h3 className={twMerge("cursor-pointer text-lg font-medium")}>
-          Select your major:{" "}
+          <b>Select your major:</b>{" "}
           <select
             className="cursor-pointer rounded-sm border bg-gray-100 hover:bg-white"
             value={major.name}

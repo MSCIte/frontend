@@ -96,7 +96,7 @@ export const FAQPage = () => {
         <div className="mt-6 space-y-4">
           {OptionFAQData.map((faq, ind) => (
             <div key={`faq=${ind}`}>
-              <div className="flex space-x-4  border-l-4 border-purple-500 bg-gray-400 p-3 text-black">
+              <div className="flex space-x-4  border-l-4 border-purple-500 bg-gray-300 p-3 text-black">
                 <div className="text-3xl">Q.</div>
                 <MarkdownWrapper>{faq.question}</MarkdownWrapper>
               </div>
