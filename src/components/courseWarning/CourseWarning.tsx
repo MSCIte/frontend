@@ -1,4 +1,4 @@
-import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 import { twMerge } from "tailwind-merge";
 import { PlanState } from "~/stores";
 
@@ -17,7 +17,7 @@ export const CourseWarnings = ({ warnings, size }: CourseWarningsProps) => {
               <ExclamationTriangleIcon
                 key={`${warning.id}-${ind}`}
                 className={twMerge(
-                  "inline text-yellow-400",
+                  "inline text-yellow-400 z-40",
                   size === "small" ? "h-5 w-5" : "h-6 w-6",
                 )}
                 data-tooltip-id={warning.id}

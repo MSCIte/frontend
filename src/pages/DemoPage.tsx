@@ -15,6 +15,7 @@ import { OnboardingModal } from "~/components/onboardingModal/OnboardingModal";
 const courseData: CourseWithTagsSchema = {
   courseCode: "CHE 100",
   courseName: "Chemical Engineering Concepts I",
+  minLevel: {},
   tags: [
     { code: "asdf", shortName: "afafa", longName: "Chemistry", color: "red" },
     { code: "asdf", shortName: "afafa", longName: "Chemistry", color: "blue" },

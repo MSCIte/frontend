@@ -56,7 +56,7 @@ export interface PlanState {
       code: string;
       term: string;
     };
-    type: "prereq" | "overloading";
+    type: "prereq" | "overloading" | "minLevel";
     text: string;
   }>;
 }
@@ -91,8 +91,9 @@ export const usePlanStore = create<PlanState>()(
               courseCode: courseCode,
               courseName: "",
               tags: [],
+              minLevel: {},
             };
-          } 
+          }
           return get().coursesCache[courseCode];
         },
         isTakingCourse: (courseCode) => {
@@ -215,11 +216,11 @@ export const usePlanStore = create<PlanState>()(
           const canTakeQueryBodies: CanTakeCourseQuery[] = Object.entries(
             courses,
           ).flatMap(([term, termCourses], termInd) => {
-            const coursesCompleted = Object.entries(courses)
-              .filter((_, ind) => ind < termInd)
-              .flatMap(([, termCourses]) =>
-                Object.keys(termCourses).map((courseCode) => courseCode),
-              );
+            // const coursesCompleted = Object.entries(courses)
+            //   .filter((_, ind) => ind < termInd)
+            //   .flatMap(([, termCourses]) =>
+            //     Object.keys(termCourses).map((courseCode) => courseCode),
+            //   );
 
             const coursesCompletedAndTaking = Object.entries(courses)
               .filter((_, ind) => ind <= termInd)
@@ -228,11 +229,11 @@ export const usePlanStore = create<PlanState>()(
               );
 
             return [
-              ...Object.keys(termCourses).map((courseCode) => ({
-                courseCode,
-                courseCodesTaken: coursesCompleted,
-                term,
-              })),
+              // ...Object.keys(termCourses).map((courseCode) => ({
+              //   courseCode,
+              //   courseCodesTaken: coursesCompleted,
+              //   term,
+              // })),
               ...Object.keys(termCourses).map((courseCode) => ({
                 courseCode,
                 courseCodesTaken: coursesCompletedAndTaking,
@@ -260,9 +261,8 @@ export const usePlanStore = create<PlanState>()(
             }
           });
 
-          console.log("coursses warnings", coursesWarnings);
-
-          console.log("canTakeQueryBodies", canTakeQueryBodies);
+          // console.log("coursses warnings", coursesWarnings);
+          // console.log("canTakeQueryBodies", canTakeQueryBodies);
 
           const overloadingWarnings = Object.entries(courses).map(
             ([term, termCourses]) => {
@@ -297,7 +297,57 @@ export const usePlanStore = create<PlanState>()(
             },
           );
 
-          const filteredWarnings = [...coursesWarnings, overloadingWarnings]
+          const minLevelWarnings = Object.entries(courses)
+            .map(([term, termCourses]) => {
+              return Object.values(termCourses).map((course) => {
+                const description = course.minLevel?.description;
+                const maxLevel = course.minLevel?.maxLevel;
+
+                // no minimum level, means no minlevel warnings
+                if (!maxLevel) {
+                  console.log("no min level", course.courseCode, term);
+                  return false;
+                }
+
+                // ignore if it's a mandatory course in its proper place, for minlevel warnings at least
+                if (course.tags?.some((tag) => tag.code === term)) {
+                  console.log("is mandatory course", course.courseCode, term);
+                  return false;
+                }
+
+                const courseYear = maxLevel.slice(0, 1);
+                const courseSeason = maxLevel.slice(1, 2);
+
+                const termYear = term.slice(0, 1);
+                const termSeason = term.slice(1, 2);
+
+                if (
+                  courseYear > termYear ||
+                  (courseYear === termYear && courseSeason > termSeason)
+                ) {
+                  console.log("min level warning", course.courseCode, term);
+                  return {
+                    affectedCourse: {
+                      code: course.courseCode,
+                      term,
+                    },
+                    type: "minLevel",
+                    text: `Min Level: ${description}`,
+                  };
+                }
+
+                console.log("WHAT THE FUCK", course.courseCode, term)
+              });
+            })
+            .flat();
+
+          console.log("min level warnings", minLevelWarnings);
+
+          const filteredWarnings = [
+            ...coursesWarnings,
+            minLevelWarnings,
+            overloadingWarnings,
+          ]
             .flat()
             .filter((x) => x)
             .filter(Boolean)
@@ -309,7 +359,8 @@ export const usePlanStore = create<PlanState>()(
                     x &&
                     warning &&
                     x?.affectedCourse?.code === warning?.affectedCourse?.code &&
-                    x?.affectedCourse?.term === warning?.affectedCourse?.term,
+                    x?.affectedCourse?.term === warning?.affectedCourse?.term &&
+                    x?.type === warning?.type,
                 ) === ind,
             )
             .map((x, ind) => {

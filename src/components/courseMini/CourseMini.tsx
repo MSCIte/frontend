@@ -38,7 +38,7 @@ export const CourseMini = (props: CourseMiniSchema) => {
           )}
 
           <Link to={hasPlannedThisCourse ? "#" : "/plan"}>
-            <div className="inline-block cursor-pointer rounded-lg border bg-gradient-to-r from-green-400 to-blue-500 px-1 text-sm hover:scale-105 hover:from-pink-500 hover:to-yellow-500 text-white font-medium">
+            <div className="inline-block cursor-pointer rounded-lg border bg-gradient-to-r from-green-400 to-blue-500 px-1 text-sm font-medium text-white hover:scale-105 hover:from-pink-500 hover:to-yellow-500">
               {hasPlannedThisCourse ? (
                 "Planned!"
               ) : (

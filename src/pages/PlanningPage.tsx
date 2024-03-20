@@ -19,7 +19,6 @@ import {
 import { twMerge } from "tailwind-merge";
 import { Tooltip } from "react-tooltip";
 import { InformationModal } from "~/components/informationModal/InformationModal";
-import { useTour } from "@reactour/tour";
 
 export interface CourseViewProps {
   focusedTerm: number;
@@ -51,11 +50,11 @@ export const PlanningPage = () => {
     validatePlan,
   } = usePlanStore();
 
-  const { setIsOpen } = useTour();
+  // const { setIsOpen } = useTour();
 
   useEffect(() => {
     if (!localStorage.getItem("tourStarted")) {
-      setIsOpen(true);
+      // setIsOpen(true);
       setIsOnboardingModalOpen(true);
       // localStorage.setItem("tourStarted", "true");
     }
@@ -219,7 +218,7 @@ export const PlanningPage = () => {
       {/* Place warnings in a root spot to make it display over all other elements */}
       <div>
         {warnings?.map((warning) => (
-          <Tooltip id={warning.id} key={`warning-root-${warning.id}`} />
+          <Tooltip id={warning.id} className="z-50" key={`warning-root-${warning.id}`} />
         ))}
       </div>
     </div>

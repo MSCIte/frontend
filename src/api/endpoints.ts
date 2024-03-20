@@ -102,6 +102,15 @@ export interface MissingReqs {
   lists: MissingList[];
 }
 
+export type MinLevelMaxLevel = string | null;
+
+export type MinLevelDescription = string | null;
+
+export interface MinLevel {
+  description?: MinLevelDescription;
+  maxLevel?: MinLevelMaxLevel;
+}
+
 export interface HTTPValidationError {
   detail?: ValidationError[];
 }
@@ -141,6 +150,8 @@ export interface CoursesTakenIn {
 
 export type CourseWithTagsSchemaPrerequisites = string | null;
 
+export type CourseWithTagsSchemaMinLevel = MinLevel | null;
+
 export type CourseWithTagsSchemaLocation = string | null;
 
 export type CourseWithTagsSchemaCredit = number | null;
@@ -157,6 +168,7 @@ export interface CourseWithTagsSchema {
   credit?: CourseWithTagsSchemaCredit;
   description?: string;
   location?: CourseWithTagsSchemaLocation;
+  minLevel: CourseWithTagsSchemaMinLevel;
   prerequisites?: CourseWithTagsSchemaPrerequisites;
   tags?: TagSchema[];
 }

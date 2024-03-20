@@ -83,7 +83,7 @@ export const YearTableView = ({ focusedTerm }: CourseViewProps) => {
 
   const unsetCourseSelections = () => {
     setSelectedTerm("");
-    setSelectedCourse({ courseCode: "", courseName: "" });
+    setSelectedCourse({ courseCode: "", courseName: "", minLevel: {} });
   };
 
   return (

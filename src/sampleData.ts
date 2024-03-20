@@ -20,6 +20,7 @@ export const courseData: CourseData = {
     CHE100: {
       courseCode: "CHE 100",
       courseName: "Chemical Engineering Concepts I",
+      minLevel: {},
       description:
         "This course introduces students to the fundamental concepts of chemical engineering. Topics include: material and energy balances, fluid flow, heat transfer, and mass transfer. The course also introduces students to the chemical engineering profession and the role of chemical engineers in society.",
       tags: [
@@ -44,6 +45,7 @@ export const courseData: CourseData = {
       ],
     },
     CHE102: {
+      minLevel: {},
       courseCode: "CHE 102",
       courseName: "Chemistry for Engineers",
       tags: [
@@ -56,6 +58,7 @@ export const courseData: CourseData = {
       ],
     },
     CHE180: {
+      minLevel: {},
       courseCode: "CHE 180",
       courseName: "Computer Literacy & Programming",
       tags: [
@@ -68,6 +71,7 @@ export const courseData: CourseData = {
       ],
     },
     MATH115: {
+      minLevel: {},
       courseCode: "MATH 115",
       courseName: "Linear Algebra for Engineering",
       tags: [
@@ -80,6 +84,7 @@ export const courseData: CourseData = {
       ],
     },
     CHE120: {
+      minLevel: {},
       courseCode: "CHE 120",
       courseName: "Chemical Engineering Design Stu...",
       tags: [
@@ -93,6 +98,7 @@ export const courseData: CourseData = {
     },
     MATH116: {
       courseCode: "MATH 116",
+      minLevel: {},
       courseName: "Calculus I for Engineering",
       tags: [
         {
@@ -107,6 +113,7 @@ export const courseData: CourseData = {
 
   "1B": {
     CHE101: {
+      minLevel: {},
       courseCode: "CHE 101",
       courseName: "Chemical Engineering Concepts I",
       tags: [
@@ -119,6 +126,7 @@ export const courseData: CourseData = {
       ],
     },
     CHE161: {
+      minLevel: {},
       courseCode: "CHE 161",
       courseName: "Chemistry for Engineers",
       tags: [
@@ -131,6 +139,7 @@ export const courseData: CourseData = {
       ],
     },
     CHE181: {
+      minLevel: {},
       courseCode: "CHE 181",
       courseName: "Computer Literacy & Programming",
       tags: [
@@ -143,6 +152,7 @@ export const courseData: CourseData = {
       ],
     },
     MATH118: {
+      minLevel: {},
       courseCode: "MATH 118",
       courseName: "Linear Algebra for Engineering",
       tags: [
@@ -155,6 +165,7 @@ export const courseData: CourseData = {
       ],
     },
     PHY115: {
+      minLevel: {},
       courseCode: "PHY 115",
       courseName: "Chemical Engineering Design Stu...",
       tags: [
@@ -167,6 +178,7 @@ export const courseData: CourseData = {
       ],
     },
     SPCOM: {
+      minLevel: {},
       courseCode: "SPCOM",
       courseName: "Calculus I for Engineering",
       tags: [
@@ -182,6 +194,7 @@ export const courseData: CourseData = {
 
   "2A": {
     CHE200: {
+      minLevel: {},
       courseCode: "CHE 200",
       courseName: "Chemical Engineering Concepts I",
       tags: [
@@ -194,6 +207,7 @@ export const courseData: CourseData = {
       ],
     },
     CHE220: {
+      minLevel: {},
       courseCode: "CHE 220",
       courseName: "Chemistry for Engineers",
       tags: [
@@ -206,6 +220,7 @@ export const courseData: CourseData = {
       ],
     },
     CHE230: {
+      minLevel: {},
       courseCode: "CHE 230",
       courseName: "Computer Literacy & Programming",
       tags: [
@@ -220,6 +235,7 @@ export const courseData: CourseData = {
   },
   "2B": {
     CHE211: {
+      minLevel: {},
       courseCode: "CHE 211",
       courseName: "Chemical Engineering Concepts I",
       tags: [
@@ -232,6 +248,7 @@ export const courseData: CourseData = {
       ],
     },
     CHE225: {
+      minLevel: {},
       courseCode: "CHE 225",
       courseName: "Chemistry for Engineers",
       tags: [
@@ -244,6 +261,7 @@ export const courseData: CourseData = {
       ],
     },
     CHE231: {
+      minLevel: {},
       courseCode: "CHE 231",
       courseName: "Computer Literacy & Programming",
       tags: [
@@ -256,6 +274,7 @@ export const courseData: CourseData = {
       ],
     },
     CHE291: {
+      minLevel: {},
       courseCode: "CHE 291",
       courseName: "Linear Algebra for Engineering",
       tags: [
@@ -268,6 +287,7 @@ export const courseData: CourseData = {
       ],
     },
     MATH218: {
+      minLevel: {},
       courseCode: "MATH 218",
       courseName: "Chemical Engineering Design Stu...",
       tags: [
@@ -286,6 +306,7 @@ export const courseList: CourseWithTagsSchema[] = [
   {
     courseCode: "CHE 100",
     courseName: "Chemical Engineering Concepts I",
+    minLevel: {},
     description:
       "This course introduces students to the fundamental concepts of chemical engineering. Topics include: material and energy balances, fluid flow, heat transfer, and mass transfer. The course also introduces students to the chemical engineering profession and the role of chemical engineers in society. Students will learn how to apply these concepts to solve real-world problems in chemical engineering.",
     tags: [
@@ -312,6 +333,7 @@ export const courseList: CourseWithTagsSchema[] = [
   {
     courseCode: "CHE 102",
     courseName: "Chemistry for Engineers",
+    minLevel: {},
     description:
       "This course provides an introduction to the principles of chemistry, with a focus on applications relevant to engineering. Students will learn about atomic structure, chemical bonding, reaction kinetics, and thermodynamics. The course also covers the properties of gases, liquids, and solids, as well as the behavior of solutions.",
     tags: [
@@ -326,6 +348,7 @@ export const courseList: CourseWithTagsSchema[] = [
   {
     courseCode: "CHE 180",
     courseName: "Computer Literacy & Programming",
+    minLevel: {},
     description:
       "This course introduces students to the basics of computer literacy and programming, with a focus on applications in engineering. Students will learn how to use common software tools, write simple programs, and understand the basics of computer hardware. The course also covers data structures, algorithms, and object-oriented programming.",
     tags: [
@@ -335,6 +358,7 @@ export const courseList: CourseWithTagsSchema[] = [
   {
     courseCode: "MATH 115",
     courseName: "Linear Algebra for Engineering",
+    minLevel: {},
     description:
       "This course covers the fundamental concepts of linear algebra, with a focus on applications in engineering. Students will learn about vectors, matrices, determinants, eigenvalues and eigenvectors, and how to apply these concepts to solve problems in engineering. The course also covers the theory of linear equations and introduces students to abstract vector spaces.",
     tags: [
@@ -349,6 +373,7 @@ export const courseList: CourseWithTagsSchema[] = [
   {
     courseCode: "CHE 120",
     courseName: "Chemical Engineering Design Stu...",
+    minLevel: {},
     description:
       "This course introduces students to the principles of chemical engineering design, with a focus on practical applications. Students will learn how to design chemical processes and equipment, and how to use simulation software to analyze and optimize these designs. The course also covers safety and environmental considerations in chemical engineering design.",
     tags: [
@@ -363,6 +388,7 @@ export const courseList: CourseWithTagsSchema[] = [
   {
     courseCode: "MATH 116",
     courseName: "Calculus I for Engineering",
+    minLevel: {},
     description:
       "This course covers the fundamental concepts of calculus, with a focus on applications in engineering. Students will learn about limits, derivatives, integrals, and series, and how to apply these concepts to solve problems in engineering. The course also introduces students to the concepts of multivariable calculus.",
     tags: [
@@ -372,6 +398,7 @@ export const courseList: CourseWithTagsSchema[] = [
   {
     courseCode: "CHE 101",
     courseName: "Chemical Engineering Concepts I",
+    minLevel: {},
     description:
       "This course introduces students to the fundamental concepts of chemical engineering. Topics include: material and energy balances, fluid flow, heat transfer, and mass transfer. The course also introduces students to the chemical engineering profession and the role of chemical engineers in society. Students will learn how to apply these concepts to solve real-world problems in chemical engineering.",
     tags: [
@@ -386,6 +413,7 @@ export const courseList: CourseWithTagsSchema[] = [
   {
     courseCode: "CHE 161",
     courseName: "Chemistry for Engineers",
+    minLevel: {},
     description:
       "This course provides an introduction to the principles of chemistry, with a focus on applications relevant to engineering. Students will learn about atomic structure, chemical bonding, reaction kinetics, and thermodynamics. The course also covers the properties of gases, liquids, and solids, as well as the behavior of solutions.",
     tags: [
@@ -395,6 +423,7 @@ export const courseList: CourseWithTagsSchema[] = [
   {
     courseCode: "CHE 181",
     courseName: "Computer Literacy & Programming",
+    minLevel: {},
     description:
       "This course introduces students to the basics of computer literacy and programming, with a focus on applications in engineering. Students will learn how to use common software tools, write simple programs, and understand the basics of computer hardware. The course also covers data structures, algorithms, and object-oriented programming.",
     tags: [
@@ -409,6 +438,7 @@ export const courseList: CourseWithTagsSchema[] = [
   {
     courseCode: "MATH 118",
     courseName: "Linear Algebra for Engineering",
+    minLevel: {},
     description:
       "This course covers the fundamental concepts of linear algebra, with a focus on applications in engineering. Students will learn about vectors, matrices, determinants, eigenvalues and eigenvectors, and how to apply these concepts to solve problems in engineering. The course also covers the theory of linear equations and introduces students to abstract vector spaces.",
     tags: [
@@ -419,6 +449,7 @@ export const courseList: CourseWithTagsSchema[] = [
   {
     courseCode: "ME 101",
     courseName: "Introduction to Mechanical Engineering",
+    minLevel: {},
     description:
       "This course provides an overview of the field of mechanical engineering, including the role of mechanical engineers, the various subfields within mechanical engineering, and the types of problems mechanical engineers solve. Students will also be introduced to the fundamental principles of mechanical engineering, including mechanics, thermodynamics, and materials science.",
     tags: [
@@ -433,6 +464,7 @@ export const courseList: CourseWithTagsSchema[] = [
   {
     courseCode: "ME 201",
     courseName: "Mechanics of Materials",
+    minLevel: {},
     description:
       "This course covers the behavior of materials under different loading conditions. Topics include stress and strain, axial loading, torsion, bending, and more. The course also introduces students to the concepts of deformation, strain hardening, and failure theories.",
     tags: [
@@ -442,6 +474,7 @@ export const courseList: CourseWithTagsSchema[] = [
   {
     courseCode: "ME 202",
     courseName: "Thermodynamics",
+    minLevel: {},
     description:
       "This course introduces the principles of thermodynamics, including the first and second laws, and their applications to engineering systems. Topics include properties of substances, heat and work, energy transfer, and energy conversion processes.",
     tags: [
@@ -456,6 +489,7 @@ export const courseList: CourseWithTagsSchema[] = [
   {
     courseCode: "ME 203",
     courseName: "Fluid Mechanics",
+    minLevel: {},
     description:
       "This course covers the fundamental principles of fluid mechanics, including fluid statics, fluid dynamics, and the basic equations of fluid flow. The course also introduces students to the concepts of laminar and turbulent flow, boundary layers, and flow around bodies.",
     tags: [
@@ -465,6 +499,7 @@ export const courseList: CourseWithTagsSchema[] = [
   {
     courseCode: "ME 204",
     courseName: "Heat Transfer",
+    minLevel: {},
     description:
       "This course introduces the principles of heat transfer, including conduction, convection, and radiation. Students will learn how to analyze and solve problems involving steady and transient heat conduction, forced and natural convection, and thermal radiation.",
     tags: [
@@ -474,6 +509,7 @@ export const courseList: CourseWithTagsSchema[] = [
   {
     courseCode: "ME 205",
     courseName: "Mechanical Design",
+    minLevel: {},
     description:
       "This course introduces the principles of mechanical design, including the design process, material selection, and manufacturing considerations. Students will learn how to design mechanical components and systems, and how to use computer-aided design (CAD) software.",
     tags: [

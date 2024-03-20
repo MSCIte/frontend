@@ -12,6 +12,7 @@ export const AllTermsTableView = (_: CourseViewProps) => {
   const [selectedCourse, setSelectedCourse] = useState<CourseWithTagsSchema>({
     courseCode: "",
     courseName: "",
+    minLevel: {},
   });
   const [modalMode, setModalMode] = useState<ModalMode>("add");
 
@@ -64,7 +65,7 @@ export const AllTermsTableView = (_: CourseViewProps) => {
 
   const unsetCourseSelections = () => {
     setSelectedTerm("");
-    setSelectedCourse({ courseCode: "", courseName: "" });
+    setSelectedCourse({ courseCode: "", courseName: "" ,minLevel: {},});
   };
 
   return (

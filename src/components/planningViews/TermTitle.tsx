@@ -17,6 +17,7 @@ export const TermTitle = (props: TermTitleProps) => {
         {props.termName}{" "}
         <ExclamationTriangleIcon
           className="inline h-6 w-6 text-yellow-400"
+          data-tooltip-place='top'
           data-tooltip-id={warnings[0].id}
           data-tooltip-content={warnings[0].text}
           data-tooltip-variant="warning"

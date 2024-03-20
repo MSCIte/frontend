@@ -40,9 +40,9 @@ export const Navbar = () => {
                   <Link href="/">
                     <img
                       className="h-8 w-auto"
-                      src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                      alt="Your Company"
-                    />
+                      src="/public/favicon.svg"
+                      alt="MSCIte"
+                  />
                   </Link>
                 </div>
                 <div className="hidden sm:ml-6 sm:block">

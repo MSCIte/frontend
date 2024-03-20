@@ -584,6 +584,12 @@
             "title": "Corequisites",
             "default": ""
           },
+          "minLevel": {
+            "anyOf": [
+              { "$ref": "#/components/schemas/MinLevel" },
+              { "type": "null" }
+            ]
+          },
           "tags": {
             "items": { "$ref": "#/components/schemas/TagSchema" },
             "type": "array",
@@ -592,7 +598,7 @@
           }
         },
         "type": "object",
-        "required": ["courseCode", "courseName"],
+        "required": ["courseCode", "courseName", "minLevel"],
         "title": "CourseWithTagsSchema"
       },
       "CoursesTakenIn": {
@@ -692,6 +698,22 @@
         },
         "type": "object",
         "title": "HTTPValidationError"
+      },
+      "MinLevel": {
+        "properties": {
+          "maxLevel": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Maxlevel",
+            "default": ""
+          },
+          "description": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Description",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "title": "MinLevel"
       },
       "MissingList": {
         "properties": {
